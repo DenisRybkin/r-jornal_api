@@ -4,7 +4,7 @@ import type { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Dialect } from 'sequelize/types/sequelize';
 import { ModelOptions } from 'sequelize/types';
-import { AppConfig } from '../../../types/app-config.type';
+import { AppConfig } from '../../../types';
 import { JwtModuleOptions, JwtSignOptions } from '@nestjs/jwt';
 
 @Injectable()

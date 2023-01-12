@@ -1,4 +1,4 @@
-export enum ApiErrorConstants {
+export enum ErrorMessagesConstants {
   ValidationError = 'notifier:error.api.validation_error',
   InternalError = 'notifier:error.api.internal_server_error',
   Conflict = 'notifier:error.api.conflict',

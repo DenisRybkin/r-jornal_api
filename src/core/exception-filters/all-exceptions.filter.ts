@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { ApiErrorConstants } from '../constants/api-error.constants';
+import { ErrorMessagesConstants } from '../constants';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -42,6 +42,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ? exception.getResponse() instanceof Object
         ? (exception.getResponse() as object)
         : { messages: exception.getResponse() }
-      : { message: ApiErrorConstants.InternalError };
+      : { message: ErrorMessagesConstants.InternalError };
   }
 }
