@@ -37,8 +37,8 @@ export class AuthGuard implements CanActivate {
           'Token not passed',
         );
 
-      // const payload = await this.jwtService.signAsync(token);
-      // this.asyncContext.set('user', payload);
+      const payload = await this.jwtService.signAsync(token);
+      this.asyncContext.set('user', payload);
 
       return true;
     } catch (exception) {
