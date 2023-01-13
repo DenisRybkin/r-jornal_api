@@ -7,7 +7,7 @@ import {
   InternalConfigurationConstants,
   ErrorMessagesConstants,
 } from '../constants';
-import { IS_PUBLIC_KEY } from '../decorators/public-controller.decorator';
+import { IS_PUBLIC_KEY } from '../decorators';
 import { AsyncContext } from '../modules/async-context/async-context';
 
 @Injectable()
