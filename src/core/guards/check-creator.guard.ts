@@ -3,10 +3,18 @@ import { Reflector } from '@nestjs/core';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Request } from 'express';
 import { Model, Sequelize } from 'sequelize-typescript';
-import { ErrorMessagesConstants } from '../constants';
+import {
+  ConstraintMessagesConstants,
+  ErrorMessagesConstants,
+} from '../constants';
 import { AsyncContext } from '../modules/async-context/async-context';
 import { MODEL_KEY } from '../decorators';
-import { ForbiddenException, NotFoundException } from '../exceptions/build-in';
+import {
+  ForbiddenException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../exceptions/build-in';
+import { PipeExceptionFactory } from '../factories/pipe-exception.factory';
 
 @Injectable()
 export class CheckCreatorGuard implements CanActivate {
@@ -24,6 +32,17 @@ export class CheckCreatorGuard implements CanActivate {
     );
 
     const entityId = Number(request.params.id);
+
+    if (!EntityClass)
+      throw new InternalServerErrorException(
+        ErrorMessagesConstants.InternalError,
+        'Something went wrong',
+      );
+
+    if (!entityId || !Number.isInteger(entityId))
+      throw PipeExceptionFactory('id', [
+        ConstraintMessagesConstants.MustBeInteger,
+      ])('Validation failed (numeric string is expected)');
 
     const model = await this.connection
       .getRepository(EntityClass)

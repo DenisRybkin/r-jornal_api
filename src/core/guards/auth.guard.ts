@@ -9,6 +9,7 @@ import {
 } from '../constants';
 import { IS_PUBLIC_KEY } from '../decorators';
 import { AsyncContext } from '../modules/async-context/async-context';
+import { JwtTokenPayloadType } from '../types/jwt-token-payload.type';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -37,7 +38,9 @@ export class AuthGuard implements CanActivate {
           'Token not passed',
         );
 
-      const payload = await this.jwtService.signAsync(token);
+      const payload = await this.jwtService.verifyAsync<JwtTokenPayloadType>(
+        token,
+      );
       this.asyncContext.set('user', payload);
 
       return true;
