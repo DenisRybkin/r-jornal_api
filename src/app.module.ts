@@ -6,11 +6,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ApiConfigService } from './core/modules/shared/services/api-config.service';
 import { AsyncContextModule } from './core/modules/async-context/async-context.module';
 import { AsyncContextMiddleware } from './core/middlewares';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AllExceptionsFilter } from './core/exception-filters/all-exceptions.filter';
-import { UniqueValidator } from './core/validators/unique.validator';
-import { AuthGuard } from './core/guards';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { UniqueValidator } from './core/validators';
+import { AuthGuard, RolesGuard } from './core/guards';
+import { JwtService } from '@nestjs/jwt';
+import { ValidationPipe } from './core/pipes';
 
 @Module({
   imports: [
@@ -33,6 +34,14 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
     },
     {
       provide: APP_FILTER,

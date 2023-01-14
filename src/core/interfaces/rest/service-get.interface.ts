@@ -1,6 +1,6 @@
-import { PagingOptions } from '../common/paging/paging.options';
-import { PagingModel } from '../common/paging/paging.model';
-import { AutocompleteModel } from '../common/autocomplete.model';
+import { PagingOptions } from '../common';
+import { PagingModel } from '../common';
+import { AutocompleteModel } from '../common';
 
 export interface IServiceGetInterface<T, TFilter> {
   getAll: (opts?: PagingOptions & TFilter) => Promise<PagingModel<T> | null>;
