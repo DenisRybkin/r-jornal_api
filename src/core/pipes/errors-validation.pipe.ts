@@ -4,7 +4,7 @@ import { validate } from 'class-validator';
 import { ValidationException } from '../exceptions/custom';
 
 @Injectable()
-export class ValidationPipe implements PipeTransform {
+export class ErrorsValidationPipe implements PipeTransform {
   private static JsNativeTypes: Function[] = [
     String,
     Boolean,
@@ -35,6 +35,6 @@ export class ValidationPipe implements PipeTransform {
   }
 
   private toValidate(metatype: Function): boolean {
-    return !ValidationPipe.JsNativeTypes.includes(metatype);
+    return !ErrorsValidationPipe.JsNativeTypes.includes(metatype);
   }
 }

@@ -11,7 +11,8 @@ import { AllExceptionsFilter } from './core/exception-filters/all-exceptions.fil
 import { UniqueValidator } from './core/validators';
 import { AuthGuard, RolesGuard } from './core/guards';
 import { JwtService } from '@nestjs/jwt';
-import { ValidationPipe } from './core/pipes';
+import { ErrorsValidationPipe } from './core/pipes';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -26,22 +27,23 @@ import { ValidationPipe } from './core/pipes';
       useFactory: (configService: ApiConfigService) => configService.dbConfig,
       inject: [ApiConfigService],
     }),
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [
     JwtService,
     UniqueValidator,
-    {
+    /*{
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
-    },
+    },*/
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
+      useClass: ErrorsValidationPipe,
     },
     {
       provide: APP_FILTER,

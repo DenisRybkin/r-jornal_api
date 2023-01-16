@@ -1,7 +1,7 @@
-import { IServiceGetInterface } from './service-get.interface';
+import { IServiceRead } from './service-read.interface';
 
 export interface IServiceCrudInterface<T, TFilter>
-  extends IServiceGetInterface<T, TFilter> {
+  extends IServiceRead<T, TFilter> {
   create: (model: T) => Promise<T | null>;
   edit: (id: number, model: T, params?: any) => Promise<T | null>;
   editPartially: (

@@ -1,7 +1,7 @@
 import { OrderType } from '../order.type';
 
-export type PagingOptions = {
+export interface IPagingOptions {
   page?: number;
   pageSize?: number;
   order?: OrderType;
-};
+}
