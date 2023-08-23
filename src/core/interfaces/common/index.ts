@@ -1,5 +1,11 @@
-export { IPagingOptions, IPaging } from './paging';
-export { OrderType } from './order.type';
-export { IAutocomplete } from './autocomplete.interface';
-export { GenderType } from './gender.type';
-export { RolesType } from './roles.type';
+export { AutoCompleteType, IAutocomplete } from './autocomplete.interface'
+export { GenderType } from './gender.type'
+export { Order, OrderType } from './order.type'
+export { IPaging, IPagingOptions } from './paging'
+export {
+  IProcessedError,
+  ProcessedError400Type,
+  ProcessedError404Type
+} from './processed-error.type'
+export { ReadFilter } from './read-filter.type'
+export { Roles } from './roles.type'

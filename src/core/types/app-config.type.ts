@@ -1,4 +1,5 @@
 export interface AppConfig {
-  port: number;
-  baseUrl: string;
+  port: number
+  baseUrl: string
+  prefix: string
 }

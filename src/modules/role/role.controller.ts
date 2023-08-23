@@ -1,20 +1,37 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { PagingOptionsPipe } from '../../core/pipes';
-import { IPagingOptions } from '../../core/interfaces/common';
-import { TransformPagingType } from '../../core/pipes/types/transformPaging.type';
+import { Controller } from '@nestjs/common'
+import { ApiExtraModels } from '@nestjs/swagger'
+import { buildBaseControllerCRUD } from 'src/core/bases/controllers'
+import { Role } from 'src/database/models/singles/Role/role.model'
+import {
+  CreateRoleDto,
+  ReadRoleFilterDto,
+  UpdatePartiallyRoleDto,
+  UpdateRoleDto
+} from './dtos'
+import { RoleService } from './role.service'
 
-@Controller('roles')
-export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+const BaseController = buildBaseControllerCRUD<Role>({
+  privacySettings: {
+    autocompleteIsPublic: true,
+    getAllIsPublic: true,
+    getByIdIsPublic: true,
+    createIsPublic: true,
+    deleteIsPublic: true,
+    updateIsPublic: true
+  },
+  swagger: { model: Role, modelName: 'role' },
+  filterDto: ReadRoleFilterDto,
+  createDto: CreateRoleDto,
+  updateDto: UpdateRoleDto,
+  updatePartiallyDto: UpdatePartiallyRoleDto
+})
 
-  @Get()
-  getAll(@Query(PagingOptionsPipe) query: TransformPagingType) {
-    return this.roleService.getAll(query.pagingOptions);
-  }
-
-  @Get('autocomplete')
-  autocomplete(@Query(PagingOptionsPipe) query: TransformPagingType) {
-    return this.roleService.autocomplete(query.pagingOptions);
+@ApiExtraModels(Role, ReadRoleFilterDto)
+@Controller('role')
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+export class RoleController extends BaseController {
+  constructor(private readonly roleService: RoleService) {
+    super(roleService)
   }
 }

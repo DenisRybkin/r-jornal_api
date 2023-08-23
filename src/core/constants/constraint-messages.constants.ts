@@ -6,5 +6,5 @@ export enum ConstraintMessagesConstants {
   MustBeInteger = 'notifier:error.api.validation.must_be_integer',
   MustBeEnum = 'notifier:error.api.validation.must_be_enum',
   MustBeDate = 'notifier:error.api.validation.must_be_date',
-  MustBeBoolean = 'notifier:error.api.validation.must_be_boolean',
+  MustBeBoolean = 'notifier:error.api.validation.must_be_boolean'
 }

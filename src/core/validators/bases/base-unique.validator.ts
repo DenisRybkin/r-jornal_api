@@ -1,13 +1,13 @@
 import {
   ValidationArguments,
-  ValidatorConstraintInterface,
-} from 'class-validator';
-import { Model, Sequelize } from 'sequelize-typescript';
+  ValidatorConstraintInterface
+} from 'class-validator'
+import { Model, Sequelize } from 'sequelize-typescript'
 
-export type UniqueConstrainsArguments = [new () => Model];
+export type UniqueConstrainsArguments = [new () => Model]
 
 export interface IUniqueValidationArguments {
-  constrains: UniqueConstrainsArguments;
+  constrains: UniqueConstrainsArguments
 }
 
 export abstract class BaseUniqueValidator
@@ -17,18 +17,18 @@ export abstract class BaseUniqueValidator
 
   public async validate(
     value: any,
-    validationArguments: ValidationArguments,
+    validationArguments: ValidationArguments
   ): Promise<boolean> {
-    const [EntityClass] = validationArguments?.constraints;
+    const [EntityClass] = validationArguments?.constraints
     const entitiesCount = await this.connection
       .getRepository(EntityClass)
-      .count({ where: { [validationArguments.property]: value } });
-    return entitiesCount <= 0;
+      .count({ where: { [validationArguments.property]: value } })
+    return entitiesCount <= 0
   }
 
   public defaultMessage(validationArguments: ValidationArguments): string {
-    const [EntityClass] = validationArguments?.constraints;
-    const entity = EntityClass.name || 'Entity';
-    return `${entity}.not_unique.${validationArguments?.property}`;
+    const [EntityClass] = validationArguments?.constraints
+    const entity = EntityClass.name || 'Entity'
+    return `${entity}.not_unique.${validationArguments?.property}`
   }
 }

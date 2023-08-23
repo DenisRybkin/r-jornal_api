@@ -1,8 +1,8 @@
-import { RolesType } from '../interfaces/common';
+import { Roles } from '../interfaces/common'
 
 export type JwtTokenPayloadType = {
-  id: number;
-  email: string;
-  roleId: number;
-  roleName: RolesType;
-};
+  id: number
+  email: string
+  roleId: number
+  roleName: Roles
+}

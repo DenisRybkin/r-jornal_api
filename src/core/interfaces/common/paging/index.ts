@@ -1,2 +1,2 @@
-export { IPagingOptions } from './paging-options.interface';
-export { IPaging } from './paging.interface';
+export { IPagingOptions } from './paging-options.interface'
+export { IPaging, PagingType } from './paging.interface'

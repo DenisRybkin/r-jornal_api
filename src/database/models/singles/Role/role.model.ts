@@ -1,25 +1,40 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
-import { CreateRoleAttributes } from './role.attributes';
-import { RolesType } from '../../../../core/interfaces/common';
+import { ApiProperty } from '@nestjs/swagger'
+import { Column, DataType, Model, Table } from 'sequelize-typescript'
+import { Roles } from '../../../../core/interfaces/common'
+import { CreateRoleAttributes } from './role.attributes'
 
-@Table({ tableName: 'roles', createdAt: true, updatedAt: true })
+@Table({ tableName: 'roles' })
 export class Role extends Model<Role, CreateRoleAttributes> {
+  @ApiProperty({ example: 1, description: 'id of role' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true,
+    primaryKey: true
   })
-  readonly id: number;
+  readonly id: number
 
+  @ApiProperty({
+    example: 'admin',
+    description: 'name of role',
+    type: typeof Roles
+  })
   @Column({
-    type: DataType.ENUM({ values: Object.values(RolesType) }),
+    type: DataType.ENUM({ values: Object.values(Roles) }),
     unique: true,
     allowNull: false,
-    defaultValue: RolesType.User,
+    defaultValue: Roles.User
   })
-  readonly name: RolesType;
+  readonly name: Roles
 
-  @Column({ type: DataType.STRING, defaultValue: null, validate: { max: 64 } })
-  readonly description: string | null;
+  @ApiProperty({
+    example: 'Administration of platform',
+    description: 'description of model'
+  })
+  @Column({
+    type: DataType.STRING,
+    defaultValue: null,
+    validate: { len: [5, 50] }
+  })
+  readonly description: string | null
 }

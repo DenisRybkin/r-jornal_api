@@ -1,10 +1,10 @@
-import { AsyncLocalStorage } from 'async_hooks';
-import { DynamicModule } from '@nestjs/common';
-import { AsyncContext } from './async-context';
+import { DynamicModule } from '@nestjs/common'
+import { AsyncLocalStorage } from 'async_hooks'
+import { AsyncContext } from './async-context'
 
 interface AsyncContextModuleOptions {
-  isGlobal?: boolean;
-  alsInstance?: AsyncLocalStorage<any>;
+  isGlobal?: boolean
+  alsInstance?: AsyncLocalStorage<any>
 }
 
 export class AsyncContextModule {
@@ -16,11 +16,11 @@ export class AsyncContextModule {
         {
           provide: AsyncContext,
           useValue: new AsyncContext(
-            options?.alsInstance ?? new AsyncLocalStorage(),
-          ),
-        },
+            options?.alsInstance ?? new AsyncLocalStorage()
+          )
+        }
       ],
-      exports: [AsyncContext],
-    };
+      exports: [AsyncContext]
+    }
   }
 }

@@ -1,23 +1,23 @@
-import { OrderType, IPagingOptions } from '../../interfaces/common';
-import { IsEnum, IsInt, IsOptional } from 'class-validator';
-import { ConstraintMessagesConstants } from '../../constants';
-import { Order } from '../../interfaces/common/order.type';
+import { IsEnum, IsInt, IsOptional } from 'class-validator'
+import { ConstraintMessagesConstants } from '../../constants'
+import { IPagingOptions, OrderType } from '../../interfaces/common'
+import { Order } from '../../interfaces/common/order.type'
 
-export class PagingOptions implements IPagingOptions {
+export class PagingOptions implements Partial<IPagingOptions> {
   @IsOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
-  readonly page?: number;
+  readonly page?: number
 
   @IsOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
-  readonly pageSize?: number;
+  readonly pageSize?: number
 
   @IsOptional()
   @IsEnum(Order, {
     message: 'invaluable value of order',
     context: {
-      availableValues: Object.values(Order),
-    },
+      availableValues: Object.values(Order)
+    }
   })
-  order?: OrderType;
+  order?: OrderType
 }

@@ -1,1 +1,1 @@
-export { PaginationHelper } from './pagination.helper';
+export { PaginationHelper } from './pagination.helper'

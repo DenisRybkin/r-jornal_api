@@ -1,1 +1,1 @@
-export { AsyncContextMiddleware } from './async-context.middleware';
+export { AsyncContextMiddleware } from './async-context.middleware'

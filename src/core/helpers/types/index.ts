@@ -1,1 +1,1 @@
-export { DbPaginationOptions } from './db-pagination-options.type';
+export { DbPaginationOptions } from './db-pagination-options.type'

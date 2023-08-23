@@ -1,14 +1,20 @@
-import { IServiceRead } from './service-read.interface';
+import { Model } from 'sequelize-typescript'
+import { MakeNullishOptional } from 'sequelize/types/utils'
+import { BaseServiceRead, IConfigServiceRead } from './service-read.interface'
 
-export interface IServiceCrudInterface<T, TFilter>
-  extends IServiceRead<T, TFilter> {
-  create: (model: T) => Promise<T | null>;
-  edit: (id: number, model: T, params?: any) => Promise<T | null>;
-  editPartially: (
-    id: number,
-    currentModel: T,
-    newModel: T,
-    params?: any,
-  ) => Promise<T | null>;
-  delete: (id: number) => Promise<boolean | null>;
+export interface IConfigServiceCRUD<T extends Model<T, any>>
+  extends IConfigServiceRead<T> {}
+
+export abstract class BaseServiceCRUD<
+  T extends Model<T, any>
+> extends BaseServiceRead<T> {
+  constructor(protected readonly config: IConfigServiceCRUD<T>) {
+    super(config)
+  }
+  abstract create(
+    model: MakeNullishOptional<T['_creationAttributes']>
+  ): Promise<T | null>
+  abstract update(id: number, model: T): Promise<T | null>
+  abstract updatePartially(id: number, model: Partial<T>): Promise<T | null>
+  abstract delete(id: number): Promise<number>
 }
