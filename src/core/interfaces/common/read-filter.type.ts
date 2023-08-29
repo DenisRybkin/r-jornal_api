@@ -1,4 +1,4 @@
-import { QueryNamingConventionConstants } from 'src/core/constants/quey-naming-convention.constants'
+import { QueryNamingConventionConstants } from 'src/core/constants/query-naming-convention.constants'
 
 export type ReadFilter = {
   key: string

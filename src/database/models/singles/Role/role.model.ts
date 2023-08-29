@@ -3,7 +3,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript'
 import { Roles } from '../../../../core/interfaces/common'
 import { CreateRoleAttributes } from './role.attributes'
 
-@Table({ tableName: 'roles' })
+@Table({ tableName: 'Role' })
 export class Role extends Model<Role, CreateRoleAttributes> {
   @ApiProperty({ example: 1, description: 'id of role' })
   @Column({

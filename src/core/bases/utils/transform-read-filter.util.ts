@@ -6,7 +6,7 @@ import {
   ConstraintMessagesConstants,
   ErrorMessagesConstants
 } from 'src/core/constants'
-import { QueryNamingConventionConstants } from 'src/core/constants/quey-naming-convention.constants'
+import { QueryNamingConventionConstants } from 'src/core/constants/query-naming-convention.constants'
 import { BadRequestException } from 'src/core/exceptions/build-in'
 import { ReadFilter } from 'src/core/interfaces/common'
 import { validateByDto } from 'src/core/validators'

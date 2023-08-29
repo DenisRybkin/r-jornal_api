@@ -82,13 +82,11 @@ export function buildBaseControllerReadShort<
     @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
     @Get()
     public override async getAll(@Req() req: Request) {
-      console.log(1.5)
       const query = transformPagingOptions(req.query)
       const filterOpts = await transformReadFilter(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto
       )
-      console.log(2222)
       return this.service.getAllShort(query.pagingOptions, filterOpts)
     }
 
