@@ -12,7 +12,7 @@ import {
 import { Request } from 'express'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants'
-import { IsPublic } from 'src/core/decorators'
+import { IsPublic, RequiredRoles } from 'src/core/decorators'
 import { PipeExceptionFactory } from 'src/core/factories/pipe-exception.factory'
 import {
   AutoCompleteType,
@@ -79,6 +79,7 @@ export function buildBaseControllerReadShort<
       }
     })
     @IsPublic(config.privacySettings?.getShortAllIsPublic)
+    @RequiredRoles(...(config.privacySettings?.getAllShortRequireRoles ?? []))
     @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
     @Get()
     public override async getAll(@Req() req: Request) {
@@ -115,6 +116,9 @@ export function buildBaseControllerReadShort<
       }
     })
     @IsPublic(config.privacySettings?.autocompleteIsPublic)
+    @RequiredRoles(
+      ...(config.privacySettings?.autocompleteShortRequireRoles ?? [])
+    )
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
       const query = transformPagingOptions(req.query)
@@ -139,6 +143,7 @@ export function buildBaseControllerReadShort<
       }
     })
     @IsPublic(config.privacySettings?.getShortByIdIsPublic)
+    @RequiredRoles(...(config.privacySettings?.getByIdShortRequireRoles ?? []))
     @Get('/:id')
     public override async getById(
       @Param(

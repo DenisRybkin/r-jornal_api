@@ -2,12 +2,12 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { InjectConnection } from '@nestjs/sequelize'
 import { Request } from 'express'
-import { Model, Sequelize } from 'sequelize-typescript'
+import { Sequelize } from 'sequelize-typescript'
 import {
   ConstraintMessagesConstants,
   ErrorMessagesConstants
 } from '../constants'
-import { MODEL_KEY } from '../decorators'
+import { IModelInfo, MODEL_INFO_KEY } from '../decorators'
 import {
   ForbiddenException,
   InternalServerErrorException,
@@ -26,18 +26,20 @@ export class CheckCreatorGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>()
-    const EntityClass = this.reflector.get<new () => Model>(
-      MODEL_KEY,
+    const modelInfo = this.reflector.get<IModelInfo>(
+      MODEL_INFO_KEY,
       context.getHandler()
     )
 
-    const entityId = Number(request.params.id)
+    if (!modelInfo) return true
 
-    if (!EntityClass)
+    if (!modelInfo.EntityClass)
       throw new InternalServerErrorException(
         ErrorMessagesConstants.InternalError,
         'Something went wrong'
       )
+
+    const entityId = Number(request.params.id)
 
     if (!entityId || !Number.isInteger(entityId))
       throw PipeExceptionFactory('id', [
@@ -45,17 +47,18 @@ export class CheckCreatorGuard implements CanActivate {
       ])('Validation failed (numeric string is expected)')
 
     const model = await this.connection
-      .getRepository(EntityClass)
+      .getRepository(modelInfo.EntityClass)
       .findByPk(entityId, {
         rejectOnEmpty: new NotFoundException(
           ErrorMessagesConstants.NotFound,
-          `No such ${EntityClass.name}`
+          `No such ${modelInfo.EntityClass.name}`
         )
       })
 
     try {
       const { id } = this.asyncContext.get('user')
-      const isCreator = id == (model as any).createdByUserId
+      const isCreator =
+        id == (model as any)[modelInfo.creatorIdField ?? 'createdByUserId']
 
       if (!isCreator)
         throw new ForbiddenException(

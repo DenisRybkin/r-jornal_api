@@ -29,8 +29,8 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(t =>
       Promise.all([
-        queryInterface.dropTable('Role'),
-        queryInterface.sequelize.query('DROP TYPE IF EXIST "enum_Role_name"')
+        queryInterface.dropTable('Role')
+        //queryInterface.sequelize.query('DROP TYPE IF EXIST "enum_Role_name"')
       ])
     )
   }

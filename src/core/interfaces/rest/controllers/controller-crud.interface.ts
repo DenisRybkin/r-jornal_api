@@ -1,17 +1,23 @@
 import { ClassConstructor } from 'class-transformer'
 import { Model } from 'sequelize-typescript'
-import { BaseServiceCRUD } from '../services/service-crud.interface'
+import { BaseServiceCRUD } from '../services'
 import {
   BaseControllerRead,
   IConfigControllerRead,
   IControllerReadPrivacySettings
 } from './controller-read.interface'
+import { Roles } from '../../common'
+import { IModelInfo } from '../../../decorators'
 
 export interface IControllerCRUDPrivacySettings
   extends IControllerReadPrivacySettings {
   createIsPublic?: boolean
   updateIsPublic?: boolean
   deleteIsPublic?: boolean
+  createRequireRoles?: Roles[]
+  updateRequireRoles?: Roles[]
+  deleteRequireRoles?: Roles[]
+  checkCreatorForUpdateInfo?: IModelInfo
 }
 
 export interface IConfigControllerCRUD<M extends Model<M, any>>

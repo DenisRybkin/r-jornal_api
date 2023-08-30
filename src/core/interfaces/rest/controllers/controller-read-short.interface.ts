@@ -1,7 +1,7 @@
 import { ClassConstructor } from 'class-transformer'
 import { Request } from 'express'
 import { Model } from 'sequelize-typescript'
-import { IAutocomplete, IPaging } from '../../common'
+import { IAutocomplete, IPaging, Roles } from '../../common'
 import { ModelWithId } from '../model-with-id.interface'
 import { BaseServiceReadShort } from '../services'
 import { ISwaggerReadShortControllerConfig } from '../swagger/swagger-controller-config.interface'
@@ -10,6 +10,9 @@ export interface IControllerReadShortPrivacySettings {
   getShortAllIsPublic?: boolean
   getShortByIdIsPublic?: boolean
   autocompleteIsPublic?: boolean
+  getAllShortRequireRoles?: Roles[]
+  getByIdShortRequireRoles?: Roles[]
+  autocompleteShortRequireRoles?: Roles[]
 }
 
 export interface IConfigControllerReadShort<M extends Model<M, any>> {

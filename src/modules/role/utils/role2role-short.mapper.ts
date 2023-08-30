@@ -1,5 +1,5 @@
 import { Role } from 'src/database/models/singles/Role/role.model'
-import { RoleShort } from '../dtos/role-short.dto'
+import { RoleShort } from '../dtos'
 
 export const role2roleShortMapper = (role: Role): RoleShort => ({
   id: role.id,

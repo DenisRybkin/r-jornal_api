@@ -11,7 +11,7 @@ import {
 import { Request } from 'express'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants/constraint-messages.constants'
-import { IsPublic } from 'src/core/decorators'
+import { IsPublic, RequiredRoles } from 'src/core/decorators'
 import { PipeExceptionFactory } from 'src/core/factories/pipe-exception.factory'
 import {
   AutoCompleteType,
@@ -70,6 +70,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     })
     @IsPublic(config.privacySettings?.getAllIsPublic)
     @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
+    @RequiredRoles(...(config.privacySettings?.getAllRequireRoles ?? []))
     @Get()
     public override async getAll(@Req() req: Request) {
       const query = transformPagingOptions(req.query)
@@ -105,6 +106,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.autocompleteIsPublic)
+    @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
       const query = transformPagingOptions(req.query)
@@ -129,6 +131,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.getByIdIsPublic)
+    @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/:id')
     public override async getById(
       @Param(

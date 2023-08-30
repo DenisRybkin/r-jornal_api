@@ -17,7 +17,9 @@ export abstract class BaseServiceReadShort<
   extends BaseServiceRead<T>
   implements AbstractServiceReadShort<T, TShort>
 {
-  constructor(protected readonly config: IConfigServiceReadShort<T, TShort>) {
+  protected constructor(
+    protected readonly config: IConfigServiceReadShort<T, TShort>
+  ) {
     super(config)
   }
 

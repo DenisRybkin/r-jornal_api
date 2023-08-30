@@ -19,7 +19,7 @@ import {
 export abstract class BaseServiceRead<T extends Model<T, any>>
   implements AbstractServiceRead<T>
 {
-  constructor(protected readonly config: IConfigServiceRead<T>) {}
+  protected constructor(protected readonly config: IConfigServiceRead<T>) {}
 
   public async getAll(
     pagingOpts: IPagingOptions = {
@@ -44,6 +44,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getById(id: number): Promise<T> {
     return await this.config.modelRepository.findByPk(id, {
+      include: this.config.includes,
       rejectOnEmpty: new NotFoundException(
         ErrorMessagesConstants.NotFound,
         `No such ${this.config.modelRepository.name}`

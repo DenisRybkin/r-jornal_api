@@ -1,4 +1,12 @@
-import { Body, Delete, Param, Patch, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseGuards
+} from '@nestjs/common'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import {
   ApiExtraModels,
@@ -9,7 +17,7 @@ import {
 } from '@nestjs/swagger'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants'
-import { IsPublic } from 'src/core/decorators'
+import { IsPublic, ModelInfo, RequiredRoles } from 'src/core/decorators'
 import { PipeExceptionFactory } from 'src/core/factories/pipe-exception.factory'
 import { ProcessedError500Type } from 'src/core/interfaces/common/processed-error.type'
 import {
@@ -19,6 +27,7 @@ import {
 import { BaseServiceCRUD } from 'src/core/interfaces/rest/services'
 import { validateByDto } from 'src/core/validators'
 import { buildBaseControllerRead } from './'
+import { CheckCreatorGuard } from '../../guards'
 
 export function buildBaseControllerCRUD<T extends Model<T, any>>(
   config: IConfigControllerCRUD<T>
@@ -45,6 +54,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.createIsPublic)
+    @RequiredRoles(...(config.privacySettings?.createRequireRoles ?? []))
     @Post()
     public async create(@Body() dto: T) {
       validateByDto(dto as any, config.createDto, {
@@ -67,6 +77,9 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.updateIsPublic)
+    @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
+    @ModelInfo(config.privacySettings?.checkCreatorForUpdateInfo)
+    @UseGuards(CheckCreatorGuard)
     @Put('/:id')
     public async update(
       @Param(
@@ -101,6 +114,9 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.updateIsPublic)
+    @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
+    @ModelInfo(config.privacySettings?.checkCreatorForUpdateInfo)
+    @UseGuards(CheckCreatorGuard)
     @Patch('/:id')
     public async updatePartially(
       @Param(
@@ -135,6 +151,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.deleteIsPublic)
+    @RequiredRoles(...(config.privacySettings?.deleteRequireRoles ?? []))
     @Delete('/:id')
     public async delete(
       @Param(

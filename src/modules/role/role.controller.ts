@@ -9,6 +9,7 @@ import {
   UpdateRoleDto
 } from './dtos'
 import { RoleService } from './role.service'
+import { User } from '../../database/models/singles/User/user.model'
 
 const BaseController = buildBaseControllerCRUD<Role>({
   privacySettings: {
@@ -26,7 +27,7 @@ const BaseController = buildBaseControllerCRUD<Role>({
   updatePartiallyDto: UpdatePartiallyRoleDto
 })
 
-@ApiExtraModels(Role, ReadRoleFilterDto)
+@ApiExtraModels(Role, ReadRoleFilterDto, User)
 @Controller('role')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore

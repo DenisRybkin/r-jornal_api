@@ -12,6 +12,7 @@ import { SharedModule } from './core/modules/shared/shared.module'
 import { ErrorsValidationPipe } from './core/pipes'
 import { UniqueValidator } from './core/validators'
 import { RoleModule } from './modules/role/role.module'
+import { UserModule } from './modules/user/user.module'
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { RoleModule } from './modules/role/role.module'
       useFactory: (configService: ApiConfigService) => configService.dbConfig,
       inject: [ApiConfigService]
     }),
-    RoleModule
+    RoleModule,
+    UserModule
   ],
   controllers: [],
   providers: [
