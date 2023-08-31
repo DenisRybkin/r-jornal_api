@@ -17,7 +17,7 @@ import { PipeExceptionFactory } from '../factories/pipe-exception.factory'
 import { AsyncContext } from '../modules/async-context/async-context'
 
 @Injectable()
-export class CheckCreatorGuard implements CanActivate {
+export class CheckPermissionForUpdateGuard implements CanActivate {
   constructor(
     @InjectConnection() private readonly connection: Sequelize,
     private readonly reflector: Reflector,
@@ -58,7 +58,7 @@ export class CheckCreatorGuard implements CanActivate {
     try {
       const { id } = this.asyncContext.get('user')
       const isCreator =
-        id == (model as any)[modelInfo.creatorIdField ?? 'createdByUserId']
+        id == (model as any)[modelInfo.comparableFieldName ?? 'createdByUserId']
 
       if (!isCreator)
         throw new ForbiddenException(

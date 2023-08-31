@@ -40,7 +40,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     ProcessedError404Type
   )
   abstract class ControllerRead extends BaseControllerRead<T> {
-    public constructor(protected readonly service: BaseServiceRead<T>) {
+    protected constructor(protected readonly service: BaseServiceRead<T>) {
       super(service)
     }
 
@@ -69,7 +69,10 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       }
     })
     @IsPublic(config.privacySettings?.getAllIsPublic)
-    @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
+    @ApiQuery({
+      required: false,
+      schema: { oneOf: [{ $ref: getSchemaPath(config.filterDto) }] }
+    })
     @RequiredRoles(...(config.privacySettings?.getAllRequireRoles ?? []))
     @Get()
     public override async getAll(@Req() req: Request) {

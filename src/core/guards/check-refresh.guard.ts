@@ -4,7 +4,7 @@ import { ErrorMessagesConstants } from '../constants'
 import { BadRequestException } from '../exceptions/build-in'
 
 @Injectable()
-export class RefreshGuard implements CanActivate {
+export class CheckRefreshGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>()
     const { refresh: token } = request.cookies

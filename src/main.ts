@@ -34,7 +34,8 @@ const buildSwagger = (app: NestExpressApplication) => {
   const swaggerService = app.select(SharedModule).get(SwaggerConfigProvider)
   const documentSwagger = SwaggerModule.createDocument(
     app,
-    swaggerService.documentBuilder
+    swaggerService.documentBuilder,
+    { extraModels: swaggerService.extraModels }
   )
   SwaggerModule.setup(swaggerService.docsPrefix, app, documentSwagger)
 }

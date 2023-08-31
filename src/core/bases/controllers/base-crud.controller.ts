@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import {
-  ApiExtraModels,
+  ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -27,14 +27,12 @@ import {
 import { BaseServiceCRUD } from 'src/core/interfaces/rest/services'
 import { validateByDto } from 'src/core/validators'
 import { buildBaseControllerRead } from './'
-import { CheckCreatorGuard } from '../../guards'
+import { CheckPermissionForUpdateGuard } from '../../guards'
 
 export function buildBaseControllerCRUD<T extends Model<T, any>>(
   config: IConfigControllerCRUD<T>
 ): BaseControllerCRUD<T> {
   const ControllerRead = buildBaseControllerRead<T>(config)
-
-  @ApiExtraModels(ProcessedError500Type)
   // eslint-disable-next-line
   //@ts-ignore
   class ControllerCRUD extends ControllerRead implements BaseControllerCRUD<T> {
@@ -53,6 +51,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError500Type)
       }
     })
+    @ApiBody({ schema: { $ref: getSchemaPath(config.createDto) } })
     @IsPublic(config.privacySettings?.createIsPublic)
     @RequiredRoles(...(config.privacySettings?.createRequireRoles ?? []))
     @Post()
@@ -76,10 +75,11 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError500Type)
       }
     })
+    @ApiBody({ schema: { $ref: getSchemaPath(config.updateDto) } })
     @IsPublic(config.privacySettings?.updateIsPublic)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
-    @ModelInfo(config.privacySettings?.checkCreatorForUpdateInfo)
-    @UseGuards(CheckCreatorGuard)
+    @ModelInfo(config.privacySettings?.checkPermissionForUpdateInfo)
+    @UseGuards(CheckPermissionForUpdateGuard)
     @Put('/:id')
     public async update(
       @Param(
@@ -113,10 +113,11 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError500Type)
       }
     })
+    @ApiBody({ schema: { $ref: getSchemaPath(config.updatePartiallyDto) } })
     @IsPublic(config.privacySettings?.updateIsPublic)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
-    @ModelInfo(config.privacySettings?.checkCreatorForUpdateInfo)
-    @UseGuards(CheckCreatorGuard)
+    @ModelInfo(config.privacySettings?.checkPermissionForUpdateInfo)
+    @UseGuards(CheckPermissionForUpdateGuard)
     @Patch('/:id')
     public async updatePartially(
       @Param(

@@ -8,6 +8,7 @@ import {
 } from './dtos'
 import { UserService } from './user.service'
 import { Controller } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 
 const BaseController = buildBaseControllerCRUD<User>({
   privacySettings: {
@@ -16,7 +17,11 @@ const BaseController = buildBaseControllerCRUD<User>({
     getByIdIsPublic: true,
     createIsPublic: true,
     deleteIsPublic: true,
-    updateIsPublic: true
+    updateIsPublic: true,
+    checkPermissionForUpdateInfo: {
+      EntityClass: User,
+      comparableFieldName: 'id'
+    }
   },
   swagger: { model: User, modelName: 'user' },
   filterDto: ReadUserFilterDto,
@@ -25,6 +30,7 @@ const BaseController = buildBaseControllerCRUD<User>({
   updatePartiallyDto: UpdatePartiallyDto
 })
 
+@ApiTags('User')
 @Controller('user')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore

@@ -5,7 +5,7 @@ export const MODEL_INFO_KEY = Symbol('Model')
 
 export interface IModelInfo {
   EntityClass: new () => Model
-  creatorIdField: string
+  comparableFieldName: string
 }
 
 export const ModelInfo = (info?: IModelInfo) =>

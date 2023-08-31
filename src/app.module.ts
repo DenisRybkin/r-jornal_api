@@ -13,6 +13,7 @@ import { ErrorsValidationPipe } from './core/pipes'
 import { UniqueValidator } from './core/validators'
 import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
+import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { UserModule } from './modules/user/user.module'
       inject: [ApiConfigService]
     }),
     RoleModule,
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [],
   providers: [

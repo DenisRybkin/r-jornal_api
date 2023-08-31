@@ -2,6 +2,7 @@ import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common'
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
 import { ValidationException } from '../exceptions/custom'
+import { TransformValidateErrorHelper } from '../helpers/transform-validate-error.helper'
 
 @Injectable()
 export class ErrorsValidationPipe implements PipeTransform {
@@ -22,13 +23,7 @@ export class ErrorsValidationPipe implements PipeTransform {
 
     if (errors.length)
       throw new ValidationException(
-        errors.map(({ property, constraints, contexts }) => ({
-          target: property,
-          messages: Object.keys(constraints ?? {}).map(key => ({
-            message: constraints?.[key] || null,
-            context: contexts?.[key]
-          }))
-        }))
+        TransformValidateErrorHelper.transformErrors(errors)
       )
 
     return value

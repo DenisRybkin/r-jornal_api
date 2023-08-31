@@ -13,7 +13,6 @@ export class DateService {
   }
 
   public createExpiresDate(duration: string, dateStart?: Date) {
-    const now = Date.now()
-    return new Date((dateStart?.getTime() ?? now) + this.ms(duration))
+    return new Date((dateStart?.getTime() ?? Date.now()) + this.ms(duration))
   }
 }

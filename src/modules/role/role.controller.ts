@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common'
-import { ApiExtraModels } from '@nestjs/swagger'
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { buildBaseControllerCRUD } from 'src/core/bases/controllers'
 import { Role } from 'src/database/models/singles/Role/role.model'
 import {
@@ -9,7 +9,7 @@ import {
   UpdateRoleDto
 } from './dtos'
 import { RoleService } from './role.service'
-import { User } from '../../database/models/singles/User/user.model'
+import { Roles } from '../../core/interfaces/common'
 
 const BaseController = buildBaseControllerCRUD<Role>({
   privacySettings: {
@@ -18,7 +18,10 @@ const BaseController = buildBaseControllerCRUD<Role>({
     getByIdIsPublic: true,
     createIsPublic: true,
     deleteIsPublic: true,
-    updateIsPublic: true
+    updateIsPublic: true,
+    createRequireRoles: [Roles.OWNER],
+    updateRequireRoles: [Roles.OWNER],
+    deleteRequireRoles: [Roles.OWNER]
   },
   swagger: { model: Role, modelName: 'role' },
   filterDto: ReadRoleFilterDto,
@@ -27,7 +30,13 @@ const BaseController = buildBaseControllerCRUD<Role>({
   updatePartiallyDto: UpdatePartiallyRoleDto
 })
 
-@ApiExtraModels(Role, ReadRoleFilterDto, User)
+@ApiExtraModels(
+  ReadRoleFilterDto,
+  CreateRoleDto,
+  UpdateRoleDto,
+  UpdatePartiallyRoleDto
+)
+@ApiTags('Role')
 @Controller('role')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore

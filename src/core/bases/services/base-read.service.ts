@@ -13,6 +13,7 @@ import {
   BaseServiceRead as AbstractServiceRead,
   IConfigServiceRead
 } from '../../interfaces/rest/services'
+import { Nullable } from '../../types'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -42,13 +43,18 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     return PaginationHelper.mapToIPaging<T>(count, rows, pagingOpts)
   }
 
-  public async getById(id: number): Promise<T> {
+  public async getById(
+    id: number,
+    rejectOnEmpty: Nullable<Error> = null
+  ): Promise<T> {
     return await this.config.modelRepository.findByPk(id, {
       include: this.config.includes,
-      rejectOnEmpty: new NotFoundException(
-        ErrorMessagesConstants.NotFound,
-        `No such ${this.config.modelRepository.name}`
-      )
+      rejectOnEmpty:
+        rejectOnEmpty ??
+        new NotFoundException(
+          ErrorMessagesConstants.NotFound,
+          `No such ${this.config.modelRepository.name}`
+        )
     })
   }
 

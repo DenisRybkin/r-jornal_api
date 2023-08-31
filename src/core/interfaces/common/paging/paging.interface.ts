@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
 import { IPagingOptions } from './'
+import { PagingOptionsType } from './paging-options.interface'
 
 export type IPaging<T> = {
   pagingOptions: IPagingOptions
-  totalItems?: number
-  totalPages?: number
+  totalItems: number
+  totalPages: number
   items: T[]
 }
 
-// name of the this class for swagger
-export class PagingType<T> implements Partial<IPaging<T>> {
+export class PagingType<T> implements IPaging<T> {
+  @ApiProperty({ oneOf: [{ $ref: getSchemaPath(PagingOptionsType) }] })
   pagingOptions: IPagingOptions
 
   @ApiProperty({ example: 15, description: 'count items' })
