@@ -14,6 +14,7 @@ import { UniqueValidator } from './core/validators'
 import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { StaticFieldModule } from './modules/static-field/static-field.module'
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { AuthModule } from './modules/auth/auth.module'
     }),
     RoleModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    StaticFieldModule
   ],
   controllers: [],
   providers: [

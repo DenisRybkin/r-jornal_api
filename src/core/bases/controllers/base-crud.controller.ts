@@ -64,7 +64,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       return this.service.create(dto as any)
     }
 
-    @ApiOperation({ summary: 'Full update model' })
+    @ApiOperation({ summary: `Full update ${config.swagger.modelName}` })
     @ApiOkResponse({
       status: 200,
       schema: { $ref: getSchemaPath(config.swagger.model) }
@@ -102,7 +102,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       return this.service.update(id, dto)
     }
 
-    @ApiOperation({ summary: 'Partially update model' })
+    @ApiOperation({ summary: `Partially update ${config.swagger.modelName}` })
     @ApiOkResponse({
       status: 200,
       schema: { $ref: getSchemaPath(config.swagger.model) }
@@ -140,7 +140,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       return this.service.updatePartially(id, dto)
     }
 
-    @ApiOperation({ summary: 'Delete model by id' })
+    @ApiOperation({ summary: `Delete ${config.swagger.modelName} by id` })
     @ApiOkResponse({
       status: 200,
       type: 'boolean'
