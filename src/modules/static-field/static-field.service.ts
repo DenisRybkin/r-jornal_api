@@ -21,7 +21,6 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
   }
 
   async create(dto: CreateStaticFieldAttributes) {
-    console.log(dto)
     return this.staticFieldRepository.create(dto)
   }
 

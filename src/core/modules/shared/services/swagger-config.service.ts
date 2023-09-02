@@ -17,6 +17,7 @@ import {
   ValidationError,
   ValidationMessage
 } from '../../../exceptions/types/validation.types'
+import { StaticField } from '../../../../database/models/singles/StaticField/static-field.model'
 
 @Injectable()
 export class SwaggerConfigProvider {
@@ -37,7 +38,7 @@ export class SwaggerConfigProvider {
 
   public docsPrefix = '/api/docs'
 
-  private dbModels = [Role, User]
+  private dbModels = [Role, User, StaticField]
   private miscModels = [
     PagingType,
     PagingOptionsType,

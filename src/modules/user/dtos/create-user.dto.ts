@@ -1,5 +1,8 @@
-import { IsEmail, IsString, Length } from 'class-validator'
-import { ConstraintMessagesConstants } from '../../../core/constants'
+import { IsEmail, IsString, Length, MinLength } from 'class-validator'
+import {
+  ConstraintMessagesConstants,
+  InternalConfigurationConstants
+} from '../../../core/constants'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsUnique, UniqueValidator } from '../../../core/decorators'
 import { User } from '../../../database/models/singles/User/user.model'
@@ -23,5 +26,6 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
+  @MinLength(InternalConfigurationConstants.MinPasswordLength)
   readonly password: string
 }

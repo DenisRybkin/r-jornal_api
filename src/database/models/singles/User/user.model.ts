@@ -9,6 +9,7 @@ import {
 import { CreateUserAttributes } from './user.attributes'
 import { Role } from '../Role/role.model'
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import { InternalConfigurationConstants } from '../../../../core/constants'
 
 @Table({ tableName: 'User' })
 export class User extends Model<User, CreateUserAttributes> {
@@ -54,7 +55,7 @@ export class User extends Model<User, CreateUserAttributes> {
 
   @ApiProperty({
     example: '$2a$05$xqY4CUGu7DaJaELkmunOe.b4cJpSuzsAP3vSlusbU/Fg58c4Rtfgq',
-    description: 'hashed password of user'
+    description: `hashed password of user, min length for for crete: ${InternalConfigurationConstants.MinPasswordLength}`
   })
   @Column({
     allowNull: false,
