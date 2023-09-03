@@ -1,6 +1,6 @@
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
 
-export class ValidationMessage {
+export class ValidationMessageType {
   constructor(message?: string) {
     this.message = message
   }
@@ -8,8 +8,8 @@ export class ValidationMessage {
   message?: string
 }
 
-export class ValidationError {
-  constructor(target: string, messages: ValidationMessage[]) {
+export class ValidationErrorType {
+  constructor(target: string, messages: ValidationMessageType[]) {
     this.target = target
     this.messages = messages
   }
@@ -17,8 +17,8 @@ export class ValidationError {
   @ApiProperty()
   target: string
   @ApiProperty({
-    items: { oneOf: [{ $ref: getSchemaPath(ValidationMessage) }] },
+    items: { oneOf: [{ $ref: getSchemaPath(ValidationMessageType) }] },
     type: 'array'
   })
-  messages: ValidationMessage[]
+  messages: ValidationMessageType[]
 }

@@ -10,6 +10,7 @@ import { CheckRefreshGuard } from '../../core/guards'
 import { Req } from '@nestjs/common/decorators'
 import {
   ApiBadRequestResponse,
+  ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -22,6 +23,7 @@ import {
   ProcessedError500Type
 } from '../../core/interfaces/common/processed-error.type'
 
+//@ApiExtraModels(LoginDto)
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {

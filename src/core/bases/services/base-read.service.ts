@@ -1,4 +1,4 @@
-import { WhereOptions } from 'sequelize'
+import sequelize, { WhereOptions } from 'sequelize'
 import { Model, Sequelize } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'

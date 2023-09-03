@@ -10,6 +10,8 @@ import { AppModule } from './app.module'
 import { ApiConfigService } from './core/modules/shared/services/api-config.service'
 import { SwaggerConfigProvider } from './core/modules/shared/services/swagger-config.service'
 import { SharedModule } from './core/modules/shared/shared.module'
+import { unlink } from 'fs'
+import { join } from 'path'
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(

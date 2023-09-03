@@ -1,1 +1,1 @@
-export { roleInclude } from './user'
+export { roleInclude, avatarInclude } from './user'

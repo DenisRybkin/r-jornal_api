@@ -14,10 +14,11 @@ import { PagingOptionsType } from '../../../interfaces/common/paging/paging-opti
 import { AutoCompleteType } from '../../../interfaces/common'
 import { LoginResponseType } from '../../../interfaces/common/login-response.type'
 import {
-  ValidationError,
-  ValidationMessage
+  ValidationErrorType,
+  ValidationMessageType
 } from '../../../exceptions/types/validation.types'
 import { StaticField } from '../../../../database/models/singles/StaticField/static-field.model'
+import { UserAvatar } from '../../../../database/models/related/UserAvatar/user-avatar.model'
 
 @Injectable()
 export class SwaggerConfigProvider {
@@ -38,13 +39,13 @@ export class SwaggerConfigProvider {
 
   public docsPrefix = '/api/docs'
 
-  private dbModels = [Role, User, StaticField]
+  private dbModels = [User, UserAvatar, Role, StaticField]
   private miscModels = [
     PagingType,
     PagingOptionsType,
     AutoCompleteType,
-    ValidationMessage,
-    ValidationError,
+    ValidationMessageType,
+    ValidationErrorType,
     ProcessedError400Type,
     ProcessedError401Type,
     ProcessedError404Type,

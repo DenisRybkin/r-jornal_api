@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { User } from '../../database/models/singles/User/user.model'
 import { InjectModel } from '@nestjs/sequelize'
-import { roleInclude } from '../../database/includes'
+import { avatarInclude, roleInclude } from '../../database/includes'
 import { Nullable } from '../../core/types'
 import { Includeable } from 'sequelize'
 import { NotFoundException } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
+import { defaultAvatarInclude } from '../../database/includes/user'
 
 @Injectable()
 export class UserService extends BaseServiceCRUD<User> {
@@ -14,7 +15,7 @@ export class UserService extends BaseServiceCRUD<User> {
     super({
       autocompleteProperty: 'nickname',
       modelRepository: userRepository,
-      includes: [roleInclude]
+      includes: [roleInclude, avatarInclude, defaultAvatarInclude]
     })
   }
 

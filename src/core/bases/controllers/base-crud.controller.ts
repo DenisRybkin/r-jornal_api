@@ -143,7 +143,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @ApiOperation({ summary: `Delete ${config.swagger.modelName} by id` })
     @ApiOkResponse({
       status: 200,
-      type: 'boolean'
+      type: Boolean
     })
     @ApiInternalServerErrorResponse({
       status: 500,
@@ -166,7 +166,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       id: number
     ) {
       const countDeleted = await this.service.delete(id)
-      return countDeleted == 1
+      return countDeleted >= 1
     }
   }
 

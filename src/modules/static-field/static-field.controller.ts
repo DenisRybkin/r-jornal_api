@@ -12,6 +12,7 @@ import { ImageUploadDto, ReadStaticFieldFilterDto } from './dtos'
 import {
   ApiBody,
   ApiConsumes,
+  ApiExtraModels,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -32,6 +33,7 @@ const baseController = buildBaseControllerRead<StaticField>({
   swagger: { model: StaticField, modelName: 'StaticField' }
 })
 
+//@ApiExtraModels(ImageUploadDto, ReadStaticFieldFilterDto)
 @ApiTags('StaticField')
 @Controller('static-field')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

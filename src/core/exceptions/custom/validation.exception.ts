@@ -1,10 +1,10 @@
 import { HttpStatus } from '@nestjs/common'
 import { ErrorMessagesConstants } from '../../constants'
 import { BaseException } from '../base.exception'
-import { ValidationError } from '../types/validation.types'
+import { ValidationErrorType } from '../types/validation.types'
 
-export class ValidationException extends BaseException<ValidationError> {
-  constructor(response: ValidationError[]) {
+export class ValidationException extends BaseException<ValidationErrorType> {
+  constructor(response: ValidationErrorType[]) {
     super(
       {
         message: ErrorMessagesConstants.ValidationError,

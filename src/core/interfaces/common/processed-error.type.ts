@@ -1,11 +1,11 @@
 import { HttpStatus } from '@nestjs/common'
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
-import { ValidationError } from '../../exceptions/types/validation.types'
+import { ValidationErrorType } from '../../exceptions/types/validation.types'
 
 export interface IProcessedError {
   statusCode: HttpStatus
   message?: string
-  messages?: ValidationError
+  messages?: ValidationErrorType
   internalMessage: string
   timestamp: string
   path: string
@@ -24,10 +24,10 @@ export class ProcessedError400Type implements IProcessedError {
   @ApiProperty({
     type: 'array',
     items: {
-      oneOf: [{ $ref: getSchemaPath(ValidationError) }]
+      oneOf: [{ $ref: getSchemaPath(ValidationErrorType) }]
     }
   })
-  messages: ValidationError
+  messages: ValidationErrorType
 
   @ApiProperty({
     example:
@@ -108,7 +108,7 @@ export class ProcessedError404Type implements IProcessedError {
 }
 
 export class ProcessedError500Type implements IProcessedError {
-  @ApiProperty({ example: 404, description: 'http status of request' })
+  @ApiProperty({ example: 500, description: 'http status of request' })
   statusCode: HttpStatus
 
   @ApiProperty({
@@ -118,7 +118,7 @@ export class ProcessedError500Type implements IProcessedError {
   message: string
 
   @ApiProperty({
-    example: 'Something wen wrong',
+    example: 'Something went wrong',
     description: 'internal error from api'
   })
   internalMessage: string

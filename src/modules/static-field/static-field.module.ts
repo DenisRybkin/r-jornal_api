@@ -12,6 +12,7 @@ import { StaticFieldController } from './static-field.controller'
     MulterModule.register(MulterAdapter)
   ],
   providers: [StaticFieldService],
-  controllers: [StaticFieldController]
+  controllers: [StaticFieldController],
+  exports: [StaticFieldService]
 })
 export class StaticFieldModule {}

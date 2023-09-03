@@ -3,13 +3,16 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   Table
 } from 'sequelize-typescript'
 import { CreateUserAttributes } from './user.attributes'
 import { Role } from '../Role/role.model'
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { InternalConfigurationConstants } from '../../../../core/constants'
+import { UserAvatar } from '../../related/UserAvatar/user-avatar.model'
+import { StaticField } from '../StaticField/static-field.model'
 
 @Table({ tableName: 'User' })
 export class User extends Model<User, CreateUserAttributes> {
@@ -70,8 +73,30 @@ export class User extends Model<User, CreateUserAttributes> {
 
   @ApiProperty({
     description: 'Role model',
-    allOf: [{ $ref: getSchemaPath(Role) }]
+    type: Role
   })
   @BelongsTo(() => Role, 'roleId')
   readonly role: Role
+
+  @ApiProperty({
+    example: 7,
+    description: 'FK of StaticField model (default avatar)'
+  })
+  @ForeignKey(() => StaticField)
+  @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 7 })
+  readonly defaultAvatarId: number
+
+  @ApiProperty({
+    description: 'default avatar',
+    type: StaticField
+  })
+  @BelongsTo(() => StaticField, 'defaultAvatarId')
+  readonly defaultAvatar: StaticField
+
+  @ApiPropertyOptional({
+    description: 'avatar',
+    type: UserAvatar
+  })
+  @HasOne(() => UserAvatar, 'userId')
+  readonly avatar: UserAvatar
 }

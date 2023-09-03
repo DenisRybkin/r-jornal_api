@@ -1,6 +1,6 @@
 import {
-  ValidationError as CustomValidationError,
-  ValidationMessage
+  ValidationErrorType as CustomValidationError,
+  ValidationMessageType
 } from '../exceptions/types/validation.types'
 import { ValidationError } from 'class-validator/types/validation/ValidationError'
 
@@ -13,7 +13,7 @@ export class TransformValidateErrorHelper {
         new CustomValidationError(
           property,
           Object.keys(constraints ?? {}).map(
-            key => new ValidationMessage(constraints?.[key])
+            key => new ValidationMessageType(constraints?.[key])
           )
         )
     )
