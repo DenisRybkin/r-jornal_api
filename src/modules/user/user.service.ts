@@ -7,7 +7,10 @@ import { Nullable } from '../../core/types'
 import { Includeable } from 'sequelize'
 import { NotFoundException } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
-import { defaultAvatarInclude } from '../../database/includes/user'
+import {
+  categoryInclude,
+  defaultAvatarInclude
+} from '../../database/includes/user'
 
 @Injectable()
 export class UserService extends BaseServiceCRUD<User> {
@@ -15,7 +18,12 @@ export class UserService extends BaseServiceCRUD<User> {
     super({
       autocompleteProperty: 'nickname',
       modelRepository: userRepository,
-      includes: [roleInclude, avatarInclude, defaultAvatarInclude]
+      includes: [
+        roleInclude,
+        avatarInclude,
+        defaultAvatarInclude,
+        categoryInclude
+      ]
     })
   }
 

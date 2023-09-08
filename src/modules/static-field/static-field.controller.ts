@@ -10,6 +10,7 @@ import { buildBaseControllerRead } from '../../core/bases/controllers'
 import { StaticField } from '../../database/models/singles/StaticField/static-field.model'
 import { ImageUploadDto, ReadStaticFieldFilterDto } from './dtos'
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiConsumes,
   ApiExtraModels,
@@ -27,13 +28,16 @@ import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factor
 import { ConstraintMessagesConstants } from '../../core/constants'
 import { ImageProcessPipe } from './pipes/image-process.pipe'
 import { CreateStaticFieldAttributes } from '../../database/models/singles/StaticField/static-field.attributes'
+import { Get } from '@nestjs/common/decorators'
+import { PagingType } from '../../core/interfaces/common/paging'
+import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
 
 const baseController = buildBaseControllerRead<StaticField>({
   filterDto: ReadStaticFieldFilterDto,
   swagger: { model: StaticField, modelName: 'StaticField' }
 })
 
-//@ApiExtraModels(ImageUploadDto, ReadStaticFieldFilterDto)
+@ApiExtraModels(ImageUploadDto, ReadStaticFieldFilterDto)
 @ApiTags('StaticField')
 @Controller('static-field')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -92,5 +96,35 @@ export class StaticFieldController extends baseController {
   ) {
     const countDeleted = await this.staticFieldService.delete(id)
     return countDeleted == 1
+  }
+
+  @ApiOperation({ summary: 'Endpoint for get default avatars' })
+  @ApiOkResponse({
+    status: 200,
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(PagingType) },
+        {
+          properties: {
+            items: {
+              type: 'array',
+              items: { $ref: getSchemaPath(StaticField) }
+            },
+            pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
+          }
+        }
+      ]
+    }
+  })
+  @ApiBadRequestResponse({
+    status: 500,
+    schema: {
+      $ref: getSchemaPath(ProcessedError500Type)
+    }
+  })
+  @Get('default-avatars')
+  public async getDefaultAvatar() {
+    console.log('4444')
+    return this.staticFieldService.getDefaultsAvatars()
   }
 }

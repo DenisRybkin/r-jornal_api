@@ -28,7 +28,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       pageSize: 10,
       page: 1
     },
-    filterOpts: WhereOptions
+    filterOpts: WhereOptions<T>
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),

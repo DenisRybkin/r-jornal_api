@@ -55,13 +55,13 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @IsPublic(config.privacySettings?.createIsPublic)
     @RequiredRoles(...(config.privacySettings?.createRequireRoles ?? []))
     @Post()
-    public async create(@Body() dto: T) {
-      validateByDto(dto as any, config.createDto, {
+    public async create(@Body() dto: InstanceType<typeof config.createDto>) {
+      await validateByDto(dto as any, config.createDto, {
         skipMissingProperties: false,
         whitelist: true,
         forbidNonWhitelisted: true
       })
-      return this.service.create(dto as any)
+      return await this.service.create(dto as any)
     }
 
     @ApiOperation({ summary: `Full update ${config.swagger.modelName}` })
@@ -91,15 +91,15 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         })
       )
       id: number,
-      @Body() dto: T
+      @Body() dto: InstanceType<typeof config.updateDto>
     ) {
       if ('id' in dto) delete dto.id
-      validateByDto(dto as any, config.createDto, {
+      await validateByDto(dto as any, config.createDto, {
         skipMissingProperties: false,
         whitelist: true,
         forbidNonWhitelisted: true
       })
-      return this.service.update(id, dto)
+      return await this.service.update(id, dto as any)
     }
 
     @ApiOperation({ summary: `Partially update ${config.swagger.modelName}` })
@@ -129,15 +129,15 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         })
       )
       id: number,
-      @Body() dto: Partial<T>
+      @Body() dto: InstanceType<typeof config.updatePartiallyDto>
     ) {
       if ('id' in dto) delete dto.id
-      validateByDto(dto as any, config.createDto, {
+      await validateByDto(dto as any, config.createDto, {
         skipMissingProperties: true,
         whitelist: true,
         forbidNonWhitelisted: true
       })
-      return this.service.updatePartially(id, dto)
+      return this.service.updatePartially(id, dto as Partial<T>)
     }
 
     @ApiOperation({ summary: `Delete ${config.swagger.modelName} by id` })

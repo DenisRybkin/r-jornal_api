@@ -8,6 +8,8 @@ import { unlink } from 'fs'
 import { join } from 'path'
 import { NotFoundException } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
+import { defaultAvatarIds } from './constants/default-avatars.contants'
+import { Order } from '../../core/interfaces/common'
 
 @Injectable()
 export class StaticFieldService extends BaseServiceRead<StaticField> {
@@ -24,6 +26,15 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
 
   async getByName(name: string) {
     return this.staticFieldRepository.findOne({ where: { name } })
+  }
+
+  async getDefaultsAvatars() {
+    return this.getAll(
+      { order: Order.desc, page: 1, pageSize: 19 },
+      {
+        id: defaultAvatarIds
+      }
+    )
   }
 
   async create(dto: CreateStaticFieldAttributes) {

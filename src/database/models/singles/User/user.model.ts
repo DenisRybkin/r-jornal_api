@@ -3,6 +3,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   Table
@@ -13,6 +14,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { InternalConfigurationConstants } from '../../../../core/constants'
 import { UserAvatar } from '../../related/UserAvatar/user-avatar.model'
 import { StaticField } from '../StaticField/static-field.model'
+import { UserCategory } from '../../related/UserCategory/user-category.model'
 
 @Table({ tableName: 'User' })
 export class User extends Model<User, CreateUserAttributes> {
@@ -98,5 +100,13 @@ export class User extends Model<User, CreateUserAttributes> {
     type: UserAvatar
   })
   @HasOne(() => UserAvatar, 'userId')
-  readonly avatar: UserAvatar
+  readonly userAvatar: UserAvatar
+
+  @ApiPropertyOptional({
+    description: 'category',
+    type: UserCategory,
+    isArray: true
+  })
+  @HasMany(() => UserCategory, 'userId')
+  readonly userCategory: UserCategory[]
 }

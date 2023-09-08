@@ -6,14 +6,17 @@ import {
   Model,
   Table
 } from 'sequelize-typescript'
-import { CreateUserAvatarAttributes } from './user-avatar.attributes'
-import { User } from '../../singles/User/user.model'
-import { StaticField } from '../../singles/StaticField/static-field.model'
+import { CreateCategoryAvatarAttributes } from './category-avatar.attributes'
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import { StaticField } from '../../singles/StaticField/static-field.model'
+import { Category } from '../../singles/Category/category.model'
 
-@Table({ tableName: 'UserAvatar' })
-export class UserAvatar extends Model<UserAvatar, CreateUserAvatarAttributes> {
-  @ApiProperty({ example: 1, description: 'id of user-avatar' })
+@Table({ tableName: 'CategoryAvatar' })
+export class CategoryAvatar extends Model<
+  CategoryAvatar,
+  CreateCategoryAvatarAttributes
+> {
+  @ApiProperty({ example: 1, description: 'id of category-avatar' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -22,17 +25,17 @@ export class UserAvatar extends Model<UserAvatar, CreateUserAvatarAttributes> {
   })
   readonly id: number
 
-  @ApiProperty({ example: 1, description: 'FK to user' })
-  @ForeignKey(() => User)
+  @ApiProperty({ example: 1, description: 'FK to category' })
+  @ForeignKey(() => Category)
   @Column({ type: DataType.INTEGER, allowNull: false, unique: true })
-  readonly userId: number
+  readonly categoryId: number
 
   @ApiProperty({
-    type: () => getSchemaPath(User),
-    description: 'user'
+    type: () => getSchemaPath(Category),
+    description: 'category'
   })
-  @BelongsTo(() => User, 'userId')
-  readonly user: User
+  @BelongsTo(() => Category, 'categoryId')
+  readonly category: Category
 
   @ApiProperty({ example: 1, description: 'FK to static-field' })
   @ForeignKey(() => StaticField)

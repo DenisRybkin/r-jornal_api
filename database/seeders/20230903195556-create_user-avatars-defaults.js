@@ -20,6 +20,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('StaticField', { type: 'image/svg' })
+    await queryInterface.bulkDelete('StaticField')
   }
 }

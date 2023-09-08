@@ -38,10 +38,10 @@ import { StaticFieldModule } from './modules/static-field/static-field.module'
   providers: [
     JwtService,
     UniqueValidator,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard
+    // },
     {
       provide: APP_GUARD,
       useClass: RolesGuard
