@@ -1,14 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsOptional, IsString } from 'class-validator'
+import { ConstraintMessagesConstants } from '../../../core/constants'
 
 export class UpdatePartiallyCategoryDto {
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
-  @IsString()
+  @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly name: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
-  @IsString()
+  @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly description: string
 }

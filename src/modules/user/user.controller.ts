@@ -3,7 +3,7 @@ import { User } from '../../database/models/singles/User/user.model'
 import {
   ReadUserFilterDto,
   UpdateUserDto,
-  UpdatePartiallyDto,
+  UpdatePartiallyUserDto,
   CreateUserDto
 } from './dtos'
 import { UserService } from './user.service'
@@ -36,14 +36,14 @@ const BaseController = buildBaseControllerCRUD<User>({
   filterDto: ReadUserFilterDto,
   createDto: CreateUserDto,
   updateDto: UpdateUserDto,
-  updatePartiallyDto: UpdatePartiallyDto
+  updatePartiallyDto: UpdatePartiallyUserDto
 })
 
 @ApiExtraModels(
   ReadUserFilterDto,
   CreateUserDto,
   UpdateUserDto,
-  UpdatePartiallyDto,
+  UpdatePartiallyUserDto,
   UserAvatarDto
 )
 @ApiTags('User')
@@ -72,7 +72,7 @@ export class UserController extends BaseController {
   })
   @ApiBody({ schema: { $ref: getSchemaPath(UserAvatarDto) } })
   @Post('/avatar')
-  async create(@Body() dto: UserAvatarDto) {
+  async createAvatar(@Body() dto: UserAvatarDto) {
     const { id: userId } = this.asyncContext.get('user')
     return this.userAvatarService.create(userId, dto.staticFieldId)
   }
@@ -90,7 +90,7 @@ export class UserController extends BaseController {
   })
   @ApiBody({ schema: { $ref: getSchemaPath(UserAvatarDto) } })
   @Patch('/avatar')
-  async update(@Body() dto: UserAvatarDto) {
+  async updateAvatar(@Body() dto: UserAvatarDto) {
     const { id: userId } = this.asyncContext.get('user')
     return this.userAvatarService.update(userId, dto.staticFieldId)
   }
@@ -107,7 +107,7 @@ export class UserController extends BaseController {
     }
   })
   @Delete('/avatar/:id')
-  public async delete(
+  public async deleteAvatar(
     @Param(
       'id',
       new ParseIntPipe({

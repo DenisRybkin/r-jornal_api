@@ -1,12 +1,4 @@
-import {
-  Body,
-  Delete,
-  Param,
-  Patch,
-  Post,
-  Put,
-  UseGuards
-} from '@nestjs/common'
+import { Body, Delete, Param, Patch, Post, Put } from '@nestjs/common'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import {
   ApiBody,
@@ -17,7 +9,11 @@ import {
 } from '@nestjs/swagger'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants'
-import { IsPublic, ModelInfo, RequiredRoles } from 'src/core/decorators'
+import {
+  CheckPermissionUpdate,
+  IsPublic,
+  RequiredRoles
+} from 'src/core/decorators'
 import { PipeExceptionFactory } from 'src/core/factories/pipe-exception.factory'
 import { ProcessedError500Type } from 'src/core/interfaces/common/processed-error.type'
 import {
@@ -27,7 +23,6 @@ import {
 import { BaseServiceCRUD } from 'src/core/interfaces/rest/services'
 import { validateByDto } from 'src/core/validators'
 import { buildBaseControllerRead } from './'
-import { CheckPermissionForUpdateGuard } from '../../guards'
 
 export function buildBaseControllerCRUD<T extends Model<T, any>>(
   config: IConfigControllerCRUD<T>
@@ -78,8 +73,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @ApiBody({ schema: { $ref: getSchemaPath(config.updateDto) } })
     @IsPublic(config.privacySettings?.updateIsPublic)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
-    @ModelInfo(config.privacySettings?.checkPermissionForUpdateInfo)
-    @UseGuards(CheckPermissionForUpdateGuard)
+    @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
     @Put('/:id')
     public async update(
       @Param(
@@ -116,8 +110,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @ApiBody({ schema: { $ref: getSchemaPath(config.updatePartiallyDto) } })
     @IsPublic(config.privacySettings?.updateIsPublic)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
-    @ModelInfo(config.privacySettings?.checkPermissionForUpdateInfo)
-    @UseGuards(CheckPermissionForUpdateGuard)
+    @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
     @Patch('/:id')
     public async updatePartially(
       @Param(

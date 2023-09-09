@@ -1,23 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { IsUnique, UniqueValidator } from '../../../core/decorators'
 import { User } from '../../../database/models/singles/User/user.model'
+import { PartialType } from '@nestjs/mapped-types'
+import { UpdateUserDto } from './udpate-user.dto'
 
-export class UpdatePartiallyDto {
-  @ApiProperty()
+export class UpdatePartiallyUserDto extends PartialType(UpdateUserDto) {
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   @Length(3, 12)
   readonly nickname: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   @Length(3, 15)
   readonly name: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   @IsEmail({}, { message: ConstraintMessagesConstants.MustBeEmail })
