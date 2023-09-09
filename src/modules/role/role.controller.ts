@@ -13,12 +13,6 @@ import { Roles } from '../../core/interfaces/common'
 
 const BaseController = buildBaseControllerCRUD<Role>({
   privacySettings: {
-    autocompleteIsPublic: true,
-    getAllIsPublic: true,
-    getByIdIsPublic: true,
-    createIsPublic: true,
-    deleteIsPublic: true,
-    updateIsPublic: true,
     createRequireRoles: [Roles.OWNER],
     updateRequireRoles: [Roles.OWNER],
     deleteRequireRoles: [Roles.OWNER]

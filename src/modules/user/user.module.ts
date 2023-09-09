@@ -8,21 +8,12 @@ import { UserAvatar } from '../../database/models/related/UserAvatar/user-avatar
 import { UserAvatarService } from './user-avatar.service'
 import { StaticFieldModule } from '../static-field/static-field.module'
 import { UserCategory } from '../../database/models/related/UserCategory/user-category.model'
-import { Category } from '../../database/models/singles/Category/category.model'
-import { CategoryAvatar } from '../../database/models/related/CategoryAvatar/category-avatar.model'
 import { UserShortService } from './user-short.service'
 import { UserShortController } from './user-short.controller'
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      User,
-      UserAvatar,
-      UserCategory,
-      UserCategory,
-      /* TODO: вынести в модуль категорий */ Category,
-      CategoryAvatar
-    ]),
+    SequelizeModule.forFeature([User, UserAvatar, UserCategory, UserCategory]),
     RoleModule,
     StaticFieldModule
   ],

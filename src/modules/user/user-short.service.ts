@@ -4,7 +4,7 @@ import { UserShortDto } from './dtos'
 import { InjectModel } from '@nestjs/sequelize'
 import { user2userShortMapper } from './utils/user2user-short.mapper'
 import { Injectable } from '@nestjs/common'
-import { avatarInclude, roleInclude } from '../../database/includes'
+import { avatarInclude, roleInclude } from '../../database/includes/user'
 import { defaultAvatarInclude } from '../../database/includes/user'
 
 @Injectable()

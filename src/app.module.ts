@@ -15,6 +15,7 @@ import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { StaticFieldModule } from './modules/static-field/static-field.module'
+import { CategoryModule } from './modules/category/category.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { StaticFieldModule } from './modules/static-field/static-field.module'
     RoleModule,
     UserModule,
     AuthModule,
+    CategoryModule,
     StaticFieldModule
   ],
   controllers: [],

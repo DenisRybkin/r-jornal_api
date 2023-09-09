@@ -23,7 +23,7 @@ import {
   ProcessedError500Type
 } from '../../core/interfaces/common/processed-error.type'
 
-//@ApiExtraModels(LoginDto)
+@ApiExtraModels(LoginDto)
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {

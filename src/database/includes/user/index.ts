@@ -4,7 +4,7 @@ import { UserAvatar } from '../../models/related/UserAvatar/user-avatar.model'
 import { StaticField } from '../../models/singles/StaticField/static-field.model'
 import { UserCategory } from '../../models/related/UserCategory/user-category.model'
 import { Category } from '../../models/singles/Category/category.model'
-import { CategoryAvatar } from '../../models/related/CategoryAvatar/category-avatar.model'
+import { avatarInclude as categoryAvatarInclude } from '../category'
 
 export const roleInclude: Includeable = {
   model: Role,
@@ -28,7 +28,7 @@ export const categoryInclude: Includeable = {
     {
       model: Category,
       as: 'category',
-      include: [{ model: CategoryAvatar, as: 'avatar', include: [StaticField] }]
+      include: [categoryAvatarInclude]
     }
   ]
 }
