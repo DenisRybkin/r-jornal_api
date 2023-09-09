@@ -48,7 +48,9 @@ export function buildBaseControllerReadShort<
     T,
     TShort
   > {
-    constructor(protected readonly service: BaseServiceReadShort<T, TShort>) {
+    protected constructor(
+      protected readonly service: BaseServiceReadShort<T, TShort>
+    ) {
       super(service)
     }
 

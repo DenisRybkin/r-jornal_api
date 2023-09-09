@@ -39,7 +39,7 @@ export class StaticField extends Model<
   readonly originalname: string
 
   @ApiProperty({
-    example: 'webp',
+    example: 'image/webp',
     description: 'extension of file'
   })
   @Column({
@@ -49,7 +49,7 @@ export class StaticField extends Model<
   readonly type: string
 
   @ApiProperty({
-    example: 'https:\\r-journal.io/api/static/avatar.webp',
+    example: 'https:\\r-journal.io/api/static/uploads/avatar.webp',
     description: 'url of static field'
   })
   @Column({

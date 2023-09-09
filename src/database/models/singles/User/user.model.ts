@@ -100,7 +100,7 @@ export class User extends Model<User, CreateUserAttributes> {
     type: UserAvatar
   })
   @HasOne(() => UserAvatar, 'userId')
-  readonly userAvatar: UserAvatar
+  readonly userAvatar?: UserAvatar
 
   @ApiPropertyOptional({
     description: 'category',

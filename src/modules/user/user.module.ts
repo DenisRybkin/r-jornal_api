@@ -10,6 +10,8 @@ import { StaticFieldModule } from '../static-field/static-field.module'
 import { UserCategory } from '../../database/models/related/UserCategory/user-category.model'
 import { Category } from '../../database/models/singles/Category/category.model'
 import { CategoryAvatar } from '../../database/models/related/CategoryAvatar/category-avatar.model'
+import { UserShortService } from './user-short.service'
+import { UserShortController } from './user-short.controller'
 
 @Module({
   imports: [
@@ -17,15 +19,15 @@ import { CategoryAvatar } from '../../database/models/related/CategoryAvatar/cat
       User,
       UserAvatar,
       UserCategory,
-      /* TODO: вынести в модуль категорий */ Category,
       UserCategory,
+      /* TODO: вынести в модуль категорий */ Category,
       CategoryAvatar
     ]),
     RoleModule,
     StaticFieldModule
   ],
-  controllers: [UserController],
-  providers: [UserService, UserAvatarService],
+  controllers: [UserController, UserShortController],
+  providers: [UserService, UserAvatarService, UserShortService],
   exports: [UserService, UserAvatarService]
 })
 export class UserModule {}

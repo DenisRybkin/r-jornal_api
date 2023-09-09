@@ -1,4 +1,4 @@
-import sequelize, { WhereOptions } from 'sequelize'
+import { WhereOptions } from 'sequelize'
 import { Model, Sequelize } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
@@ -70,9 +70,14 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       ...PaginationHelper.genPagingOpts(pagingOpts),
       attributes: ['id', [this.config.autocompleteProperty, 'text']],
       order: Sequelize.literal(`id ${pagingOpts.order.toUpperCase()}`),
-      where: Object.assign(filterOpts, this.config.whereOpts),
-      include: this.config.includes
+      where: Object.assign(
+        filterOpts,
+        this.config.whereOpts,
+        this.config.whereOptsFactory?.()
+      )
     })
+
+    console.log(count, ['id', [this.config.autocompleteProperty, 'text']], rows)
 
     return PaginationHelper.mapToIPaging<IAutocomplete>(
       count,
