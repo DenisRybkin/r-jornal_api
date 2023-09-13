@@ -10,6 +10,7 @@ import { NotFoundException } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
 import { defaultAvatarIds } from './constants/default-avatars.contants'
 import { Order } from '../../core/interfaces/common'
+import { defaultPagingOptions } from '../../core/bases/utils'
 
 @Injectable()
 export class StaticFieldService extends BaseServiceRead<StaticField> {
@@ -30,7 +31,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
 
   async getDefaultsAvatars() {
     return this.getAll(
-      { order: Order.desc, page: 1, pageSize: 19 },
+      { ...defaultPagingOptions, pageSize: 19 },
       {
         id: defaultAvatarIds
       }

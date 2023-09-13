@@ -16,7 +16,9 @@ export abstract class BaseServiceReadShort<
   T extends Model<T, any>,
   TShort extends ModelWithId
 > extends BaseServiceRead<T> {
-  constructor(protected readonly config: IConfigServiceReadShort<T, TShort>) {
+  protected constructor(
+    protected readonly config: IConfigServiceReadShort<T, TShort>
+  ) {
     super(config)
   }
   abstract getShortById(id: number): Promise<TShort>

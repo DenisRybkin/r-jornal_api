@@ -8,7 +8,7 @@ export interface IConfigServiceCRUD<T extends Model<T, any>>
 export abstract class BaseServiceCRUD<
   T extends Model<T, any>
 > extends BaseServiceRead<T> {
-  constructor(protected readonly config: IConfigServiceCRUD<T>) {
+  protected constructor(protected readonly config: IConfigServiceCRUD<T>) {
     super(config)
   }
   abstract create(

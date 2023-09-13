@@ -76,11 +76,12 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     @RequiredRoles(...(config.privacySettings?.getAllRequireRoles ?? []))
     @Get()
     public override async getAll(@Req() req: Request) {
-      const query = transformPagingOptions(req.query)
+      const query = transformPagingOptions(req.query, config.swagger.model)
       const filterOpts = await transformReadFilter(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto
       )
+      console.log(query, filterOpts)
       return this.service.getAll(query.pagingOptions, filterOpts)
     }
 
@@ -112,7 +113,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
-      const query = transformPagingOptions(req.query)
+      const query = transformPagingOptions(req.query, config.swagger.model)
       const filterOpts = await transformReadFilter(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto

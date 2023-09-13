@@ -25,7 +25,9 @@ export abstract class BaseControllerReadShort<
   T extends Model<T, any>,
   TShort extends ModelWithId
 > {
-  constructor(protected readonly service: BaseServiceReadShort<T, TShort>) {}
+  protected constructor(
+    protected readonly service: BaseServiceReadShort<T, TShort>
+  ) {}
   abstract getAll(req: Request): Promise<IPaging<TShort>>
   abstract autocomplete(req: Request): Promise<IPaging<IAutocomplete>>
   abstract getById(id: number): Promise<TShort>

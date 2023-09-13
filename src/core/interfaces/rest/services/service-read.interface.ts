@@ -7,13 +7,13 @@ export interface IConfigServiceRead<T extends Model<T, any>> {
   autocompleteProperty: string
   includes?: Includeable[]
   whereOpts?: WhereOptions<T>
-  orderOpts?: Array<[keyof T, Order]>
+  orderOpts?: Array<[string, Order]>
   whereOptsFactory?: () => WhereOptions
 }
 
 export abstract class BaseServiceRead<T extends Model<T, any>> {
   protected constructor(protected readonly config: IConfigServiceRead<T>) {}
-  abstract getById(id: number): Promise<T | null>
+  abstract getById(id: number): Promise<T>
   abstract getAll(
     pagingOptions: IPagingOptions,
     filterOpts: WhereOptions

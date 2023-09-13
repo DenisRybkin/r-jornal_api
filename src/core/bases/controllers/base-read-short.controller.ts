@@ -85,7 +85,7 @@ export function buildBaseControllerReadShort<
     @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
     @Get()
     public override async getAll(@Req() req: Request) {
-      const query = transformPagingOptions(req.query)
+      const query = transformPagingOptions(req.query, config.swagger.model)
       const filterOpts = await transformReadFilter(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto
@@ -123,7 +123,7 @@ export function buildBaseControllerReadShort<
     )
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
-      const query = transformPagingOptions(req.query)
+      const query = transformPagingOptions(req.query, config.swagger.model)
       const filterOpts = await transformReadFilter(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto

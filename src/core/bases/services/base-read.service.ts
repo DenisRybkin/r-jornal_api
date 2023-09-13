@@ -3,24 +3,14 @@ import { Model } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
 import { PaginationHelper } from '../../helpers'
-import {
-  IAutocomplete,
-  IPaging,
-  IPagingOptions,
-  Order
-} from '../../interfaces/common'
+import { IAutocomplete, IPaging, IPagingOptions } from '../../interfaces/common'
 import { Order as SequelizeOrder } from 'sequelize/types/model'
 import {
   BaseServiceRead as AbstractServiceRead,
   IConfigServiceRead
 } from '../../interfaces/rest/services'
 import { Nullable } from '../../types'
-
-const defaultPagingOptions = {
-  order: Order.desc,
-  pageSize: 10,
-  page: 1
-}
+import { defaultPagingOptions } from '../utils'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -35,9 +25,9 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
-      order: [['createdAt', pagingOpts.order]].concat(
-        (this.config.orderOpts ?? [[]]) as any
-      ) as SequelizeOrder,
+      order: (this.config.orderOpts ?? []).concat([
+        [pagingOpts.orderBy, pagingOpts.order]
+      ]) as SequelizeOrder,
       where: Object.assign(
         filterOpts,
         this.config.whereOpts,
@@ -70,9 +60,9 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
       attributes: ['id', [this.config.autocompleteProperty, 'text']],
-      order: [['createdAt', pagingOpts.order]].concat(
-        (this.config.orderOpts ?? [[]]) as any
-      ) as SequelizeOrder,
+      order: (this.config.orderOpts ?? []).concat([
+        [pagingOpts.orderBy, pagingOpts.order]
+      ]) as SequelizeOrder,
       where: Object.assign(
         filterOpts,
         this.config.whereOpts,
