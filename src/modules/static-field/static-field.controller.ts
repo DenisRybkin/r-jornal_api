@@ -65,8 +65,11 @@ export class StaticFieldController extends baseController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   public async upload(@UploadedFile(ImageProcessPipe) image: UploadProcessed) {
-    await this.staticFieldService.upload(image.buffer, image.dto)
-    return this.staticFieldService.create(image.dto)
+    const { Location } = await this.staticFieldService.upload(
+      image.buffer,
+      image.dto
+    )
+    return this.staticFieldService.create({ ...image.dto, url: Location })
   }
 
   @ApiOperation({ summary: 'Delete model by id' })
