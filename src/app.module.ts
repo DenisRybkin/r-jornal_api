@@ -4,7 +4,7 @@ import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { SequelizeModule } from '@nestjs/sequelize'
 import { AllExceptionsFilter } from './core/exception-filters/all-exceptions.filter'
-import { AuthGuard, RolesGuard } from './core/guards'
+import { RolesGuard } from './core/guards'
 import { AsyncContextMiddleware } from './core/middlewares'
 import { AsyncContextModule } from './core/modules/async-context/async-context.module'
 import { ApiConfigService } from './core/modules/shared/services/api-config.service'
@@ -16,6 +16,8 @@ import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { StaticFieldModule } from './modules/static-field/static-field.module'
 import { CategoryModule } from './modules/category/category.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { resolve, join } from 'node:path'
 
 @Module({
   imports: [
@@ -29,6 +31,10 @@ import { CategoryModule } from './modules/category/category.module'
       imports: [SharedModule],
       useFactory: (configService: ApiConfigService) => configService.dbConfig,
       inject: [ApiConfigService]
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'static'),
+      serveStaticOptions: {}
     }),
     RoleModule,
     UserModule,

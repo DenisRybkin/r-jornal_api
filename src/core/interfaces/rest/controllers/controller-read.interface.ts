@@ -22,7 +22,7 @@ export interface IConfigControllerRead<M extends Model<M, any>> {
 }
 
 export abstract class BaseControllerRead<T extends Model<T, any>> {
-  constructor(protected readonly service: BaseServiceRead<T>) {}
+  protected constructor(protected readonly service: BaseServiceRead<T>) {}
   abstract getAll(req: Request): Promise<IPaging<T> | null>
   abstract autocomplete(req: Request): Promise<IPaging<IAutocomplete> | null>
   abstract getById(id: number): Promise<T | null>

@@ -1,5 +1,5 @@
 export interface AppConfig {
-  port: number
-  baseUrl: string
-  prefix: string
+  readonly port: number
+  readonly baseUrl: string
+  readonly prefix: string
 }

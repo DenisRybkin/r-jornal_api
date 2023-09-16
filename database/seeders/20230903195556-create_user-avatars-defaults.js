@@ -9,7 +9,7 @@ module.exports = {
         id: index + 2,
         name: (index + 1).toString() + '.svg',
         originalname: (index + 1).toString() + '.svg',
-        url: `${process.env.BASE_URL}/static/default-avatars/${
+        url: `https://it-hub.storage.yandexcloud.net/default-avatars/${
           (index + 1).toString() + '.svg'
         }`,
         type: 'image/svg',

@@ -5,7 +5,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import type { SequelizeModuleOptions } from '@nestjs/sequelize'
 import { ModelOptions } from 'sequelize/types'
 import { Dialect } from 'sequelize/types/sequelize'
-import { AppConfig } from '../../../types'
+import { AppConfig, S3Config } from '../../../types'
 
 @Injectable()
 export class ApiConfigService {
@@ -60,6 +60,13 @@ export class ApiConfigService {
       signOptions: {
         expiresIn: this.getString('JWT_ACCESS_EXPIRES_IN')
       }
+    }
+  }
+
+  get S3AccessConfig(): S3Config {
+    return {
+      accessKeyId: this.getString('S3_ACCESS_SECRET_KEY_ID'),
+      secretAccessKey: this.getString('S3_SECRET_ACCESS_KEY')
     }
   }
 

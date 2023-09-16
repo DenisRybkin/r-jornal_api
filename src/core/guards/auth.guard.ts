@@ -9,7 +9,7 @@ import {
 import { IS_PUBLIC_KEY } from '../decorators'
 import { UnauthorizedException } from '../exceptions/build-in'
 import { AsyncContext } from '../modules/async-context/async-context'
-import { JwtTokenPayloadType } from '../types/jwt-token-payload.type'
+import { JwtTokenPayloadType } from '../types'
 
 @Injectable()
 export class AuthGuard implements CanActivate {

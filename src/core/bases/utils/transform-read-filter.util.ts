@@ -11,8 +11,7 @@ import { BadRequestException } from 'src/core/exceptions/build-in'
 import { ReadFilter } from 'src/core/interfaces/common'
 import { validateByDto } from 'src/core/validators'
 
-const transformBoolean = (value: 'true' | 'false'): boolean =>
-  value == 'false' ? false : true
+const transformBoolean = (value: 'true' | 'false'): boolean => value != 'false'
 
 export const transformQueryFilter = <T extends Model<T, any>>(
   query: Query,
@@ -108,7 +107,7 @@ export const transformReadFilter = async (
     ...item,
     value: transformQueryValueByOperationType(item.value, item.filterType)
   }))
-  validateByDto(
+  await validateByDto(
     dto,
     Object.assign(
       {},

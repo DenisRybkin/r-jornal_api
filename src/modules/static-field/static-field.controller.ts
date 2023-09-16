@@ -26,8 +26,7 @@ import { ProcessedError500Type } from '../../core/interfaces/common/processed-er
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
 import { ConstraintMessagesConstants } from '../../core/constants'
-import { ImageProcessPipe } from './pipes/image-process.pipe'
-import { CreateStaticFieldAttributes } from '../../database/models/singles/StaticField/static-field.attributes'
+import { ImageProcessPipe, UploadProcessed } from './pipes/image-process.pipe'
 import { Get } from '@nestjs/common/decorators'
 import { PagingType } from '../../core/interfaces/common/paging'
 import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
@@ -65,10 +64,9 @@ export class StaticFieldController extends baseController {
   @ApiConsumes('multipart/form-data')
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  public async upload(
-    @UploadedFile(ImageProcessPipe) dto: CreateStaticFieldAttributes
-  ) {
-    return this.staticFieldService.create(dto)
+  public async upload(@UploadedFile(ImageProcessPipe) image: UploadProcessed) {
+    await this.staticFieldService.upload(image.buffer, image.dto)
+    return this.staticFieldService.create(image.dto)
   }
 
   @ApiOperation({ summary: 'Delete model by id' })
@@ -124,7 +122,6 @@ export class StaticFieldController extends baseController {
   })
   @Get('default-avatars')
   public async getDefaultAvatar() {
-    console.log('4444')
     return this.staticFieldService.getDefaultsAvatars()
   }
 }
