@@ -11,6 +11,7 @@ export class CreateUserDto {
   @ApiProperty()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   @Length(3, 12)
+  @IsUnique(UniqueValidator, [User])
   readonly nickname: string
 
   @ApiProperty()

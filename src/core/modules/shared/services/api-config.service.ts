@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { JwtModuleOptions, JwtSignOptions } from '@nestjs/jwt'
+import {
+  JwtModuleOptions,
+  JwtSecretRequestType,
+  JwtSignOptions
+} from '@nestjs/jwt'
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
 import type { SequelizeModuleOptions } from '@nestjs/sequelize'
 import { ModelOptions } from 'sequelize/types'
@@ -36,6 +40,10 @@ export class ApiConfigService {
       baseUrl: this.getString('BASE_URL'),
       prefix: this.getString('GLOBAL_PREFIX')
     }
+  }
+
+  get clientWebUrl(): string {
+    return this.getString('CLIENT_WEB_URL')
   }
 
   get dbConfig(): SequelizeModuleOptions {

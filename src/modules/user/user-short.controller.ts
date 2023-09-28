@@ -3,7 +3,7 @@ import { User } from '../../database/models/singles/User/user.model'
 import { ReadUserFilterDto, UserShortDto } from './dtos'
 import { UserShortService } from './user-short.service'
 import { Controller } from '@nestjs/common'
-import { ApiExtraModels } from '@nestjs/swagger'
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 
 const BaseController = buildBaseControllerReadShort<User, UserShortDto>({
   filterDto: ReadUserFilterDto,
@@ -11,6 +11,7 @@ const BaseController = buildBaseControllerReadShort<User, UserShortDto>({
 })
 
 @ApiExtraModels(UserShortDto)
+@ApiTags('User-short')
 @Controller('user-short')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

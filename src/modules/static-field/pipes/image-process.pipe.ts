@@ -3,7 +3,6 @@ import { Injectable, PipeTransform } from '@nestjs/common'
 import { ApiConfigService } from '../../../core/modules/shared/services/api-config.service'
 import { CreateStaticFieldAttributes } from '../../../database/models/singles/StaticField/static-field.attributes'
 import { GeneratorService } from '../../../core/modules/shared/services/generator.service'
-import { UrlService } from '../../../core/modules/shared/services/url.service'
 
 export interface UploadProcessed {
   dto: Omit<CreateStaticFieldAttributes, 'url'>
@@ -16,8 +15,7 @@ export class ImageProcessPipe
 {
   constructor(
     private readonly configService: ApiConfigService,
-    private readonly generatorService: GeneratorService,
-    private readonly urlService: UrlService
+    private readonly generatorService: GeneratorService
   ) {}
 
   async transform(image: Express.Multer.File): Promise<UploadProcessed> {

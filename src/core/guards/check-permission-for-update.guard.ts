@@ -32,7 +32,6 @@ export class CheckPermissionForUpdateGuard implements CanActivate {
     )
 
     if (!modelInfo) return true
-
     if (!modelInfo.EntityClass)
       throw new InternalServerErrorException(
         ErrorMessagesConstants.InternalError,

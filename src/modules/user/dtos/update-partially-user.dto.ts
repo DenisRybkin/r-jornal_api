@@ -3,10 +3,8 @@ import { IsEmail, IsOptional, IsString, Length } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { IsUnique, UniqueValidator } from '../../../core/decorators'
 import { User } from '../../../database/models/singles/User/user.model'
-import { PartialType } from '@nestjs/mapped-types'
-import { UpdateUserDto } from './udpate-user.dto'
 
-export class UpdatePartiallyUserDto extends PartialType(UpdateUserDto) {
+export class UpdatePartiallyUserDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })

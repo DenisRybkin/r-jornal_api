@@ -15,7 +15,8 @@ const BaseController = buildBaseControllerCRUD<Role>({
   privacySettings: {
     createRequireRoles: [Roles.OWNER],
     updateRequireRoles: [Roles.OWNER],
-    deleteRequireRoles: [Roles.OWNER]
+    deleteRequireRoles: [Roles.OWNER],
+    getAllIsPublic: false
   },
   swagger: { model: Role, modelName: 'role' },
   filterDto: ReadRoleFilterDto,

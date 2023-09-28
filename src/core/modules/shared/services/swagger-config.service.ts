@@ -4,6 +4,7 @@ import { ApiConfigService } from './api-config.service'
 import { Role } from '../../../../database/models/singles/Role/role.model'
 import { User } from '../../../../database/models/singles/User/user.model'
 import {
+  BaseProcessedError,
   ProcessedError400Type,
   ProcessedError401Type,
   ProcessedError404Type,
@@ -19,6 +20,9 @@ import {
 } from '../../../exceptions/types/validation.types'
 import { StaticField } from '../../../../database/models/singles/StaticField/static-field.model'
 import { UserAvatar } from '../../../../database/models/related/UserAvatar/user-avatar.model'
+import { Category } from '../../../../database/models/singles/Category/category.model'
+import { CategoryAvatar } from '../../../../database/models/related/CategoryAvatar/category-avatar.model'
+import { UserCategory } from '../../../../database/models/related/UserCategory/user-category.model'
 
 @Injectable()
 export class SwaggerConfigProvider {
@@ -39,13 +43,22 @@ export class SwaggerConfigProvider {
 
   public docsPrefix = '/api/docs'
 
-  private dbModels = [User, UserAvatar, Role, StaticField]
+  private dbModels = [
+    User,
+    UserAvatar,
+    Role,
+    StaticField,
+    CategoryAvatar,
+    Category,
+    UserCategory
+  ]
   private miscModels = [
     PagingType,
     PagingOptionsType,
     AutoCompleteType,
     ValidationMessageType,
     ValidationErrorType,
+    BaseProcessedError,
     ProcessedError400Type,
     ProcessedError401Type,
     ProcessedError404Type,

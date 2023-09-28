@@ -31,10 +31,7 @@ export class UserAvatarService {
       { userId, staticFieldId: newStaticFieldId },
       {
         where: { userId },
-        returning: true,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        plain: true
+        returning: true
       }
     )
     await this.staticFieldService.delete(source.staticFieldId)

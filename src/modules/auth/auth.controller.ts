@@ -22,6 +22,13 @@ import {
   ProcessedError401Type,
   ProcessedError500Type
 } from '../../core/interfaces/common/processed-error.type'
+import { UserService } from '../user/user.service'
+import {
+  avatarInclude,
+  categoryInclude,
+  defaultAvatarInclude,
+  roleInclude
+} from '../../database/includes/user'
 
 @ApiExtraModels(LoginDto)
 @ApiTags('Auth')
@@ -29,6 +36,7 @@ import {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly userService: UserService,
     private readonly configService: ApiConfigService,
     private readonly dateService: DateService
   ) {}
@@ -46,7 +54,7 @@ export class AuthController {
       $ref: getSchemaPath(ProcessedError401Type)
     }
   })
-  @IsPublic()
+  @IsPublic(true)
   @Post('login')
   async login(
     @Body() userDto: LoginDto,
@@ -56,13 +64,22 @@ export class AuthController {
 
     response.cookie('refresh', refresh, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'none',
+      secure: true,
       expires: this.dateService.createExpiresDate(
         this.configService.jwtRefreshConfig.expiresIn as string
       )
     })
 
-    return { access }
+    return {
+      access,
+      user: await this.userService.getByEmail(userDto.email, null, [
+        roleInclude,
+        avatarInclude,
+        defaultAvatarInclude,
+        categoryInclude
+      ])
+    }
   }
 
   @ApiOperation({ summary: 'Registration endpoint' })
@@ -88,16 +105,25 @@ export class AuthController {
 
     response.cookie('refresh', refresh, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'none',
+      secure: true,
       expires: this.dateService.createExpiresDate(
         this.configService.jwtRefreshConfig.expiresIn as string
       )
     })
 
-    return { access }
+    return {
+      access,
+      user: await this.userService.getByEmail(userDto.email, null, [
+        roleInclude,
+        avatarInclude,
+        defaultAvatarInclude,
+        categoryInclude
+      ])
+    }
   }
 
-  @ApiOperation({ summary: 'Login endpoint' })
+  @ApiOperation({ summary: 'Refresh auth endpoint' })
   @ApiOkResponse({
     status: 200,
     schema: {
@@ -118,16 +144,20 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response
   ) {
     const { refresh: token } = request.cookies
-    const { access, refresh } = await this.authService.refresh(token)
+    const { access, refresh, user } = await this.authService.refresh(token)
 
     response.cookie('refresh', refresh, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'none',
+      secure: true,
       expires: this.dateService.createExpiresDate(
         this.configService.jwtRefreshConfig.expiresIn as string
       )
     })
 
-    return { access }
+    return {
+      access,
+      user
+    }
   }
 }

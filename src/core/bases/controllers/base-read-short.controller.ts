@@ -80,7 +80,7 @@ export function buildBaseControllerReadShort<
         $ref: getSchemaPath(ProcessedError400Type)
       }
     })
-    @IsPublic(config.privacySettings?.getShortAllIsPublic)
+    @IsPublic(config.privacySettings?.getShortAllIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getAllShortRequireRoles ?? []))
     @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
     @Get()
@@ -117,7 +117,7 @@ export function buildBaseControllerReadShort<
         $ref: getSchemaPath(ProcessedError400Type)
       }
     })
-    @IsPublic(config.privacySettings?.autocompleteIsPublic)
+    @IsPublic(config.privacySettings?.autocompleteIsPublic ?? false)
     @RequiredRoles(
       ...(config.privacySettings?.autocompleteShortRequireRoles ?? [])
     )
@@ -144,7 +144,7 @@ export function buildBaseControllerReadShort<
         $ref: getSchemaPath(ProcessedError404Type)
       }
     })
-    @IsPublic(config.privacySettings?.getShortByIdIsPublic)
+    @IsPublic(config.privacySettings?.getShortByIdIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdShortRequireRoles ?? []))
     @Get('/:id')
     public override async getById(

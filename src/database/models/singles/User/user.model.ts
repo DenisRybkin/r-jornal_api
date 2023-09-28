@@ -73,12 +73,12 @@ export class User extends Model<User, CreateUserAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 1 })
   readonly roleId: number
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Role model',
     type: Role
   })
   @BelongsTo(() => Role, 'roleId')
-  readonly role: Role
+  readonly role?: Role
 
   @ApiProperty({
     example: 7,
@@ -108,5 +108,5 @@ export class User extends Model<User, CreateUserAttributes> {
     isArray: true
   })
   @HasMany(() => UserCategory, 'userId')
-  readonly userCategory: UserCategory[]
+  readonly userCategory?: UserCategory[]
 }

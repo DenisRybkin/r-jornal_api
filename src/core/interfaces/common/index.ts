@@ -3,7 +3,7 @@ export { GenderType } from './gender.type'
 export { Order, OrderType } from './order.type'
 export { IPaging, IPagingOptions } from './paging'
 export {
-  IProcessedError,
+  BaseProcessedError,
   ProcessedError400Type,
   ProcessedError404Type
 } from './processed-error.type'

@@ -7,7 +7,11 @@ import {
   Table
 } from 'sequelize-typescript'
 import { CreateUserCategoryAttributes } from './user-category.attributes'
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  getSchemaPath
+} from '@nestjs/swagger'
 import { Category } from '../../singles/Category/category.model'
 import { User } from '../../singles/User/user.model'
 
@@ -30,22 +34,22 @@ export class UserCategory extends Model<
   @Column({ type: DataType.INTEGER, allowNull: false })
   readonly categoryId: number
 
-  @ApiProperty({
-    type: () => getSchemaPath(Category),
+  @ApiPropertyOptional({
+    type: Category,
     description: 'category'
   })
   @BelongsTo(() => Category, 'categoryId')
-  readonly category: Category
+  readonly category?: Category
 
   @ApiProperty({ example: 1, description: 'FK to user' })
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
   readonly userId: number
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => getSchemaPath(User),
     description: 'user'
   })
   @BelongsTo(() => User, 'userId')
-  readonly user: User
+  readonly user?: User
 }

@@ -23,10 +23,17 @@ import { AsyncContext } from '../../core/modules/async-context/async-context'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
 import { ConstraintMessagesConstants } from '../../core/constants'
-import { ProcessedError500Type } from '../../core/interfaces/common/processed-error.type'
+import {
+  ProcessedError400Type,
+  ProcessedError500Type
+} from '../../core/interfaces/common/processed-error.type'
+import { Get } from '@nestjs/common/decorators'
 
 const BaseController = buildBaseControllerCRUD<User>({
   privacySettings: {
+    getAllIsPublic: true,
+    getByIdIsPublic: true,
+    autocompleteIsPublic: true,
     checkPermissionForUpdateInfo: {
       EntityClass: User,
       comparableFieldName: 'id'
@@ -57,6 +64,23 @@ export class UserController extends BaseController {
     private readonly asyncContext: AsyncContext<string, any>
   ) {
     super(userService)
+  }
+
+  @ApiOperation({ summary: `get user details` })
+  @ApiOkResponse({
+    status: 200,
+    schema: { $ref: getSchemaPath(User) }
+  })
+  @ApiInternalServerErrorResponse({
+    status: 400,
+    schema: {
+      $ref: getSchemaPath(ProcessedError400Type)
+    }
+  })
+  @Get('/get-me')
+  async getMe() {
+    const { id: userId } = this.asyncContext.get('user')
+    return this.userService.getById(userId)
   }
 
   @ApiOperation({ summary: `Create avatar of user` })

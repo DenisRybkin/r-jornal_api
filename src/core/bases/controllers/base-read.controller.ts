@@ -68,7 +68,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError400Type)
       }
     })
-    @IsPublic(config.privacySettings?.getAllIsPublic)
+    @IsPublic(config.privacySettings?.getAllIsPublic ?? false)
     @ApiQuery({
       required: false,
       schema: { oneOf: [{ $ref: getSchemaPath(config.filterDto) }] }
@@ -81,7 +81,6 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
         transformQueryFilter<T>(query.other, config.swagger.model),
         config.filterDto
       )
-      console.log(query, filterOpts)
       return this.service.getAll(query.pagingOptions, filterOpts)
     }
 
@@ -109,7 +108,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError400Type)
       }
     })
-    @IsPublic(config.privacySettings?.autocompleteIsPublic)
+    @IsPublic(config.privacySettings?.autocompleteIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
@@ -134,7 +133,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError404Type)
       }
     })
-    @IsPublic(config.privacySettings?.getByIdIsPublic)
+    @IsPublic(config.privacySettings?.getByIdIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/:id')
     public override async getById(

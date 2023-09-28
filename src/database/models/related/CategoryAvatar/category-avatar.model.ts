@@ -7,7 +7,11 @@ import {
   Table
 } from 'sequelize-typescript'
 import { CreateCategoryAvatarAttributes } from './category-avatar.attributes'
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  getSchemaPath
+} from '@nestjs/swagger'
 import { StaticField } from '../../singles/StaticField/static-field.model'
 import { Category } from '../../singles/Category/category.model'
 
@@ -30,22 +34,22 @@ export class CategoryAvatar extends Model<
   @Column({ type: DataType.INTEGER, allowNull: false, unique: true })
   readonly categoryId: number
 
-  @ApiProperty({
-    type: () => getSchemaPath(Category),
+  @ApiPropertyOptional({
+    type: () => Category,
     description: 'category'
   })
   @BelongsTo(() => Category, 'categoryId')
-  readonly category: Category
+  readonly category?: Category
 
   @ApiProperty({ example: 1, description: 'FK to static-field' })
   @ForeignKey(() => StaticField)
   @Column({ type: DataType.INTEGER, allowNull: false, unique: true })
   readonly staticFieldId: number
 
-  @ApiProperty({
-    allOf: [{ $ref: getSchemaPath(StaticField) }],
+  @ApiPropertyOptional({
+    type: () => StaticField,
     description: 'avatar (static-field)'
   })
   @BelongsTo(() => StaticField, 'staticFieldId')
-  readonly staticField: StaticField
+  readonly staticField?: StaticField
 }

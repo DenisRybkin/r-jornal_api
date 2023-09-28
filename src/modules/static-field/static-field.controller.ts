@@ -30,13 +30,15 @@ import { ImageProcessPipe, UploadProcessed } from './pipes/image-process.pipe'
 import { Get } from '@nestjs/common/decorators'
 import { PagingType } from '../../core/interfaces/common/paging'
 import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
+import { EditorImageDto } from './dtos/editor-image.dto'
+import { CloudFoldersConstants } from './S3/cloud-folders.constants'
 
 const baseController = buildBaseControllerRead<StaticField>({
   filterDto: ReadStaticFieldFilterDto,
   swagger: { model: StaticField, modelName: 'StaticField' }
 })
 
-@ApiExtraModels(ImageUploadDto, ReadStaticFieldFilterDto)
+@ApiExtraModels(ImageUploadDto, ReadStaticFieldFilterDto, EditorImageDto)
 @ApiTags('StaticField')
 @Controller('static-field')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -70,6 +72,46 @@ export class StaticFieldController extends baseController {
       image.dto
     )
     return this.staticFieldService.create({ ...image.dto, url: Location })
+  }
+
+  @ApiOperation({
+    summary: `Upload image from editor js plugin & create StaticField model`
+  })
+  @ApiOkResponse({
+    status: 200,
+    schema: { $ref: getSchemaPath(EditorImageDto) }
+  })
+  @ApiInternalServerErrorResponse({
+    status: 500,
+    schema: {
+      $ref: getSchemaPath(ProcessedError500Type)
+    }
+  })
+  @ApiBody({
+    description: 'Image form-data',
+    type: ImageUploadDto
+  })
+  @ApiConsumes('multipart/form-data')
+  @Post('editor-js')
+  @UseInterceptors(FileInterceptor('image'))
+  public async uploadFromEditor(
+    @UploadedFile(ImageProcessPipe) image: UploadProcessed
+  ) {
+    const { Location } = await this.staticFieldService.upload(
+      image.buffer,
+      image.dto,
+      CloudFoldersConstants.EDITORJS
+    )
+
+    const staticField = await this.staticFieldService.create({
+      ...image.dto,
+      url: Location
+    })
+
+    return {
+      success: 1,
+      file: staticField
+    }
   }
 
   @ApiOperation({ summary: 'Delete model by id' })

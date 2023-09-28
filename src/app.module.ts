@@ -4,7 +4,7 @@ import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { SequelizeModule } from '@nestjs/sequelize'
 import { AllExceptionsFilter } from './core/exception-filters/all-exceptions.filter'
-import { RolesGuard } from './core/guards'
+import { AuthGuard, RolesGuard } from './core/guards'
 import { AsyncContextMiddleware } from './core/middlewares'
 import { AsyncContextModule } from './core/modules/async-context/async-context.module'
 import { ApiConfigService } from './core/modules/shared/services/api-config.service'
@@ -46,10 +46,10 @@ import { resolve, join } from 'node:path'
   providers: [
     JwtService,
     UniqueValidator,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    },
     {
       provide: APP_GUARD,
       useClass: RolesGuard

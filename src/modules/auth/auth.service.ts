@@ -13,6 +13,13 @@ import bcrypt from 'bcryptjs'
 import { TokenPayload } from './types'
 import { User } from '../../database/models/singles/User/user.model'
 import { CreateUserDto } from '../user/dtos'
+import {
+  avatarInclude,
+  categoryInclude,
+  defaultAvatarInclude,
+  roleInclude
+} from '../../database/includes/user'
+import { JwtTokenPayloadType } from '../../core/types'
 
 @Injectable()
 export class AuthService {
@@ -25,7 +32,7 @@ export class AuthService {
 
   public async login(dto: LoginDto) {
     const user = await this.validateUser(dto)
-    return this.generateTokens(await this.createTokenPayload(user))
+    return await this.generateTokens(await this.createTokenPayload(user))
   }
 
   async registration(dto: CreateUserDto) {
@@ -39,24 +46,28 @@ export class AuthService {
       password: hashedPassword
     })
 
-    return this.generateTokens(await this.createTokenPayload(user))
+    return await this.generateTokens(await this.createTokenPayload(user))
   }
 
   async refresh(refresh: string) {
-    const token = await this.jwtService.verifyAsync(
+    const token = await this.jwtService.verifyAsync<JwtTokenPayloadType>(
       refresh || '',
       this.configService.jwtRefreshConfig
     )
 
-    const user = await this.userService.getById(
-      token.id,
+    const user = await this.userService.getByEmail(
+      token.email,
       new UnauthorizedException(
         ErrorMessagesConstants.Unauthorized,
         'Refreshing by token data failed'
-      )
+      ),
+      [roleInclude, avatarInclude, defaultAvatarInclude, categoryInclude]
     )
 
-    return this.generateTokens(await this.createTokenPayload(user))
+    return {
+      ...(await this.generateTokens(await this.createTokenPayload(user))),
+      user
+    }
   }
 
   private async createTokenPayload({
@@ -68,10 +79,13 @@ export class AuthService {
     return { id, email, roleId, roleName: role.name }
   }
 
-  private generateTokens(payload: TokenPayload) {
+  private async generateTokens(payload: TokenPayload) {
     return {
-      access: this.jwtService.sign(payload, this.configService.jwtAccessConfig),
-      refresh: this.jwtService.sign(
+      access: await this.jwtService.signAsync(
+        payload,
+        this.configService.jwtAccessConfig
+      ),
+      refresh: await this.jwtService.signAsync(
         payload,
         this.configService.jwtRefreshConfig
       )
@@ -83,7 +97,7 @@ export class AuthService {
       dto.email,
       new UnauthorizedException(
         ErrorMessagesConstants.Unauthorized,
-        'User with this email does not exist'
+        'Invalid email or password'
       )
     )
     const passwordsEquals = await bcrypt.compare(dto.password, user.password)

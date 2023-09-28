@@ -1,10 +1,10 @@
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class ValidationMessageType {
   constructor(message?: string) {
     this.message = message
   }
-  @ApiProperty()
+  @ApiPropertyOptional()
   message?: string
 }
 
@@ -17,8 +17,8 @@ export class ValidationErrorType {
   @ApiProperty()
   target: string
   @ApiProperty({
-    items: { oneOf: [{ $ref: getSchemaPath(ValidationMessageType) }] },
-    type: 'array'
+    type: ValidationMessageType,
+    isArray: true
   })
   messages: ValidationMessageType[]
 }

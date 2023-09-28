@@ -47,7 +47,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @ApiBody({ schema: { $ref: getSchemaPath(config.createDto) } })
-    @IsPublic(config.privacySettings?.createIsPublic)
+    @IsPublic(config.privacySettings?.createIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.createRequireRoles ?? []))
     @Post()
     public async create(@Body() dto: InstanceType<typeof config.createDto>) {
@@ -71,7 +71,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @ApiBody({ schema: { $ref: getSchemaPath(config.updateDto) } })
-    @IsPublic(config.privacySettings?.updateIsPublic)
+    @IsPublic(config.privacySettings?.updateIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
     @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
     @Put('/:id')
@@ -108,7 +108,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       }
     })
     @ApiBody({ schema: { $ref: getSchemaPath(config.updatePartiallyDto) } })
-    @IsPublic(config.privacySettings?.updateIsPublic)
+    @IsPublic(config.privacySettings?.updateIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
     @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
     @Patch('/:id')
@@ -144,7 +144,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         $ref: getSchemaPath(ProcessedError500Type)
       }
     })
-    @IsPublic(config.privacySettings?.deleteIsPublic)
+    @IsPublic(config.privacySettings?.deleteIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.deleteRequireRoles ?? []))
     @Delete('/:id')
     public async delete(

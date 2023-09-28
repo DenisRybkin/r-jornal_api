@@ -1,17 +1,23 @@
 import { HttpStatus } from '@nestjs/common'
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ValidationErrorType } from '../../exceptions/types/validation.types'
 
-export interface IProcessedError {
+export class BaseProcessedError {
+  @ApiProperty()
   statusCode: HttpStatus
+  @ApiPropertyOptional()
   message?: string
-  messages?: ValidationErrorType
+  @ApiPropertyOptional()
+  messages?: ValidationErrorType[]
+  @ApiPropertyOptional()
   internalMessage: string
+  @ApiPropertyOptional()
   timestamp: string
+  @ApiPropertyOptional()
   path: string
 }
 
-export class ProcessedError400Type implements IProcessedError {
+export class ProcessedError400Type implements BaseProcessedError {
   @ApiProperty({ example: 400, description: 'http status of request' })
   statusCode: HttpStatus
 
@@ -22,12 +28,10 @@ export class ProcessedError400Type implements IProcessedError {
   message: string
 
   @ApiProperty({
-    type: 'array',
-    items: {
-      oneOf: [{ $ref: getSchemaPath(ValidationErrorType) }]
-    }
+    type: ValidationErrorType,
+    isArray: true
   })
-  messages: ValidationErrorType
+  messages: ValidationErrorType[]
 
   @ApiProperty({
     example:
@@ -49,7 +53,7 @@ export class ProcessedError400Type implements IProcessedError {
   path: string
 }
 
-export class ProcessedError401Type {
+export class ProcessedError401Type implements BaseProcessedError {
   @ApiProperty({ example: 401, description: 'http status of request' })
   statusCode: HttpStatus
 
@@ -78,7 +82,7 @@ export class ProcessedError401Type {
   path: string
 }
 
-export class ProcessedError404Type implements IProcessedError {
+export class ProcessedError404Type implements BaseProcessedError {
   @ApiProperty({ example: 404, description: 'http status of request' })
   statusCode: HttpStatus
 
@@ -107,7 +111,7 @@ export class ProcessedError404Type implements IProcessedError {
   path: string
 }
 
-export class ProcessedError500Type implements IProcessedError {
+export class ProcessedError500Type implements BaseProcessedError {
   @ApiProperty({ example: 500, description: 'http status of request' })
   statusCode: HttpStatus
 

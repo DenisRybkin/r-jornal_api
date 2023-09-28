@@ -52,14 +52,17 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
 
   async upload(
     buffer: Buffer,
-    fileDto: CreateStaticFieldAttributes
+    fileDto:
+      | Omit<CreateStaticFieldAttributes, 'url'>
+      | CreateStaticFieldAttributes,
+    bucket: CloudFoldersConstants = CloudFoldersConstants.UPLOADS
   ): Promise<S3.ManagedUpload.SendData> {
     const uploaded = await this.client.Upload(
       {
         buffer: buffer,
         name: fileDto.name
       },
-      `/${CloudFoldersConstants.UPLOADS}`
+      `/${bucket}`
     )
     if (uploaded == false)
       throw new InternalServerErrorException(

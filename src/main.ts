@@ -16,20 +16,24 @@ import { join } from 'node:path'
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(),
-    { cors: true }
+    new ExpressAdapter()
   )
 
   const configService = app.select(SharedModule).get(ApiConfigService)
 
-  const { port } = configService.appConfig
-
   app.use(cookieParser())
   app.setGlobalPrefix('api')
-  //app.enableCors({})
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders:
+      'X-Requested-With, Origin, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization'
+    //allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
+  })
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
   buildSwagger(app)
-  await app.listen(port)
+  await app.listen(configService.appConfig.port)
 }
 
 const buildSwagger = async (app: NestExpressApplication) => {

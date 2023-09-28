@@ -10,7 +10,7 @@ export type IPaging<T> = {
 }
 
 export class PagingType<T> implements IPaging<T> {
-  @ApiProperty({ oneOf: [{ $ref: getSchemaPath(PagingOptionsType) }] })
+  @ApiProperty({ type: PagingOptionsType })
   pagingOptions: IPagingOptions
 
   @ApiProperty({ example: 15, description: 'count items' })
