@@ -40,10 +40,6 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     ProcessedError404Type
   )
   abstract class ControllerRead extends BaseControllerRead<T> {
-    protected constructor(protected readonly service: BaseServiceRead<T>) {
-      super(service)
-    }
-
     @ApiOperation({ summary: `Get all ${config.swagger.modelName} models` })
     @ApiOkResponse({
       status: 200,
@@ -64,15 +60,20 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     })
     @ApiBadRequestResponse({
       status: 400,
+      type: ProcessedError400Type
+    })
+    @ApiQuery({
+      name: 'filters',
+      required: false,
+
       schema: {
-        $ref: getSchemaPath(ProcessedError400Type)
+        allOf: [
+          { $ref: getSchemaPath(config.filterDto) },
+          { $ref: getSchemaPath(PagingOptionsType) }
+        ]
       }
     })
     @IsPublic(config.privacySettings?.getAllIsPublic ?? false)
-    @ApiQuery({
-      required: false,
-      schema: { oneOf: [{ $ref: getSchemaPath(config.filterDto) }] }
-    })
     @RequiredRoles(...(config.privacySettings?.getAllRequireRoles ?? []))
     @Get()
     public override async getAll(@Req() req: Request) {
@@ -82,6 +83,10 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
         config.filterDto
       )
       return this.service.getAll(query.pagingOptions, filterOpts)
+    }
+
+    protected constructor(protected readonly service: BaseServiceRead<T>) {
+      super(service)
     }
 
     @ApiOperation({ summary: 'Get all models in autocomplete format' })
@@ -104,9 +109,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     })
     @ApiBadRequestResponse({
       status: 400,
-      schema: {
-        $ref: getSchemaPath(ProcessedError400Type)
-      }
+      type: ProcessedError400Type
     })
     @IsPublic(config.privacySettings?.autocompleteIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
@@ -123,15 +126,11 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     @ApiOperation({ summary: 'Get model by id' })
     @ApiOkResponse({
       status: 200,
-      schema: {
-        $ref: getSchemaPath(config.swagger.model)
-      }
+      type: config.swagger.model
     })
     @ApiNotFoundResponse({
       status: 404,
-      schema: {
-        $ref: getSchemaPath(ProcessedError404Type)
-      }
+      type: ProcessedError404Type
     })
     @IsPublic(config.privacySettings?.getByIdIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))

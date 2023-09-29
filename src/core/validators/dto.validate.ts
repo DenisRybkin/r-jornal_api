@@ -1,4 +1,4 @@
-import { ClassConstructor, plainToClass } from 'class-transformer'
+import { ClassConstructor, plainToInstance } from 'class-transformer'
 import { validate, ValidatorOptions } from 'class-validator'
 import { ValidationException } from '../exceptions/custom'
 import { TransformValidateErrorHelper } from '../helpers/transform-validate-error.helper'
@@ -8,11 +8,10 @@ export const validateByDto = async <T extends ClassConstructor<any>>(
   validatedObj: Object,
   opts?: ValidatorOptions
 ) => {
-  const plannedClass = plainToClass(dto, validatedObj)
+  const plannedClass = plainToInstance(dto, validatedObj)
   const errors = await validate(plannedClass, opts)
-
   if (errors.length)
-    new ValidationException(
+    throw new ValidationException(
       TransformValidateErrorHelper.transformErrors(errors)
     )
 

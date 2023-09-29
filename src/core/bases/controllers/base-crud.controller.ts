@@ -21,13 +21,18 @@ import {
   IConfigControllerCRUD
 } from 'src/core/interfaces/rest/controllers'
 import { BaseServiceCRUD } from 'src/core/interfaces/rest/services'
-import { validateByDto } from 'src/core/validators'
 import { buildBaseControllerRead } from './'
+import { MakeNullishOptional } from 'sequelize/types/utils'
 
 export function buildBaseControllerCRUD<T extends Model<T, any>>(
   config: IConfigControllerCRUD<T>
 ): BaseControllerCRUD<T> {
   const ControllerRead = buildBaseControllerRead<T>(config)
+
+  class CreateDto extends config.createDto {}
+  class UpdateDto extends config.updateDto {}
+  class UpdatePartially extends config.updatePartiallyDto {}
+
   // eslint-disable-next-line
   //@ts-ignore
   class ControllerCRUD extends ControllerRead implements BaseControllerCRUD<T> {
@@ -38,39 +43,32 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @ApiOperation({ summary: `Create new ${config.swagger.modelName} model` })
     @ApiOkResponse({
       status: 200,
-      schema: { $ref: getSchemaPath(config.swagger.model) }
+      type: config.swagger.model
     })
     @ApiInternalServerErrorResponse({
       status: 500,
-      schema: {
-        $ref: getSchemaPath(ProcessedError500Type)
-      }
+      type: ProcessedError500Type
     })
-    @ApiBody({ schema: { $ref: getSchemaPath(config.createDto) } })
+    @ApiBody({ type: config.createDto })
     @IsPublic(config.privacySettings?.createIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.createRequireRoles ?? []))
     @Post()
-    public async create(@Body() dto: InstanceType<typeof config.createDto>) {
-      await validateByDto(dto as any, config.createDto, {
-        skipMissingProperties: false,
-        whitelist: true,
-        forbidNonWhitelisted: true
-      })
-      return await this.service.create(dto as any)
+    public async create(@Body() dto: CreateDto) {
+      return await this.service.create(
+        dto as MakeNullishOptional<T['_creationAttributes']>
+      )
     }
 
     @ApiOperation({ summary: `Full update ${config.swagger.modelName}` })
     @ApiOkResponse({
       status: 200,
-      schema: { $ref: getSchemaPath(config.swagger.model) }
+      type: config.swagger.model
     })
     @ApiInternalServerErrorResponse({
       status: 500,
-      schema: {
-        $ref: getSchemaPath(ProcessedError500Type)
-      }
+      type: ProcessedError500Type
     })
-    @ApiBody({ schema: { $ref: getSchemaPath(config.updateDto) } })
+    @ApiBody({ type: config.updateDto })
     @IsPublic(config.privacySettings?.updateIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
     @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
@@ -85,29 +83,22 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         })
       )
       id: number,
-      @Body() dto: InstanceType<typeof config.updateDto>
+      @Body() dto: UpdateDto
     ) {
       if ('id' in dto) delete dto.id
-      await validateByDto(dto as any, config.createDto, {
-        skipMissingProperties: false,
-        whitelist: true,
-        forbidNonWhitelisted: true
-      })
-      return await this.service.update(id, dto as any)
+      return await this.service.update(id, dto as T)
     }
 
     @ApiOperation({ summary: `Partially update ${config.swagger.modelName}` })
     @ApiOkResponse({
       status: 200,
-      schema: { $ref: getSchemaPath(config.swagger.model) }
+      type: config.swagger.model
     })
     @ApiInternalServerErrorResponse({
       status: 500,
-      schema: {
-        $ref: getSchemaPath(ProcessedError500Type)
-      }
+      type: ProcessedError500Type
     })
-    @ApiBody({ schema: { $ref: getSchemaPath(config.updatePartiallyDto) } })
+    @ApiBody({ type: config.updatePartiallyDto })
     @IsPublic(config.privacySettings?.updateIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.updateRequireRoles ?? []))
     @CheckPermissionUpdate(config.privacySettings?.checkPermissionForUpdateInfo)
@@ -122,14 +113,9 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
         })
       )
       id: number,
-      @Body() dto: InstanceType<typeof config.updatePartiallyDto>
+      @Body() dto: UpdatePartially
     ) {
       if ('id' in dto) delete dto.id
-      await validateByDto(dto as any, config.createDto, {
-        skipMissingProperties: true,
-        whitelist: true,
-        forbidNonWhitelisted: true
-      })
       return this.service.updatePartially(id, dto as Partial<T>)
     }
 
@@ -140,9 +126,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     })
     @ApiInternalServerErrorResponse({
       status: 500,
-      schema: {
-        $ref: getSchemaPath(ProcessedError500Type)
-      }
+      type: ProcessedError500Type
     })
     @IsPublic(config.privacySettings?.deleteIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.deleteRequireRoles ?? []))

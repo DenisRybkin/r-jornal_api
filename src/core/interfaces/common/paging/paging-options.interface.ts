@@ -33,7 +33,7 @@ export class PagingOptionsType implements IPagingOptions {
   order: OrderType
 
   @ApiPropertyOptional({
-    example: 'id',
+    example: 'createdAt',
     description: 'filed for ordering',
     default: 'createdAt'
   })

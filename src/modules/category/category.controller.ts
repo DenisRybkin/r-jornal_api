@@ -8,8 +8,8 @@ import {
 } from './dtos'
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
 import { Category } from '../../database/models/singles/Category/category.model'
-import { Roles } from '../../core/interfaces/common'
 import { CategoryService } from './category.service'
+import { Roles } from '../../core/interfaces/common'
 
 const BaseController = buildBaseControllerCRUD<Category>({
   swagger: { model: Category, modelName: 'category' },
