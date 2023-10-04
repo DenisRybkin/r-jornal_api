@@ -7,11 +7,7 @@ import {
   Table
 } from 'sequelize-typescript'
 import { CreateCategoryAvatarAttributes } from './category-avatar.attributes'
-import {
-  ApiProperty,
-  ApiPropertyOptional,
-  getSchemaPath
-} from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { StaticField } from '../../singles/StaticField/static-field.model'
 import { Category } from '../../singles/Category/category.model'
 

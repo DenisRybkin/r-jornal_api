@@ -17,7 +17,10 @@ import { AuthModule } from './modules/auth/auth.module'
 import { StaticFieldModule } from './modules/static-field/static-field.module'
 import { CategoryModule } from './modules/category/category.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { resolve, join } from 'node:path'
+import { join } from 'node:path'
+import { ExaminationModule } from './modules/examination/examination.module'
+import { QuestionModule } from './modules/question/question.module'
+import { AnswerModule } from './modules/answer/answer.module'
 
 @Module({
   imports: [
@@ -40,7 +43,10 @@ import { resolve, join } from 'node:path'
     UserModule,
     AuthModule,
     CategoryModule,
-    StaticFieldModule
+    StaticFieldModule,
+    ExaminationModule,
+    QuestionModule,
+    AnswerModule
   ],
   controllers: [],
   providers: [

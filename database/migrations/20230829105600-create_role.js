@@ -16,7 +16,7 @@ module.exports = {
         unique: true,
         defaultValue: 'user',
         type: Sequelize.DataTypes.ENUM,
-        values: ['user', 'admin', 'owner']
+        values: ['user', 'admin', 'owner', 'publisher']
       },
       description: {
         defaultValue: null,

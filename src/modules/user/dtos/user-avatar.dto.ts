@@ -1,8 +1,9 @@
 import { IsInt } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
+import { ConstraintMessagesConstants } from '../../../core/constants'
 
 export class UserAvatarDto {
   @ApiProperty()
-  @IsInt()
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly staticFieldId: number
 }

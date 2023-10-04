@@ -1,13 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { IsInt, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 
-export class CreateCategoryDto {
+export class CreateExaminationDto {
   @ApiProperty()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
-  readonly name: string
+  readonly title: string
 
   @ApiProperty()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly description: string
+
+  @ApiProperty()
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
+  readonly certificateRoleId: string
 }

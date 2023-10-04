@@ -4,8 +4,7 @@ import {
   ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
-  ApiOperation,
-  getSchemaPath
+  ApiOperation
 } from '@nestjs/swagger'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants'

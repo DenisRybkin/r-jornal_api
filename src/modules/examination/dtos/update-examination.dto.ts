@@ -1,20 +1,17 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsInt, IsOptional, IsString } from 'class-validator'
+import { IsInt, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 
-export class ReadFilterDto {
+export class UpdateExaminationDto {
   @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
-  readonly id: number
-
-  @ApiPropertyOptional()
-  @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
-  readonly name: string
+  readonly title: string
 
   @ApiPropertyOptional()
-  @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly description: string
+
+  @ApiPropertyOptional()
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
+  readonly certificateRoleId: number
 }

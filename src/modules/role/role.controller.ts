@@ -13,9 +13,9 @@ import { Roles } from '../../core/interfaces/common'
 
 const BaseController = buildBaseControllerCRUD<Role>({
   privacySettings: {
-    createRequireRoles: [Roles.OWNER],
-    updateRequireRoles: [Roles.OWNER],
-    deleteRequireRoles: [Roles.OWNER]
+    createRequireRoles: [Roles.Owner],
+    updateRequireRoles: [Roles.Owner],
+    deleteRequireRoles: [Roles.Owner]
   },
   swagger: { model: Role, modelName: 'role' },
   filterDto: ReadRoleFilterDto,

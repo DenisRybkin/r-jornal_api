@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import {
   CreateCategoryDto,
-  ReadFilterDto,
+  ReadCategoryFilterDto,
   UpdateCategoryDto,
   UpdatePartiallyCategoryDto
 } from './dtos'
@@ -14,21 +14,24 @@ import { Roles } from '../../core/interfaces/common'
 const BaseController = buildBaseControllerCRUD<Category>({
   swagger: { model: Category, modelName: 'category' },
   privacySettings: {
-    deleteRequireRoles: [Roles.Admin, Roles.OWNER],
-    updateRequireRoles: [Roles.Admin, Roles.OWNER],
-    createRequireRoles: [Roles.Admin, Roles.OWNER]
+    getAllIsPublic: true,
+    getByIdIsPublic: true,
+    autocompleteIsPublic: true,
+    deleteRequireRoles: [Roles.Admin, Roles.Owner],
+    updateRequireRoles: [Roles.Admin, Roles.Owner],
+    createRequireRoles: [Roles.Admin, Roles.Owner]
   },
   updatePartiallyDto: UpdatePartiallyCategoryDto,
   updateDto: UpdateCategoryDto,
   createDto: CreateCategoryDto,
-  filterDto: ReadFilterDto
+  filterDto: ReadCategoryFilterDto
 })
 
 @ApiExtraModels(
   CreateCategoryDto,
   UpdateCategoryDto,
   UpdatePartiallyCategoryDto,
-  ReadFilterDto
+  ReadCategoryFilterDto
 )
 @ApiTags('Category')
 @Controller('category')

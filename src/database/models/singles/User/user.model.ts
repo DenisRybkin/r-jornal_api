@@ -103,7 +103,7 @@ export class User extends Model<User, CreateUserAttributes> {
   readonly userAvatar?: UserAvatar
 
   @ApiPropertyOptional({
-    description: 'category',
+    description: 'categories',
     type: UserCategory,
     isArray: true
   })
