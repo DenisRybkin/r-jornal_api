@@ -7,7 +7,7 @@ import {
   Table
 } from 'sequelize-typescript'
 import { CreateAnswerAttributes } from './answer.attributes'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Question } from '../Question/question.model'
 
 @Table({ tableName: 'Answer' })
@@ -36,12 +36,12 @@ export class Answer extends Model<Answer, CreateAnswerAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   readonly questionId: number
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => Question,
     description: 'question'
   })
   @BelongsTo(() => Question, 'questionId')
-  readonly question: Question
+  readonly question?: Question
 
   @ApiProperty({
     example: true,

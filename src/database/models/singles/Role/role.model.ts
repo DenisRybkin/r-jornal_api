@@ -17,7 +17,7 @@ export class Role extends Model<Role, CreateRoleAttributes> {
   @ApiProperty({
     example: 'admin',
     description: 'name of role',
-    type: typeof Roles
+    enum: Roles
   })
   @Column({
     type: DataType.ENUM({ values: Object.values(Roles) }),

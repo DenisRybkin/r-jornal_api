@@ -10,10 +10,19 @@ import { StaticFieldModule } from '../static-field/static-field.module'
 import { UserCategory } from '../../database/models/related/UserCategory/user-category.model'
 import { UserShortService } from './user-short.service'
 import { UserShortController } from './user-short.controller'
+import { UserAchievement } from '../../database/models/related/UserAchievement/user-achievement.model'
+import { Achievement } from '../../database/models/singles/Achievement/achievement.model'
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User, UserAvatar, UserCategory, UserCategory]),
+    SequelizeModule.forFeature([
+      User,
+      UserAvatar,
+      UserCategory,
+      UserCategory,
+      UserAchievement,
+      Achievement
+    ]),
     RoleModule,
     StaticFieldModule
   ],

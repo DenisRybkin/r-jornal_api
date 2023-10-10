@@ -25,7 +25,7 @@ import {
 import { UserService } from '../user/user.service'
 import {
   avatarInclude,
-  categoryInclude,
+  categoriesInclude,
   defaultAvatarInclude,
   roleInclude
 } from '../../database/includes/user'
@@ -77,7 +77,7 @@ export class AuthController {
         roleInclude,
         avatarInclude,
         defaultAvatarInclude,
-        categoryInclude
+        categoriesInclude
       ])
     }
   }
@@ -118,7 +118,7 @@ export class AuthController {
         roleInclude,
         avatarInclude,
         defaultAvatarInclude,
-        categoryInclude
+        categoriesInclude
       ])
     }
   }

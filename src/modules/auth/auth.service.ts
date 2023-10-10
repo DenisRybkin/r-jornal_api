@@ -15,7 +15,7 @@ import { User } from '../../database/models/singles/User/user.model'
 import { CreateUserDto } from '../user/dtos'
 import {
   avatarInclude,
-  categoryInclude,
+  categoriesInclude,
   defaultAvatarInclude,
   roleInclude
 } from '../../database/includes/user'
@@ -61,7 +61,7 @@ export class AuthService {
         ErrorMessagesConstants.Unauthorized,
         'Refreshing by token data failed'
       ),
-      [roleInclude, avatarInclude, defaultAvatarInclude, categoryInclude]
+      [roleInclude, avatarInclude, defaultAvatarInclude, categoriesInclude]
     )
 
     return {

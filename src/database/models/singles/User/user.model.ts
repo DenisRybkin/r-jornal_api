@@ -15,6 +15,7 @@ import { InternalConfigurationConstants } from '../../../../core/constants'
 import { UserAvatar } from '../../related/UserAvatar/user-avatar.model'
 import { StaticField } from '../StaticField/static-field.model'
 import { UserCategory } from '../../related/UserCategory/user-category.model'
+import { UserAchievement } from '../../related/UserAchievement/user-achievement.model'
 
 @Table({ tableName: 'User' })
 export class User extends Model<User, CreateUserAttributes> {
@@ -109,4 +110,12 @@ export class User extends Model<User, CreateUserAttributes> {
   })
   @HasMany(() => UserCategory, 'userId')
   readonly userCategory?: UserCategory[]
+
+  @ApiPropertyOptional({
+    description: 'user achievements',
+    type: UserAchievement,
+    isArray: true
+  })
+  @HasMany(() => UserAchievement, 'userId')
+  readonly userAchievements?: UserAchievement[]
 }

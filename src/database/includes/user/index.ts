@@ -5,6 +5,8 @@ import { StaticField } from '../../models/singles/StaticField/static-field.model
 import { UserCategory } from '../../models/related/UserCategory/user-category.model'
 import { Category } from '../../models/singles/Category/category.model'
 import { avatarInclude as categoryAvatarInclude } from '../category'
+import { UserAchievement } from '../../models/related/UserAchievement/user-achievement.model'
+import { Achievement } from '../../models/singles/Achievement/achievement.model'
 
 export const roleInclude: Includeable = {
   model: Role,
@@ -21,7 +23,7 @@ export const defaultAvatarInclude: Includeable = {
   as: 'defaultAvatar'
 }
 
-export const categoryInclude: Includeable = {
+export const categoriesInclude: Includeable = {
   model: UserCategory,
   as: 'userCategory',
   include: [
@@ -29,6 +31,17 @@ export const categoryInclude: Includeable = {
       model: Category,
       as: 'category',
       include: [categoryAvatarInclude]
+    }
+  ]
+}
+
+export const achievementsInclude: Includeable = {
+  model: UserAchievement,
+  as: 'userAchievements',
+  include: [
+    {
+      model: Achievement,
+      as: 'achievement'
     }
   ]
 }

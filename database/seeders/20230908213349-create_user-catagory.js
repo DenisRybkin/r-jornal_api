@@ -53,6 +53,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('UserCategory', null)
+    await queryInterface.bulkDelete('UserCategory', null)
   }
 }
