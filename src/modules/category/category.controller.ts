@@ -5,7 +5,7 @@ import {
   ReadCategoryFilterDto,
   UpdateCategoryDto,
   UpdatePartiallyCategoryDto
-} from './dtos'
+} from './dto'
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
 import { Category } from '../../database/models/singles/Category/category.model'
 import { CategoryService } from './category.service'

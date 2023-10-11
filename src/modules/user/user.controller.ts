@@ -5,7 +5,7 @@ import {
   UpdateUserDto,
   UpdatePartiallyUserDto,
   CreateUserDto
-} from './dtos'
+} from './dto'
 import { UserService } from './user.service'
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common'
 import {
@@ -17,7 +17,7 @@ import {
   ApiTags,
   getSchemaPath
 } from '@nestjs/swagger'
-import { UserAvatarDto } from './dtos'
+import { UserAvatarDto } from './dto'
 import { UserAvatarService } from './user-avatar.service'
 import { AsyncContext } from '../../core/modules/async-context/async-context'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'

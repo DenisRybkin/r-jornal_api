@@ -3,7 +3,10 @@ import { CreateAchievementAttributes } from './achievement.attributes'
 import { ApiProperty } from '@nestjs/swagger'
 
 @Table({ tableName: 'Achievement' })
-export class Achievement extends Model<Model, CreateAchievementAttributes> {
+export class Achievement extends Model<
+  Achievement,
+  CreateAchievementAttributes
+> {
   @ApiProperty({ example: 1, description: 'id of achievement' })
   @Column({
     type: DataType.INTEGER,

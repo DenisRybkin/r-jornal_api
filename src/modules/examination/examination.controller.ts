@@ -6,7 +6,7 @@ import {
   ReadExaminationFilterDto,
   UpdateExaminationDto,
   UpdatePartiallyExaminationDto
-} from './dtos'
+} from './dto'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { Controller } from '@nestjs/common'
 import { ExaminationService } from './examination.service'

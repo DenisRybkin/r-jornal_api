@@ -7,7 +7,7 @@ import {
   ReadRoleFilterDto,
   UpdatePartiallyRoleDto,
   UpdateRoleDto
-} from './dtos'
+} from './dto'
 import { RoleService } from './role.service'
 import { Roles } from '../../core/interfaces/common'
 

@@ -1,6 +1,6 @@
 import { buildBaseControllerReadShort } from '../../core/bases/controllers'
 import { User } from '../../database/models/singles/User/user.model'
-import { ReadUserFilterDto, UserShortDto } from './dtos'
+import { ReadUserFilterDto, UserShortDto } from './dto'
 import { UserShortService } from './user-short.service'
 import { Controller } from '@nestjs/common'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'

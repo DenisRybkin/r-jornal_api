@@ -6,7 +6,7 @@ import {
   CreateQuestionDto,
   UpdatePartiallyQuestionDto,
   ReadQuestionFilterDto
-} from './dtos'
+} from './dto'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { Controller } from '@nestjs/common'
 import { QuestionService } from './question.service'

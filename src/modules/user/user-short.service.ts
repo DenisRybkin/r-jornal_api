@@ -1,6 +1,6 @@
 import { BaseServiceReadShort } from '../../core/bases/services'
 import { User } from '../../database/models/singles/User/user.model'
-import { UserShortDto } from './dtos'
+import { UserShortDto } from './dto'
 import { InjectModel } from '@nestjs/sequelize'
 import { user2userShortMapper } from './utils/user2user-short.mapper'
 import { Injectable } from '@nestjs/common'

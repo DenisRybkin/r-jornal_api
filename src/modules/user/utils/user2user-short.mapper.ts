@@ -1,5 +1,5 @@
 import { User } from '../../../database/models/singles/User/user.model'
-import { UserShortDto } from '../dtos'
+import { UserShortDto } from '../dto'
 
 export const user2userShortMapper = (user: User): UserShortDto => ({
   id: user.id,

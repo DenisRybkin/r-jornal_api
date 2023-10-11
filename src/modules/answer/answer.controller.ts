@@ -3,7 +3,7 @@ import {
   ReadAnswerFilterDto,
   CreateAnswerDto,
   UpdatePartiallyAnswerDto
-} from './dtos'
+} from './dto'
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
 import { Answer } from '../../database/models/singles/Answer/answer.model'
 import { Roles } from '../../core/interfaces/common'

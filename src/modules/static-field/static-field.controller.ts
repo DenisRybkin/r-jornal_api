@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { buildBaseControllerRead } from '../../core/bases/controllers'
 import { StaticField } from '../../database/models/singles/StaticField/static-field.model'
-import { ImageUploadDto, ReadStaticFieldFilterDto } from './dtos'
+import { ImageUploadDto, ReadStaticFieldFilterDto } from './dto'
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -30,7 +30,7 @@ import { ImageProcessPipe, UploadProcessed } from './pipes/image-process.pipe'
 import { Get } from '@nestjs/common/decorators'
 import { PagingType } from '../../core/interfaces/common/paging'
 import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
-import { EditorImageDto } from './dtos/editor-image.dto'
+import { EditorImageDto } from './dto/editor-image.dto'
 import { CloudFoldersConstants } from './S3/cloud-folders.constants'
 
 const baseController = buildBaseControllerRead<StaticField>({

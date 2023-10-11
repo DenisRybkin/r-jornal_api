@@ -3,7 +3,7 @@ import { UserService } from '../user/user.service'
 import { RoleService } from '../role/role.service'
 import { JwtService } from '@nestjs/jwt'
 import { ApiConfigService } from '../../core/modules/shared/services/api-config.service'
-import { LoginDto } from './dtos/login.dto'
+import { LoginDto } from './dto/login.dto'
 import { UnauthorizedException } from '../../core/exceptions/build-in'
 import {
   ErrorMessagesConstants,
@@ -12,7 +12,7 @@ import {
 import bcrypt from 'bcryptjs'
 import { TokenPayload } from './types'
 import { User } from '../../database/models/singles/User/user.model'
-import { CreateUserDto } from '../user/dtos'
+import { CreateUserDto } from '../user/dto'
 import {
   avatarInclude,
   categoriesInclude,

@@ -21,6 +21,7 @@ import { join } from 'node:path'
 import { ExaminationModule } from './modules/examination/examination.module'
 import { QuestionModule } from './modules/question/question.module'
 import { AnswerModule } from './modules/answer/answer.module'
+import { AchievementModule } from './modules/achievement/achievement.module'
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { AnswerModule } from './modules/answer/answer.module'
     StaticFieldModule,
     ExaminationModule,
     QuestionModule,
-    AnswerModule
+    AnswerModule,
+    AchievementModule
   ],
   controllers: [],
   providers: [
