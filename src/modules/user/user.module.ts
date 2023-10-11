@@ -12,6 +12,10 @@ import { UserShortService } from './user-short.service'
 import { UserShortController } from './user-short.controller'
 import { UserAchievement } from '../../database/models/related/UserAchievement/user-achievement.model'
 import { Achievement } from '../../database/models/singles/Achievement/achievement.model'
+import { AchievementsHelper } from '../achievement/utils/achievements.helper'
+import { UserAchievementService } from './user-achievement.service'
+import { UserCategoryService } from './user-category.service'
+import { CategoryModule } from '../category/category.module'
 
 @Module({
   imports: [
@@ -24,10 +28,24 @@ import { Achievement } from '../../database/models/singles/Achievement/achieveme
       Achievement
     ]),
     RoleModule,
-    StaticFieldModule
+    StaticFieldModule,
+    CategoryModule
   ],
   controllers: [UserController, UserShortController],
-  providers: [UserService, UserAvatarService, UserShortService],
-  exports: [UserService, UserAvatarService]
+  providers: [
+    UserService,
+    UserAvatarService,
+    UserCategoryService,
+    UserShortService,
+    UserAchievementService,
+    AchievementsHelper
+  ],
+  exports: [
+    UserService,
+    UserShortService,
+    UserCategoryService,
+    UserAvatarService,
+    UserAchievementService
+  ]
 })
 export class UserModule {}

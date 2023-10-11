@@ -21,22 +21,16 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     return this.config.modelRepository.create(model)
   }
 
-  public async update(id: number, model: T) {
+  public async update(
+    idOrWhereOpts: number | Partial<T>,
+    model: T | Partial<T>
+  ) {
     return (
       await this.config.modelRepository.update<ORMModelWithId>(model, {
         where: {
-          id
-        },
-        returning: true
-      })
-    )[1] as unknown as T
-  }
-
-  public async updatePartially(id: number, model: Partial<T>) {
-    return (
-      await this.config.modelRepository.update<ORMModelWithId>(model, {
-        where: {
-          id
+          ...(typeof idOrWhereOpts == 'number'
+            ? { id: idOrWhereOpts }
+            : idOrWhereOpts)
         },
         returning: true
       })

@@ -35,13 +35,13 @@ export const categoriesInclude: Includeable = {
   ]
 }
 
+export const achievementInclude: Includeable = {
+  model: Achievement,
+  as: 'achievement'
+}
+
 export const achievementsInclude: Includeable = {
   model: UserAchievement,
   as: 'userAchievements',
-  include: [
-    {
-      model: Achievement,
-      as: 'achievement'
-    }
-  ]
+  include: [achievementInclude]
 }

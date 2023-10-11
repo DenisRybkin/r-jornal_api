@@ -1,4 +1,4 @@
-import { WhereOptions } from 'sequelize'
+import { Includeable, WhereOptions } from 'sequelize'
 import { Model } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
@@ -11,6 +11,7 @@ import {
 } from '../../interfaces/rest/services'
 import { Nullable } from '../../types'
 import { defaultPagingOptions } from '../utils'
+import { BaseException } from '../../exceptions/base.exception'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -21,7 +22,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getAll(
     pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions<T>
+    filterOpts: Nullable<WhereOptions<T>> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
@@ -29,7 +30,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         [pagingOpts.orderBy, pagingOpts.order]
       ]) as SequelizeOrder,
       where: Object.assign(
-        filterOpts,
+        filterOpts ?? {},
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
       ),
@@ -40,7 +41,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getById(
     id: number,
-    rejectOnEmpty: Nullable<Error> = null
+    rejectOnEmpty: Nullable<BaseException> = null
   ): Promise<T> {
     return await this.config.modelRepository.findByPk(id, {
       include: this.config.includes,
@@ -55,7 +56,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async autocomplete(
     pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions
+    filterOpts: WhereOptions<T>
   ): Promise<IPaging<IAutocomplete>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
@@ -75,5 +76,22 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       rows as unknown as IAutocomplete[],
       pagingOpts
     )
+  }
+
+  protected async getOne(
+    whereOpts: WhereOptions<T>,
+    includes: Includeable[] | undefined = this.config.includes,
+    rejectOnEmpty: Nullable<BaseException> = null
+  ) {
+    return await this.config.modelRepository.findOne({
+      where: whereOpts,
+      include: includes,
+      rejectOnEmpty:
+        rejectOnEmpty ??
+        new NotFoundException(
+          ErrorMessagesConstants.NotFound,
+          `No such ${this.config.modelRepository.name}`
+        )
+    })
   }
 }

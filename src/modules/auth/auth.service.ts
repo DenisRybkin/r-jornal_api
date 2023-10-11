@@ -41,7 +41,7 @@ export class AuthService {
       InternalConfigurationConstants.BcryptSalt
     )
 
-    const user = await this.userService.create({
+    const user = await this.userService.createFull({
       ...dto,
       password: hashedPassword
     })

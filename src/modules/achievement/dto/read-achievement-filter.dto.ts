@@ -1,24 +1,24 @@
 import { IsInt, IsOptional, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 
 export class ReadAchievementFilterDto {
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly id?: number
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly name?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly requiredPoints?: number
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly level: number
 }

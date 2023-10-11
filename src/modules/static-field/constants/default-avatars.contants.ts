@@ -1,3 +1,3 @@
-export const defaultAvatarIds = Array.from(Array(18).keys()).map(
-  (_, index) => index + 2
+export const defaultAvatarNames = Array.from(Array(18).keys()).map(
+  (_, index) => index + 1 + '.svg'
 )

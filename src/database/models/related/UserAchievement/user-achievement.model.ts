@@ -49,7 +49,7 @@ export class UserAchievement extends Model<
   readonly achievementId: number
 
   @BelongsTo(() => Achievement, 'achievementId')
-  readonly achievement: Achievement
+  readonly achievement?: Achievement
 
   @ApiProperty({
     example: 1,

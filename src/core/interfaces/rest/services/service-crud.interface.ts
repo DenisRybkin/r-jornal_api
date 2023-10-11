@@ -14,7 +14,6 @@ export abstract class BaseServiceCRUD<
   abstract create(
     model: MakeNullishOptional<T['_creationAttributes']>
   ): Promise<T | null>
-  abstract update(id: number, model: T): Promise<T | null>
-  abstract updatePartially(id: number, model: Partial<T>): Promise<T | null>
+  abstract update(id: number, model: T | Partial<T>): Promise<T | null>
   abstract delete(id: number): Promise<number>
 }

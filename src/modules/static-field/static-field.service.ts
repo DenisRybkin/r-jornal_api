@@ -9,7 +9,7 @@ import {
   NotFoundException
 } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
-import { defaultAvatarIds } from './constants/default-avatars.contants'
+import { defaultAvatarNames } from './constants/default-avatars.contants'
 import { defaultPagingOptions } from '../../core/bases/utils'
 import EasyYandexS3 from 'easy-yandex-s3'
 import { S3BucketFactory } from './S3/S3-bucket.factory'
@@ -41,7 +41,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
     return this.getAll(
       { ...defaultPagingOptions, pageSize: 19 },
       {
-        id: defaultAvatarIds
+        name: defaultAvatarNames
       }
     )
   }

@@ -115,7 +115,7 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       @Body() dto: UpdatePartially
     ) {
       if ('id' in dto) delete dto.id
-      return this.service.updatePartially(id, dto as Partial<T>)
+      return this.service.update(id, dto as Partial<T>)
     }
 
     @ApiOperation({ summary: `Delete ${config.swagger.modelName} by id` })

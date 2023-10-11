@@ -3,4 +3,5 @@ export interface CreateUserAttributes {
   readonly name: string
   readonly email: string
   readonly password: string
+  readonly defaultAvatarId: number
 }
