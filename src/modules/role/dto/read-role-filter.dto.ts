@@ -2,7 +2,6 @@ import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsEnum, IsOptional, IsString, IsInt } from 'class-validator'
 import { ConstraintMessagesConstants } from 'src/core/constants'
 import { Roles } from 'src/core/interfaces/common'
-import { Expose } from 'class-transformer'
 
 export class ReadRoleFilterDto {
   @ApiPropertyOptional()
