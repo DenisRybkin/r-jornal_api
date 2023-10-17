@@ -16,6 +16,8 @@ import { UserAvatar } from '../../related/UserAvatar/user-avatar.model'
 import { StaticField } from '../StaticField/static-field.model'
 import { UserCategory } from '../../related/UserCategory/user-category.model'
 import { UserAchievement } from '../../related/UserAchievement/user-achievement.model'
+import { UserFollowing } from '../../related/UserFollowing/user-following.model'
+import { UserFollower } from '../../related/UserFollower/user-follower.model'
 
 @Table({ tableName: 'User' })
 export class User extends Model<User, CreateUserAttributes> {
@@ -118,4 +120,20 @@ export class User extends Model<User, CreateUserAttributes> {
   })
   @HasMany(() => UserAchievement, 'userId')
   readonly userAchievements?: UserAchievement[]
+
+  @ApiPropertyOptional({
+    description: 'user followings',
+    type: UserFollowing,
+    isArray: true
+  })
+  @HasMany(() => UserFollowing, 'userId')
+  readonly userFollowings?: UserFollowing[]
+
+  @ApiPropertyOptional({
+    description: 'user followers',
+    type: UserFollower,
+    isArray: true
+  })
+  @HasMany(() => UserFollower, 'userId')
+  readonly userFollowers?: UserFollower[]
 }

@@ -6,6 +6,11 @@ import { Controller } from '@nestjs/common'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 
 const BaseController = buildBaseControllerReadShort<User, UserShortDto>({
+  privacySettings: {
+    autocompleteIsPublic: true,
+    getShortAllIsPublic: true,
+    getShortByIdIsPublic: true
+  },
   filterDto: ReadUserFilterDto,
   swagger: { modelName: 'userShort', model: User, shortModel: UserShortDto }
 })

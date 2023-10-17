@@ -30,7 +30,7 @@ export class UserFollower extends Model<
   readonly userId: number
 
   @ApiPropertyOptional({
-    type: User,
+    type: () => User,
     description: 'author'
   })
   @BelongsTo(() => User, 'userId')
@@ -42,7 +42,7 @@ export class UserFollower extends Model<
   readonly followerUserId: number
 
   @ApiPropertyOptional({
-    type: User,
+    type: () => User,
     description: 'follower'
   })
   @BelongsTo(() => User, 'followerUserId')

@@ -16,6 +16,8 @@ import { AchievementsHelper } from '../achievement/utils/achievements.helper'
 import { UserAchievementService } from './user-achievement.service'
 import { UserCategoryService } from './user-category.service'
 import { CategoryModule } from '../category/category.module'
+import { UserFollowing } from '../../database/models/related/UserFollowing/user-following.model'
+import { UserFollower } from '../../database/models/related/UserFollower/user-follower.model'
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { CategoryModule } from '../category/category.module'
       UserCategory,
       UserCategory,
       UserAchievement,
-      Achievement
+      Achievement,
+      UserFollowing,
+      UserFollower
     ]),
     RoleModule,
     StaticFieldModule,

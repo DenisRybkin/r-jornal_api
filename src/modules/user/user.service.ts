@@ -7,7 +7,9 @@ import {
   avatarInclude,
   roleInclude,
   categoriesInclude,
-  defaultAvatarInclude
+  defaultAvatarInclude,
+  followingsInclude,
+  followersInclude
 } from '../../database/includes/user'
 import { Nullable } from '../../core/types'
 import { Includeable } from 'sequelize'
@@ -34,11 +36,13 @@ export class UserService extends BaseServiceCRUD<User> {
       autocompleteProperty: 'nickname',
       modelRepository: userRepository,
       includes: [
-        roleInclude,
-        avatarInclude,
-        defaultAvatarInclude,
-        categoriesInclude,
-        achievementsInclude
+        // roleInclude,
+        // avatarInclude,
+        // defaultAvatarInclude,
+        // categoriesInclude,
+        // achievementsInclude,
+        followingsInclude,
+        followersInclude
       ]
     })
   }

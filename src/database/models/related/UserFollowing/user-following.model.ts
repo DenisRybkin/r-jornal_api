@@ -10,7 +10,7 @@ import { CreateUserFollowingAttributes } from './user-following.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { User } from '../../singles/User/user.model'
 
-@Table({ tableName: 'UserFollower' })
+@Table({ tableName: 'UserFollowing' })
 export class UserFollowing extends Model<
   UserFollowing,
   CreateUserFollowingAttributes
@@ -30,7 +30,7 @@ export class UserFollowing extends Model<
   readonly userId: number
 
   @ApiPropertyOptional({
-    type: User,
+    type: () => User,
     description: 'author'
   })
   @BelongsTo(() => User, 'userId')
@@ -42,9 +42,9 @@ export class UserFollowing extends Model<
   readonly followingUserId: number
 
   @ApiPropertyOptional({
-    type: User,
+    type: () => User,
     description: 'following'
   })
-  @BelongsTo(() => User, 'followerUserId')
+  @BelongsTo(() => User, 'followingUserId')
   readonly following?: User
 }
