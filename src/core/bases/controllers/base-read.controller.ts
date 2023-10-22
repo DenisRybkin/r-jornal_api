@@ -1,17 +1,8 @@
 import { Get, Param, ParseIntPipe, Req } from '@nestjs/common'
-import {
-  ApiBadRequestResponse,
-  ApiExtraModels,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiQuery,
-  getSchemaPath
-} from '@nestjs/swagger'
+import { ApiExtraModels } from '@nestjs/swagger'
 import { Request } from 'express'
 import { Model } from 'sequelize-typescript'
 import { ConstraintMessagesConstants } from 'src/core/constants/constraint-messages.constants'
-import { IsPublic, RequiredRoles } from 'src/core/decorators'
 import { PipeExceptionFactory } from 'src/core/factories/pipe-exception.factory'
 import {
   AutoCompleteType,
@@ -28,6 +19,11 @@ import {
   transformQueryFilter,
   transformReadFilter
 } from '../utils'
+import {
+  AutocompleteEndpoint,
+  GetAllEndpoint,
+  GetByIdEndpoint
+} from '../decorators'
 
 export function buildBaseControllerRead<T extends Model<T, any>>(
   config: IConfigControllerRead<T>
@@ -40,41 +36,17 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     ProcessedError404Type
   )
   abstract class ControllerRead extends BaseControllerRead<T> {
-    @ApiOperation({ summary: `Get all ${config.swagger.modelName} models` })
-    @ApiOkResponse({
-      status: 200,
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(PagingType) },
-          {
-            properties: {
-              items: {
-                type: 'array',
-                items: { $ref: getSchemaPath(config.swagger.model) }
-              },
-              pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
-            }
-          }
-        ]
-      }
-    })
-    @ApiBadRequestResponse({
-      status: 400,
-      type: ProcessedError400Type
-    })
-    @ApiQuery({
-      name: 'filters',
-      required: false,
+    protected constructor(protected readonly service: BaseServiceRead<T>) {
+      super(service)
+    }
 
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(config.filterDto) },
-          { $ref: getSchemaPath(PagingOptionsType) }
-        ]
-      }
+    @GetAllEndpoint<T>({
+      modelName: config.swagger.modelName,
+      model: config.swagger.model,
+      filterDto: config.filterDto,
+      requiredRoles: config.privacySettings?.getAllRequireRoles,
+      isPublic: config.privacySettings?.getAllIsPublic
     })
-    @IsPublic(config.privacySettings?.getAllIsPublic ?? false)
-    @RequiredRoles(...(config.privacySettings?.getAllRequireRoles ?? []))
     @Get()
     public override async getAll(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
@@ -85,34 +57,11 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       return this.service.getAll(query.pagingOptions, filterOpts)
     }
 
-    protected constructor(protected readonly service: BaseServiceRead<T>) {
-      super(service)
-    }
-
-    @ApiOperation({ summary: 'Get all models in autocomplete format' })
-    @ApiOkResponse({
-      status: 200,
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(PagingType) },
-          {
-            properties: {
-              items: {
-                type: 'array',
-                items: { $ref: getSchemaPath(AutoCompleteType) }
-              },
-              pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
-            }
-          }
-        ]
-      }
+    @AutocompleteEndpoint({
+      filterDto: config.filterDto,
+      requiredRoles: config.privacySettings?.autocompleteRequireRoles,
+      isPublic: config.privacySettings?.autocompleteIsPublic
     })
-    @ApiBadRequestResponse({
-      status: 400,
-      type: ProcessedError400Type
-    })
-    @IsPublic(config.privacySettings?.autocompleteIsPublic ?? false)
-    @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
@@ -123,17 +72,12 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       return this.service.autocomplete(query.pagingOptions, filterOpts)
     }
 
-    @ApiOperation({ summary: 'Get model by id' })
-    @ApiOkResponse({
-      status: 200,
-      type: config.swagger.model
+    @GetByIdEndpoint<T>({
+      model: config.swagger.model,
+      isPublic: config.privacySettings?.getByIdIsPublic,
+      requiredRoles: config.privacySettings?.getByIdRequireRoles,
+      modelName: config.swagger.modelName
     })
-    @ApiNotFoundResponse({
-      status: 404,
-      type: ProcessedError404Type
-    })
-    @IsPublic(config.privacySettings?.getByIdIsPublic ?? false)
-    @RequiredRoles(...(config.privacySettings?.getByIdRequireRoles ?? []))
     @Get('/:id')
     public override async getById(
       @Param(

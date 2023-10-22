@@ -36,11 +36,11 @@ export class UserService extends BaseServiceCRUD<User> {
       autocompleteProperty: 'nickname',
       modelRepository: userRepository,
       includes: [
-        // roleInclude,
-        // avatarInclude,
-        // defaultAvatarInclude,
-        // categoriesInclude,
-        // achievementsInclude,
+        roleInclude,
+        avatarInclude,
+        defaultAvatarInclude,
+        categoriesInclude,
+        achievementsInclude,
         followingsInclude,
         followersInclude
       ]

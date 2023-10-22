@@ -9,6 +9,7 @@ import {
 import { UserService } from './user.service'
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiExtraModels,
   ApiInternalServerErrorResponse,
@@ -28,6 +29,9 @@ import {
   ProcessedError500Type
 } from '../../core/interfaces/common/processed-error.type'
 import { Get } from '@nestjs/common/decorators'
+import { IsPublic } from '../../core/decorators'
+import { PagingType } from '../../core/interfaces/common/paging'
+import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
 
 const BaseController = buildBaseControllerCRUD<User>({
   privacySettings: {
@@ -82,6 +86,8 @@ export class UserController extends BaseController {
     const { id: userId } = this.asyncContext.get('user')
     return this.userService.getById(userId)
   }
+
+  async getFollowersByUserId() {}
 
   @ApiOperation({ summary: `Create avatar of user` })
   @ApiOkResponse({
