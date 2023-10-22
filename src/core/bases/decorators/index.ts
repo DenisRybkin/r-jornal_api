@@ -1,3 +1,7 @@
 export { GetByIdEndpoint } from './get-by-id-endpoint.decorator'
 export { GetAllEndpoint } from './get-all-endpoint.decorator'
 export { AutocompleteEndpoint } from './autocomplete-endpoint.decorator'
+export { CreateEndpoint } from './create-endpoint.decorator'
+export { UpdateEndpoint } from './update-endpoint.decorator'
+export { UpdatePartiallyEndpoint } from './update-partially-endpoint.decorator'
+export { DeleteEndpoint } from './delete-endpoint.decorator'

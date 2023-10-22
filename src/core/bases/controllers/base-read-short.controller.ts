@@ -32,6 +32,7 @@ import {
   transformQueryFilter,
   transformReadFilter
 } from '../utils'
+import { GetAllEndpoint, GetByIdEndpoint } from '../decorators'
 
 export function buildBaseControllerReadShort<
   T extends Model<T, any>,
@@ -54,35 +55,14 @@ export function buildBaseControllerReadShort<
       super(service)
     }
 
-    @ApiOperation({
-      summary: `Get all ${config.swagger.modelName} short models`
+    @GetAllEndpoint<T>({
+      modelName: config.swagger.modelName,
+      isShort: true,
+      isPublic: config.privacySettings?.getShortAllIsPublic,
+      filterDto: config.filterDto,
+      model: config.swagger.shortModel,
+      requiredRoles: config.privacySettings?.getAllShortRequireRoles
     })
-    @ApiOkResponse({
-      status: 200,
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(PagingType) },
-          {
-            properties: {
-              items: {
-                type: 'array',
-                items: { $ref: getSchemaPath(config.swagger.shortModel) }
-              },
-              pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
-            }
-          }
-        ]
-      }
-    })
-    @ApiBadRequestResponse({
-      status: 400,
-      schema: {
-        $ref: getSchemaPath(ProcessedError400Type)
-      }
-    })
-    @IsPublic(config.privacySettings?.getShortAllIsPublic ?? false)
-    @RequiredRoles(...(config.privacySettings?.getAllShortRequireRoles ?? []))
-    @ApiQuery({ required: false, type: getSchemaPath(config.filterDto) })
     @Get()
     public override async getAll(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
@@ -91,44 +71,6 @@ export function buildBaseControllerReadShort<
         config.filterDto
       )
       return this.service.getAllShort(query.pagingOptions, filterOpts)
-    }
-
-    @ApiOperation({ summary: 'Get all models in autocomplete format' })
-    @ApiOkResponse({
-      status: 200,
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(PagingType) },
-          {
-            properties: {
-              items: {
-                type: 'array',
-                items: { $ref: getSchemaPath(AutoCompleteType) }
-              },
-              pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
-            }
-          }
-        ]
-      }
-    })
-    @ApiBadRequestResponse({
-      status: 400,
-      schema: {
-        $ref: getSchemaPath(ProcessedError400Type)
-      }
-    })
-    @IsPublic(config.privacySettings?.autocompleteIsPublic ?? false)
-    @RequiredRoles(
-      ...(config.privacySettings?.autocompleteShortRequireRoles ?? [])
-    )
-    @Get('/autocomplete')
-    public override async autocomplete(@Req() req: Request) {
-      const query = transformPagingOptions(req.query, config.swagger.model)
-      const filterOpts = await transformReadFilter(
-        transformQueryFilter<T>(query.other, config.swagger.model),
-        config.filterDto
-      )
-      return this.service.autocomplete(query.pagingOptions, filterOpts)
     }
 
     @ApiOperation({ summary: 'Get model by id' })
@@ -146,6 +88,12 @@ export function buildBaseControllerReadShort<
     })
     @IsPublic(config.privacySettings?.getShortByIdIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdShortRequireRoles ?? []))
+    @GetByIdEndpoint({
+      model: config.swagger.shortModel,
+      requiredRoles: config.privacySettings?.getByIdShortRequireRoles,
+      modelName: config.swagger.modelName,
+      isPublic: config.privacySettings?.getShortByIdIsPublic
+    })
     @Get('/:id')
     public override async getById(
       @Param(

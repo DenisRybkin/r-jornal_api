@@ -31,7 +31,7 @@ export interface IConfigControllerCRUD<M extends Model<M, any>>
 export abstract class BaseControllerCRUD<
   T extends Model<T, any>
 > extends BaseControllerRead<T> {
-  constructor(protected readonly service: BaseServiceCRUD<T>) {
+  protected constructor(protected readonly service: BaseServiceCRUD<T>) {
     super(service)
   }
   abstract create(dto: T): Promise<T | null>
