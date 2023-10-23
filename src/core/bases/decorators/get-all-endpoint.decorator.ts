@@ -19,7 +19,7 @@ import { IsPublic, RequiredRoles } from '../../decorators'
 interface IGetAllEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
   isShort?: boolean
-  modelName: string
+  modelName?: string
   model: Repository<M> | ClassConstructor<ModelWithId>
   filterDto?: ClassConstructor<ModelWithId>
 }
@@ -29,7 +29,9 @@ export const GetAllEndpoint = <M extends Model<M, any>>(
 ) =>
   applyDecorators(
     ApiOperation({
-      summary: `Get all ${config.modelName} ${config.isShort && 'short'} models`
+      summary:
+        config.operationName ??
+        `Get all ${config.modelName} ${config.isShort && 'short'} models`
     }),
     ApiOkResponse({
       status: 200,

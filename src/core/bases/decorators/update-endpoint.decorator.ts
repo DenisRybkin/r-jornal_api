@@ -28,7 +28,9 @@ export const UpdateEndpoint = <M extends Model<M, any>>(
   config: IUpdateEndpointConfig<M>
 ) =>
   applyDecorators(
-    ApiOperation({ summary: `Full update ${config.modelName}` }),
+    ApiOperation({
+      summary: config.operationName ?? `Full update ${config.modelName}`
+    }),
     ApiOkResponse({ status: 200, type: config.model }),
     ApiInternalServerErrorResponse({
       status: 500,

@@ -18,6 +18,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async create(model: MakeNullishOptional<T['_creationAttributes']>) {
+    console.log('model')
     return this.config.modelRepository.create(model)
   }
 
@@ -37,9 +38,13 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     )[1] as unknown as T
   }
 
-  public async delete(id: number): Promise<number> {
+  public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {
     return this.config.modelRepository.destroy<ORMModelWithId>({
-      where: { id }
+      where: {
+        ...(typeof idOrWhereOpts == 'number'
+          ? { id: idOrWhereOpts }
+          : idOrWhereOpts)
+      }
     })
   }
 }

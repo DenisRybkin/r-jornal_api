@@ -18,6 +18,8 @@ import { UserCategoryService } from './user-category.service'
 import { CategoryModule } from '../category/category.module'
 import { UserFollowing } from '../../database/models/related/UserFollowing/user-following.model'
 import { UserFollower } from '../../database/models/related/UserFollower/user-follower.model'
+import { UserFollowingService } from './user-following.service'
+import { UserFollowerService } from './user-follower.service'
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { UserFollower } from '../../database/models/related/UserFollower/user-fo
     UserCategoryService,
     UserShortService,
     UserAchievementService,
+    UserFollowingService,
+    UserFollowerService,
     AchievementsHelper
   ],
   exports: [

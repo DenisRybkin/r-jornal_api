@@ -10,7 +10,7 @@ import { CreateAnswerAttributes } from './answer.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Question } from '../Question/question.model'
 
-@Table({ tableName: 'Answer' })
+@Table({ tableName: 'ExaminationAnswer' })
 export class Answer extends Model<Answer, CreateAnswerAttributes> {
   @ApiProperty({ example: 1, description: 'id of answer' })
   @Column({

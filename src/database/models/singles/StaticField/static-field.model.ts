@@ -1,6 +1,7 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript'
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript'
 import { CreateStaticFieldAttributes } from './static-field.attributes'
 import { ApiProperty } from '@nestjs/swagger'
+import { User } from '../User/user.model'
 
 @Table({
   tableName: 'StaticField'
@@ -57,4 +58,7 @@ export class StaticField extends Model<
     allowNull: false
   })
   readonly url: string
+
+  @HasMany(() => User, 'defaultAvatarId')
+  readonly user?: User[]
 }

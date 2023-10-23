@@ -10,7 +10,6 @@ import { Achievement } from '../../models/singles/Achievement/achievement.model'
 import { UserFollowing } from '../../models/related/UserFollowing/user-following.model'
 import { User } from '../../models/singles/User/user.model'
 import { UserFollower } from '../../models/related/UserFollower/user-follower.model'
-import { Model } from 'sequelize-typescript'
 
 export const roleInclude: Includeable = {
   model: Role,
@@ -50,27 +49,36 @@ export const achievementsInclude: Includeable = {
   include: [achievementInclude]
 }
 
+export const followingInclude: Includeable = {
+  model: User,
+  as: 'following'
+}
+
+export const followingWithAvatar: Includeable = {
+  model: User,
+  as: 'following',
+  include: [defaultAvatarInclude, avatarInclude]
+}
+
 export const followingsInclude: Includeable = {
   model: UserFollowing,
   as: 'userFollowings',
-  //foreignKey: 'followingUserId',
-  include: [
-    {
-      model: User,
-      as: 'following',
-      include: [avatarInclude, defaultAvatarInclude]
-    }
-  ]
+  include: [followingInclude]
+}
+
+export const followerInclude: Includeable = {
+  model: User,
+  as: 'follower'
+}
+
+export const followerWithAvatarInclude: Includeable = {
+  model: User,
+  as: 'follower',
+  include: [defaultAvatarInclude, avatarInclude]
 }
 
 export const followersInclude: Includeable = {
   model: UserFollower,
   as: 'userFollowers',
-  include: [
-    {
-      model: User,
-      as: 'follower',
-      include: [avatarInclude]
-    }
-  ]
+  include: [followerInclude]
 }

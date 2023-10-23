@@ -18,8 +18,8 @@ import {
 
 interface IUpdatePartiallyEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
-  modelName: string
-  model: Repository<M>
+  modelName?: string
+  model: Repository<M> | ClassConstructor<Object>
   updateDto: ClassConstructor<Object>
   modelInfo?: IModelInfo
 }
@@ -28,7 +28,10 @@ export const UpdatePartiallyEndpoint = <M extends Model<M, any>>(
   config: IUpdatePartiallyEndpointConfig<M>
 ) =>
   applyDecorators(
-    ApiOperation({ summary: `Partially full update ${config.modelName}` }),
+    ApiOperation({
+      summary:
+        config.operationName ?? `Partially full update ${config.modelName}`
+    }),
     ApiOkResponse({ status: 200, type: config.model }),
     ApiInternalServerErrorResponse({
       status: 500,

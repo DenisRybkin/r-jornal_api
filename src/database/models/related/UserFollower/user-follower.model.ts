@@ -6,7 +6,7 @@ import {
   Model,
   Table
 } from 'sequelize-typescript'
-import { CreateUserFollowerAttributes } from './user-following.attributes'
+import { CreateUserFollowerAttributes } from './user-follower.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { User } from '../../singles/User/user.model'
 

@@ -25,6 +25,8 @@ import { CategoryAvatar } from '../../../../database/models/related/CategoryAvat
 import { UserCategory } from '../../../../database/models/related/UserCategory/user-category.model'
 import { Achievement } from '../../../../database/models/singles/Achievement/achievement.model'
 import { UserAchievement } from '../../../../database/models/related/UserAchievement/user-achievement.model'
+import { UserFollower } from '../../../../database/models/related/UserFollower/user-follower.model'
+import { UserFollowing } from '../../../../database/models/related/UserFollowing/user-following.model'
 
 @Injectable()
 export class SwaggerConfigProvider {
@@ -54,7 +56,9 @@ export class SwaggerConfigProvider {
     Category,
     UserCategory,
     UserAchievement,
-    Achievement
+    Achievement,
+    UserFollower,
+    UserFollowing
   ]
   private miscModels = [
     PagingType,

@@ -13,8 +13,8 @@ import { IsPublic, RequiredRoles } from '../../decorators'
 
 interface ICreateEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
-  modelName: string
-  model: Repository<M>
+  modelName?: string
+  model: Repository<M> | ClassConstructor<Object>
   createDto: ClassConstructor<Object>
 }
 
@@ -22,7 +22,9 @@ export const CreateEndpoint = <M extends Model<M, any>>(
   config: ICreateEndpointConfig<M>
 ) =>
   applyDecorators(
-    ApiOperation({ summary: `Create new ${config.modelName} model` }),
+    ApiOperation({
+      summary: config.operationName ?? `Create new ${config.modelName} model`
+    }),
     ApiOkResponse({ status: 200, type: config.model }),
     ApiInternalServerErrorResponse({
       status: 500,

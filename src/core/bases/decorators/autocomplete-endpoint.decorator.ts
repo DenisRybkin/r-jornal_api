@@ -26,7 +26,9 @@ interface IAutocompleteEndpointConfig extends IBaseSwaggerEndpoint {
 export const AutocompleteEndpoint = (config: IAutocompleteEndpointConfig) =>
   applyDecorators(
     ...[
-      ApiOperation({ summary: `Get all models in autocomplete format` }),
+      ApiOperation({
+        summary: config.operationName ?? `Get all models in autocomplete format`
+      }),
       ApiOkResponse({
         status: 200,
         schema: {

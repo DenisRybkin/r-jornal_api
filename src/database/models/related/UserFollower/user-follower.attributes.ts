@@ -1,4 +1,4 @@
 export interface CreateUserFollowerAttributes {
   readonly userId: number
-  readonly followingUserId: number
+  readonly followerUserId: number
 }

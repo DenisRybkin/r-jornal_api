@@ -9,12 +9,14 @@ import { ProcessedError500Type } from '../../interfaces/common/processed-error.t
 import { IsPublic, RequiredRoles } from '../../decorators'
 
 interface IDeleteEndpointConfig extends IBaseSwaggerEndpoint {
-  modelName: string
+  modelName?: string
 }
 
 export const DeleteEndpoint = (config: IDeleteEndpointConfig) =>
   applyDecorators(
-    ApiOperation({ summary: `Delete ${config.modelName}` }),
+    ApiOperation({
+      summary: config.operationName ?? `Delete ${config.modelName}`
+    }),
     ApiOkResponse({ status: 200, type: Boolean }),
     ApiInternalServerErrorResponse({
       status: 500,

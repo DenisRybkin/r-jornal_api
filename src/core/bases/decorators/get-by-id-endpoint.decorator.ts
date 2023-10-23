@@ -13,15 +13,17 @@ import { ModelWithId } from '../../interfaces/rest/model-with-id.interface'
 
 interface IGetByIdEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
-  modelName: string
-  model: Repository<M> | ClassConstructor<ModelWithId>
+  modelName?: string
+  model: Repository<M> | ClassConstructor<ModelWithId> | NumberConstructor
 }
 
 export const GetByIdEndpoint = <M extends Model<M, any>>(
   config: IGetByIdEndpointConfig<M>
 ) =>
   applyDecorators(
-    ApiOperation({ summary: `Get ${config.modelName} model by id` }),
+    ApiOperation({
+      summary: config.operationName ?? `Get ${config.modelName} model by id`
+    }),
     ApiOkResponse({
       status: 200,
       type: config.model
