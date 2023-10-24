@@ -7,13 +7,16 @@ import {
   Model,
   Table
 } from 'sequelize-typescript'
-import { CreateQuestionAttributes } from './question.attributes'
+import { CreateQuestionAttributes } from './examination-question.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Examination } from '../Examination/examination.model'
-import { Answer } from '../Answer/answer.model'
+import { ExaminationAnswer } from '../ExaminationAnswer/examination-answer.model'
 
-@Table({ tableName: 'Question' })
-export class Question extends Model<Question, CreateQuestionAttributes> {
+@Table({ tableName: 'ExaminationQuestion' })
+export class ExaminationQuestion extends Model<
+  ExaminationQuestion,
+  CreateQuestionAttributes
+> {
   @ApiProperty({ example: 1, description: 'id of quest' })
   @Column({
     type: DataType.INTEGER,
@@ -47,9 +50,9 @@ export class Question extends Model<Question, CreateQuestionAttributes> {
 
   @ApiPropertyOptional({
     description: 'answers of question',
-    type: () => Answer,
+    type: () => ExaminationAnswer,
     isArray: true
   })
-  @HasMany(() => Answer, 'questionId')
-  readonly answers?: Answer[]
+  @HasMany(() => ExaminationAnswer, 'questionId')
+  readonly answers?: ExaminationAnswer[]
 }

@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ExaminationQuestion', {
+    await queryInterface.createTable('ArticleStaticField', {
       id: {
         primaryKey: true,
         autoIncrement: true,
@@ -11,18 +11,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING
-      },
-      examinationId: {
+      articleId: {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
-        onDelete: 'CASCADE',
         references: {
-          model: 'Examination',
+          model: 'Article',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
+      },
+      staticFieldId: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        unique: true,
+        references: {
+          model: 'StaticField',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -38,6 +44,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ExaminationQuestion')
+    await queryInterface.dropTable('ArticleStaticField')
   }
 }

@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common'
 import { SequelizeModule } from '@nestjs/sequelize'
-import { Question } from '../../database/models/singles/Question/question.model'
-import { Answer } from '../../database/models/singles/Answer/answer.model'
+import { ExaminationQuestion } from '../../database/models/singles/ExaminationQuestion/examination-question.model'
+import { ExaminationAnswer } from '../../database/models/singles/ExaminationAnswer/examination-answer.model'
 import { QuestionController } from './question.controller'
 import { QuestionService } from './question.service'
 
 @Module({
-  imports: [SequelizeModule.forFeature([Question, Answer])],
+  imports: [
+    SequelizeModule.forFeature([ExaminationQuestion, ExaminationAnswer])
+  ],
   controllers: [QuestionController],
   providers: [QuestionService],
   exports: [QuestionService]

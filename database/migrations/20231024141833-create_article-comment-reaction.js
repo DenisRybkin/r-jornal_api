@@ -1,9 +1,11 @@
 'use strict'
 
+const constraintName = 'constraint_unique_commentId_userId_value'
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ExaminationQuestion', {
+    await queryInterface.createTable('ArticleCommentReaction', {
       id: {
         primaryKey: true,
         autoIncrement: true,
@@ -11,18 +13,27 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING
-      },
-      examinationId: {
+      commentId: {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'Examination',
+          model: 'ArticleComment',
           key: 'id'
         }
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'User',
+          key: 'id'
+        }
+      },
+      value: {
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -35,9 +46,18 @@ module.exports = {
         defaultValue: Sequelize.fn('now')
       }
     })
+    await queryInterface.addConstraint('ArticleCommentReaction', {
+      type: 'unique',
+      fields: ['commentId', 'userId', 'value'],
+      name: constraintName
+    })
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ExaminationQuestion')
+    await queryInterface.removeConstraint(
+      'ArticleCommentReaction',
+      constraintName
+    )
+    await queryInterface.dropTable('ArticleCommentReaction')
   }
 }

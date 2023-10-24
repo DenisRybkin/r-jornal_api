@@ -1,5 +1,5 @@
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
-import { Question } from '../../database/models/singles/Question/question.model'
+import { ExaminationQuestion } from '../../database/models/singles/ExaminationQuestion/examination-question.model'
 import { Roles } from '../../core/interfaces/common'
 import {
   UpdateQuestionDto,
@@ -11,8 +11,8 @@ import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { Controller } from '@nestjs/common'
 import { QuestionService } from './question.service'
 
-const BaseController = buildBaseControllerCRUD<Question>({
-  swagger: { model: Question, modelName: 'question' },
+const BaseController = buildBaseControllerCRUD<ExaminationQuestion>({
+  swagger: { model: ExaminationQuestion, modelName: 'question' },
   privacySettings: {
     updateRequireRoles: [Roles.Admin, Roles.Owner],
     createRequireRoles: [Roles.Admin, Roles.Owner],

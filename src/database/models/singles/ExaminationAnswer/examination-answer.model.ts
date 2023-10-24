@@ -6,12 +6,15 @@ import {
   Model,
   Table
 } from 'sequelize-typescript'
-import { CreateAnswerAttributes } from './answer.attributes'
+import { CreateAnswerAttributes } from './examination-answer.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Question } from '../Question/question.model'
+import { ExaminationQuestion } from '../ExaminationQuestion/examination-question.model'
 
 @Table({ tableName: 'ExaminationAnswer' })
-export class Answer extends Model<Answer, CreateAnswerAttributes> {
+export class ExaminationAnswer extends Model<
+  ExaminationAnswer,
+  CreateAnswerAttributes
+> {
   @ApiProperty({ example: 1, description: 'id of answer' })
   @Column({
     type: DataType.INTEGER,
@@ -32,16 +35,16 @@ export class Answer extends Model<Answer, CreateAnswerAttributes> {
     example: 1,
     description: 'FK of question'
   })
-  @ForeignKey(() => Question)
+  @ForeignKey(() => ExaminationQuestion)
   @Column({ type: DataType.INTEGER, allowNull: false })
   readonly questionId: number
 
   @ApiPropertyOptional({
-    type: () => Question,
+    type: () => ExaminationQuestion,
     description: 'question'
   })
-  @BelongsTo(() => Question, 'questionId')
-  readonly question?: Question
+  @BelongsTo(() => ExaminationQuestion, 'questionId')
+  readonly question?: ExaminationQuestion
 
   @ApiProperty({
     example: true,

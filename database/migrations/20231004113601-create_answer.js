@@ -21,7 +21,8 @@ module.exports = {
         references: {
           model: 'ExaminationQuestion',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       isRight: {
         allowNull: false,

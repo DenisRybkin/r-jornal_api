@@ -1,9 +1,9 @@
 import { Includeable } from 'sequelize'
-import { Question } from '../../models/singles/Question/question.model'
+import { ExaminationQuestion } from '../../models/singles/ExaminationQuestion/examination-question.model'
 import { answersInclude } from '../question'
 
 export const questionsInclude: Includeable = {
-  model: Question,
+  model: ExaminationQuestion,
   as: 'questions',
   include: [answersInclude]
 }

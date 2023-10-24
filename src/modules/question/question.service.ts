@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
-import { Question } from '../../database/models/singles/Question/question.model'
+import { ExaminationQuestion } from '../../database/models/singles/ExaminationQuestion/examination-question.model'
 import { InjectModel } from '@nestjs/sequelize'
 import { answersInclude } from '../../database/includes/question'
 
 @Injectable()
-export class QuestionService extends BaseServiceCRUD<Question> {
+export class QuestionService extends BaseServiceCRUD<ExaminationQuestion> {
   constructor(
-    @InjectModel(Question)
-    private readonly questionRepository: typeof Question
+    @InjectModel(ExaminationQuestion)
+    private readonly questionRepository: typeof ExaminationQuestion
   ) {
     super({
       autocompleteProperty: 'name',

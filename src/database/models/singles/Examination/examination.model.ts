@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript'
 import { CreateExaminationAttributes } from './examination.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Question } from '../Question/question.model'
+import { ExaminationQuestion } from '../ExaminationQuestion/examination-question.model'
 import { Role } from '../Role/role.model'
 
 @Table({ tableName: 'Examination' })
@@ -59,9 +59,9 @@ export class Examination extends Model<
 
   @ApiPropertyOptional({
     description: 'questions of exam',
-    type: () => Question,
+    type: () => ExaminationQuestion,
     isArray: true
   })
-  @HasMany(() => Question, 'examinationId')
-  readonly questions?: Question[]
+  @HasMany(() => ExaminationQuestion, 'examinationId')
+  readonly questions?: ExaminationQuestion[]
 }

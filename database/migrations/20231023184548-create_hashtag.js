@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ExaminationQuestion', {
+    await queryInterface.createTable('Hashtag', {
       id: {
         primaryKey: true,
         autoIncrement: true,
@@ -14,15 +14,6 @@ module.exports = {
       name: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING
-      },
-      examinationId: {
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Examination',
-          key: 'id'
-        }
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -38,6 +29,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ExaminationQuestion')
+    await queryInterface.dropTable('Hashtag')
   }
 }

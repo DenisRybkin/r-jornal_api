@@ -5,14 +5,14 @@ import {
   UpdatePartiallyAnswerDto
 } from './dto'
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
-import { Answer } from '../../database/models/singles/Answer/answer.model'
+import { ExaminationAnswer } from '../../database/models/singles/ExaminationAnswer/examination-answer.model'
 import { Roles } from '../../core/interfaces/common'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { Controller } from '@nestjs/common'
 import { AnswerService } from './answer.service'
 
-const BaseController = buildBaseControllerCRUD<Answer>({
-  swagger: { model: Answer, modelName: 'answer' },
+const BaseController = buildBaseControllerCRUD<ExaminationAnswer>({
+  swagger: { model: ExaminationAnswer, modelName: 'answer' },
   privacySettings: {
     updateRequireRoles: [Roles.Admin, Roles.Owner],
     createRequireRoles: [Roles.Admin, Roles.Owner],

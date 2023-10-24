@@ -1,9 +1,11 @@
 'use strict'
 
+const constraintName = 'constraint_unique_articleId_categoryId'
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ExaminationQuestion', {
+    await queryInterface.createTable('ArticleCategory', {
       id: {
         primaryKey: true,
         autoIncrement: true,
@@ -11,18 +13,23 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING
-      },
-      examinationId: {
+      articleId: {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
-        onDelete: 'CASCADE',
         references: {
-          model: 'Examination',
+          model: 'Article',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
+      },
+      categoryId: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'Category',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -35,9 +42,15 @@ module.exports = {
         defaultValue: Sequelize.fn('now')
       }
     })
+    await queryInterface.addConstraint('ArticleCategory', {
+      type: 'unique',
+      fields: ['articleId', 'categoryId'],
+      name: constraintName
+    })
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ExaminationQuestion')
+    await queryInterface.removeConstraint('ArticleCategory', constraintName)
+    await queryInterface.dropTable('ArticleCategory')
   }
 }
