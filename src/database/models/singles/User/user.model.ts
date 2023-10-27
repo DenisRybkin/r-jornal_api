@@ -91,7 +91,7 @@ export class User extends Model<User, CreateUserAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 7 })
   readonly defaultAvatarId: number
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'default avatar',
     type: StaticField
   })

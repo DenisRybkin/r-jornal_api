@@ -17,7 +17,7 @@ export class ExaminationQuestion extends Model<
   ExaminationQuestion,
   CreateQuestionAttributes
 > {
-  @ApiProperty({ example: 1, description: 'id of quest' })
+  @ApiProperty({ example: 1, description: 'id of question' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
