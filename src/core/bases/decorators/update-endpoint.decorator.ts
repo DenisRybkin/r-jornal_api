@@ -19,7 +19,7 @@ import {
 interface IUpdateEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
   modelName: string
-  model: Repository<M>
+  model: Repository<M> | ClassConstructor<Object>
   updateDto: ClassConstructor<Object>
   modelInfo?: IModelInfo
 }

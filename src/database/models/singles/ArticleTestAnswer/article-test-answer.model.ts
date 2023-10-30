@@ -16,7 +16,7 @@ export class ArticleTestAnswer extends Model<
   ArticleTestAnswer,
   CreateArticleTestAnswerAttributes
 > {
-  @ApiProperty({ example: 1, description: 'id of test answer' })
+  @ApiProperty({ example: 1, description: 'id of test examination-answer' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -27,14 +27,14 @@ export class ArticleTestAnswer extends Model<
 
   @ApiProperty({
     example: '1024',
-    description: 'answer of question'
+    description: 'examination-answer of examination-question'
   })
   @Column({ allowNull: false, type: DataType.STRING })
   readonly name: string
 
   @ApiProperty({
     example: 1,
-    description: 'FK of question'
+    description: 'FK of examination-question'
   })
   @ForeignKey(() => ArticleTestQuestion)
   @Column({ type: DataType.INTEGER, allowNull: false })
@@ -49,7 +49,7 @@ export class ArticleTestAnswer extends Model<
 
   @ApiProperty({
     example: true,
-    description: 'field of right of answer'
+    description: 'field of right of examination-answer'
   })
   @Column({ type: DataType.BOOLEAN, allowNull: false })
   readonly isRight: boolean

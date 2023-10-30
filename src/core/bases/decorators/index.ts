@@ -1,4 +1,4 @@
-export { GetByIdEndpoint } from './get-by-id-endpoint.decorator'
+export { GetOneEndpoint } from './get-one-endpoint.decorator'
 export { GetAllEndpoint } from './get-all-endpoint.decorator'
 export { AutocompleteEndpoint } from './autocomplete-endpoint.decorator'
 export { CreateEndpoint } from './create-endpoint.decorator'

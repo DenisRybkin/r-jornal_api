@@ -17,7 +17,7 @@ export class ExaminationQuestion extends Model<
   ExaminationQuestion,
   CreateQuestionAttributes
 > {
-  @ApiProperty({ example: 1, description: 'id of question' })
+  @ApiProperty({ example: 1, description: 'id of examination-question' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -28,14 +28,14 @@ export class ExaminationQuestion extends Model<
 
   @ApiProperty({
     example: 'How many bits are in one kilobyte',
-    description: 'name of question'
+    description: 'name of examination-question'
   })
   @Column({ allowNull: false, type: DataType.STRING })
   readonly name: string
 
   @ApiProperty({
     example: 'FK of exam',
-    description: 'name of question'
+    description: 'name of examination-question'
   })
   @ForeignKey(() => Examination)
   @Column({ type: DataType.INTEGER, allowNull: false })
@@ -49,7 +49,7 @@ export class ExaminationQuestion extends Model<
   readonly examination?: Examination
 
   @ApiPropertyOptional({
-    description: 'answers of question',
+    description: 'answers of examination-question',
     type: () => ExaminationAnswer,
     isArray: true
   })

@@ -32,7 +32,7 @@ import {
   transformQueryFilter,
   transformReadFilter
 } from '../utils'
-import { GetAllEndpoint, GetByIdEndpoint } from '../decorators'
+import { GetAllEndpoint, GetOneEndpoint } from '../decorators'
 
 export function buildBaseControllerReadShort<
   T extends Model<T, any>,
@@ -88,7 +88,7 @@ export function buildBaseControllerReadShort<
     })
     @IsPublic(config.privacySettings?.getShortByIdIsPublic ?? false)
     @RequiredRoles(...(config.privacySettings?.getByIdShortRequireRoles ?? []))
-    @GetByIdEndpoint({
+    @GetOneEndpoint({
       model: config.swagger.shortModel,
       requiredRoles: config.privacySettings?.getByIdShortRequireRoles,
       modelName: config.swagger.modelName,

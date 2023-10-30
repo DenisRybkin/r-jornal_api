@@ -22,7 +22,7 @@ import {
 import {
   AutocompleteEndpoint,
   GetAllEndpoint,
-  GetByIdEndpoint
+  GetOneEndpoint
 } from '../decorators'
 
 export function buildBaseControllerRead<T extends Model<T, any>>(
@@ -72,7 +72,7 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
       return this.service.autocomplete(query.pagingOptions, filterOpts)
     }
 
-    @GetByIdEndpoint<T>({
+    @GetOneEndpoint<T>({
       model: config.swagger.model,
       isPublic: config.privacySettings?.getByIdIsPublic,
       requiredRoles: config.privacySettings?.getByIdRequireRoles,

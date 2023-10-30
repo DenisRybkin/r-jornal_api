@@ -2,14 +2,14 @@ import { buildBaseControllerCRUD } from '../../core/bases/controllers'
 import { User } from '../../database/models/singles/User/user.model'
 import {
   CreateUserDto,
+  CreateUserFollowingDto,
+  FollowDto,
   ReadUserFilterDto,
+  ReadUserFollowerFilterDto,
+  ReadUserFollowingFilterDto,
   UpdatePartiallyUserDto,
   UpdateUserDto,
-  UserAvatarDto,
-  ReadUserFollowingFilterDto,
-  ReadUserFollowerFilterDto,
-  CreateUserFollowingDto,
-  FollowDto
+  UserAvatarDto
 } from './dto'
 import { UserService } from './user.service'
 import {
@@ -21,26 +21,18 @@ import {
   Post,
   Req
 } from '@nestjs/common'
-import {
-  ApiExtraModels,
-  ApiInternalServerErrorResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-  getSchemaPath
-} from '@nestjs/swagger'
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { UserAvatarService } from './user-avatar.service'
 import { AsyncContext } from '../../core/modules/async-context/async-context'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
 import { ConstraintMessagesConstants } from '../../core/constants'
-import { ProcessedError400Type } from '../../core/interfaces/common'
 import { Get } from '@nestjs/common/decorators'
 import {
   CreateEndpoint,
   DeleteEndpoint,
   GetAllEndpoint,
-  GetByIdEndpoint,
+  GetOneEndpoint,
   UpdatePartiallyEndpoint
 } from '../../core/bases/decorators'
 import { UserAvatar } from '../../database/models/related/UserAvatar/user-avatar.model'
@@ -94,16 +86,10 @@ export class UserController extends BaseController {
     super(userService)
   }
 
-  @ApiOperation({ summary: `get user details` })
-  @ApiOkResponse({
-    status: 200,
-    schema: { $ref: getSchemaPath(User) }
-  })
-  @ApiInternalServerErrorResponse({
-    status: 400,
-    schema: {
-      $ref: getSchemaPath(ProcessedError400Type)
-    }
+  @GetOneEndpoint({
+    operationName: 'get user details',
+    model: User,
+    modelName: 'user'
   })
   @Get('/get-me')
   async getMe() {
@@ -111,7 +97,7 @@ export class UserController extends BaseController {
     return this.userService.getById(userId)
   }
 
-  @GetByIdEndpoint({
+  @GetOneEndpoint({
     operationName: 'Get count followers of user by userId',
     model: Number
   })
@@ -159,7 +145,7 @@ export class UserController extends BaseController {
     })
   }
 
-  @GetByIdEndpoint({
+  @GetOneEndpoint({
     operationName: 'Get count followers of user by userId',
     model: Number
   })

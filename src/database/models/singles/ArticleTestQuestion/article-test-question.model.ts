@@ -17,7 +17,7 @@ export class ArticleTestQuestion extends Model<
   ArticleTestQuestion,
   CreateArticleTestQuestionAttributes
 > {
-  @ApiProperty({ example: 1, description: 'id of test question' })
+  @ApiProperty({ example: 1, description: 'id of test examination-question' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -28,7 +28,7 @@ export class ArticleTestQuestion extends Model<
 
   @ApiProperty({
     example: 'How many bits are in one kilobyte',
-    description: 'name of question'
+    description: 'name of examination-question'
   })
   @Column({ allowNull: false, type: DataType.STRING })
   readonly name: string
@@ -42,14 +42,14 @@ export class ArticleTestQuestion extends Model<
   readonly testId: number
 
   @ApiPropertyOptional({
-    description: 'test of this question',
+    description: 'test of this examination-question',
     type: ArticleTest
   })
   @BelongsTo(() => ArticleTest, 'testId')
   readonly test?: ArticleTest
 
   @ApiPropertyOptional({
-    description: 'answers of question',
+    description: 'answers of examination-question',
     type: () => ArticleTestAnswer,
     isArray: true
   })

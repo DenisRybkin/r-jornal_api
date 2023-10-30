@@ -35,7 +35,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
         },
         returning: true
       })
-    )[1] as unknown as T
+    )[1][0] as unknown as T
   }
 
   public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {

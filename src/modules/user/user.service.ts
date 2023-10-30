@@ -61,7 +61,7 @@ export class UserService extends BaseServiceCRUD<User> {
     })
   }
 
-  async createFull(dto: CreateUserDto) {
+  async createComplex(dto: CreateUserDto) {
     if (!dto.defaultAvatarId) {
       const defaultAvatars = await this.staticFiledService.getDefaultsAvatars()
       dto.defaultAvatarId =

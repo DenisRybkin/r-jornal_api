@@ -16,7 +16,7 @@ export class ArticleCommentStaticField extends Model<
   ArticleCommentStaticField,
   CreateArticleCommentStaticFieldAttributes
 > {
-  @ApiProperty({ example: 1, description: 'id of test answer' })
+  @ApiProperty({ example: 1, description: 'id of test examination-answer' })
   @Column({
     type: DataType.INTEGER,
     unique: true,

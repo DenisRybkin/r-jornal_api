@@ -41,7 +41,7 @@ export class AuthService {
       InternalConfigurationConstants.BcryptSalt
     )
 
-    const user = await this.userService.createFull({
+    const user = await this.userService.createComplex({
       ...dto,
       password: hashedPassword
     })
@@ -51,7 +51,7 @@ export class AuthService {
 
   async refresh(refresh: string) {
     const token = await this.jwtService.verifyAsync<JwtTokenPayloadType>(
-      refresh || '',
+      refresh,
       this.configService.jwtRefreshConfig
     )
 

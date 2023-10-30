@@ -19,9 +19,11 @@ import { CategoryModule } from './modules/category/category.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'node:path'
 import { ExaminationModule } from './modules/examination/examination.module'
-import { QuestionModule } from './modules/question/question.module'
-import { AnswerModule } from './modules/answer/answer.module'
+import { ExaminationQuestionModule } from './modules/examination-question/examination-question.module'
+import { ExaminationAnswerModule } from './modules/examination-answer/examination-answer.module'
 import { AchievementModule } from './modules/achievement/achievement.module'
+import { HashtagModule } from './modules/hashtag/hashtag.module'
+import { ArticleTestModule } from './modules/article-test/article-test.module'
 
 @Module({
   imports: [
@@ -46,9 +48,11 @@ import { AchievementModule } from './modules/achievement/achievement.module'
     CategoryModule,
     StaticFieldModule,
     ExaminationModule,
-    QuestionModule,
-    AnswerModule,
-    AchievementModule
+    ExaminationQuestionModule,
+    ExaminationAnswerModule,
+    AchievementModule,
+    HashtagModule
+    //ArticleTestModule
   ],
   controllers: [],
   providers: [

@@ -31,6 +31,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      roleId: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'Role',
+          key: 'id'
+        }
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('now'),
@@ -40,14 +48,6 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('now'),
         allowNull: false
-      },
-      roleId: {
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER,
-        references: {
-          model: 'Role',
-          key: 'id'
-        }
       }
     })
   },
