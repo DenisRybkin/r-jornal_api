@@ -17,7 +17,7 @@ import { PipeExceptionFactory } from '../factories/pipe-exception.factory'
 import { AsyncContext } from '../modules/async-context/async-context'
 
 @Injectable()
-export class CheckPermissionForUpdateGuard implements CanActivate {
+export class CheckModifyPermissionGuard implements CanActivate {
   constructor(
     @InjectConnection() private readonly connection: Sequelize,
     private readonly reflector: Reflector,

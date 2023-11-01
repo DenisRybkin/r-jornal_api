@@ -2,20 +2,22 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsInt, IsOptional, IsString, MinLength } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 
-export class UpdateComplexArticleCommentDto {
+export class UpdateComplexArticleDto {
   @ApiProperty()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
-  readonly text: string
-
-  @ApiProperty()
-  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
-  readonly articleId: number
+  readonly body: string
 
   @ApiPropertyOptional()
   @IsOptional()
-  @MinLength(1, {
-    message: ConstraintMessagesConstants.MustBeNumber,
-    each: true
-  })
-  readonly staticFieldIds: number[]
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
+  readonly previewId?: number
+
+  @ApiProperty({ isArray: true, type: Number })
+  @MinLength(1, { each: true })
+  readonly categoryIds: number[]
+
+  @ApiPropertyOptional({ isArray: true, type: Number })
+  @IsOptional()
+  @MinLength(1, { each: true })
+  readonly hashtagIds?: number[]
 }

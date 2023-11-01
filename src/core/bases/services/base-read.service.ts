@@ -41,7 +41,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getById(
     id: number,
-    rejectOnEmpty: Nullable<BaseException> = null
+    rejectOnEmpty: Nullable<BaseException | false> = null
   ): Promise<T> {
     return await this.config.modelRepository.findByPk(id, {
       include: this.config.includes,
@@ -81,7 +81,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
   protected async getOne(
     whereOpts: WhereOptions<T>,
     includes: Includeable[] | undefined = this.config.includes,
-    rejectOnEmpty: Nullable<BaseException> = null
+    rejectOnEmpty: Nullable<BaseException | false> = null
   ) {
     return await this.config.modelRepository.findOne({
       where: whereOpts,

@@ -10,9 +10,7 @@ import {
 import { buildBaseControllerCRUD } from '../../core/bases/controllers'
 import { ArticleComment } from '../../database/models/singles/ArticleComment/article-comment.model'
 import { ArticleCommentService } from './article-comment.service'
-import { ArticleCommentStaticFieldService } from './article-comment-static-field.service'
 import { CreateEndpoint, UpdateEndpoint } from '../../core/bases/decorators'
-import { AsyncContext } from '../../core/modules/async-context/async-context'
 import { UpdateComplexArticleCommentDto } from './dto/update-complex-article-comment.dto'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
@@ -25,6 +23,10 @@ const BaseController = buildBaseControllerCRUD<ArticleComment>({
     getByIdIsPublic: true,
     autocompleteIsPublic: true,
     checkPermissionForUpdateInfo: {
+      EntityClass: ArticleComment,
+      comparableFieldName: 'createdByUserId'
+    },
+    checkPermissionForDeleteInfo: {
       EntityClass: ArticleComment,
       comparableFieldName: 'createdByUserId'
     }
@@ -48,11 +50,7 @@ const BaseController = buildBaseControllerCRUD<ArticleComment>({
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class ArticleCommentController extends BaseController {
-  constructor(
-    private readonly articleCommentService: ArticleCommentService,
-    private readonly articleCommentStaticFieldService: ArticleCommentStaticFieldService,
-    private readonly asyncContext: AsyncContext<string, any>
-  ) {
+  constructor(private readonly articleCommentService: ArticleCommentService) {
     super(articleCommentService)
   }
 
@@ -64,23 +62,7 @@ export class ArticleCommentController extends BaseController {
   })
   @Post('/complex')
   async createComplex(@Body() dto: CreateComplexArticleCommentDto) {
-    const { id: userId } = this.asyncContext.get('user')
-    const articleComment = await this.articleCommentService.create({
-      articleId: dto.articleId,
-      createdByUserId: userId,
-      text: dto.text
-    })
-    if (dto.staticFieldIds)
-      await Promise.all(
-        dto.staticFieldIds.map(staticFieldId =>
-          this.articleCommentStaticFieldService.create({
-            commentId: articleComment.articleId,
-            staticFieldId: staticFieldId
-          })
-        )
-      )
-
-    return articleComment
+    return await this.articleCommentService.createComplex(dto)
   }
 
   @UpdateEndpoint({
@@ -102,20 +84,6 @@ export class ArticleCommentController extends BaseController {
     commentId: number,
     @Body() dto: UpdateComplexArticleCommentDto
   ) {
-    const { id: userId } = this.asyncContext.get('user')
-    const articleComment = await this.articleCommentService.update(commentId, {
-      articleId: dto.articleId,
-      createdByUserId: userId,
-      text: dto.text
-    })
-    if (dto.staticFieldId)
-      await this.articleCommentStaticFieldService.update(
-        { commentId: commentId },
-        {
-          commentId: articleComment.articleId,
-          staticFieldId: dto.staticFieldId
-        }
-      )
-    return articleComment
+    return await this.articleCommentService.updateComplex(commentId, dto)
   }
 }

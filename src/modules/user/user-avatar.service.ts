@@ -34,13 +34,18 @@ export class UserAvatarService {
         returning: true
       }
     )
+
     await this.staticFieldService.delete(source.staticFieldId)
     return result[1]
   }
 
   async delete(id: number) {
-    return this.userAvatarRepository.destroy({
-      where: { id }
+    const source = await this.userAvatarRepository.findByPk(id, {
+      rejectOnEmpty: new NotFoundException(
+        ErrorMessagesConstants.NotFound,
+        'No such static field'
+      )
     })
+    return await this.staticFieldService.delete(source.id)
   }
 }

@@ -95,7 +95,8 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
     @DeleteEndpoint({
       isPublic: config.privacySettings?.deleteIsPublic,
       requiredRoles: config.privacySettings?.deleteRequireRoles,
-      modelName: config.swagger.modelName
+      modelName: config.swagger.modelName,
+      modelInfo: config.privacySettings?.checkPermissionForDeleteInfo
     })
     @Delete('/:id')
     public async delete(

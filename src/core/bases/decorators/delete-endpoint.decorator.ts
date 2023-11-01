@@ -6,10 +6,16 @@ import {
   ApiOperation
 } from '@nestjs/swagger'
 import { ProcessedError500Type } from '../../interfaces/common/processed-error.type'
-import { IsPublic, RequiredRoles } from '../../decorators'
+import {
+  CheckPermissionModify,
+  IModelInfo,
+  IsPublic,
+  RequiredRoles
+} from '../../decorators'
 
 interface IDeleteEndpointConfig extends IBaseSwaggerEndpoint {
   modelName?: string
+  modelInfo?: IModelInfo
 }
 
 export const DeleteEndpoint = (config: IDeleteEndpointConfig) =>
@@ -23,5 +29,6 @@ export const DeleteEndpoint = (config: IDeleteEndpointConfig) =>
       type: ProcessedError500Type
     }),
     IsPublic(config.isPublic ?? false),
-    RequiredRoles(...(config.requiredRoles ?? []))
+    RequiredRoles(...(config.requiredRoles ?? [])),
+    CheckPermissionModify(config.modelInfo)
   )

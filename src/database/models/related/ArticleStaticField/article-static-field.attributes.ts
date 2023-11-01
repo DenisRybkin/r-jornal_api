@@ -1,4 +1,4 @@
 export interface CreateArticleStaticFieldAttributes {
   readonly articleId: number
-  readonly staticField: number
+  readonly staticFieldId: number
 }

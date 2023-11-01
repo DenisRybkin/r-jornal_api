@@ -10,7 +10,7 @@ import { Model, Repository } from 'sequelize-typescript'
 import { ClassConstructor } from 'class-transformer'
 import { ProcessedError500Type } from '../../interfaces/common/processed-error.type'
 import {
-  CheckPermissionUpdate,
+  CheckPermissionModify,
   IModelInfo,
   IsPublic,
   RequiredRoles
@@ -39,5 +39,5 @@ export const UpdateEndpoint = <M extends Model<M, any>>(
     ApiBody({ type: config.updateDto }),
     IsPublic(config.isPublic ?? false),
     RequiredRoles(...(config.requiredRoles ?? [])),
-    CheckPermissionUpdate(config.modelInfo)
+    CheckPermissionModify(config.modelInfo)
   )

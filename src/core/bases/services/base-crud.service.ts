@@ -6,6 +6,7 @@ import {
 } from '../../interfaces/rest/services'
 import { BaseServiceRead } from './base-read.service'
 import { ORMModelWithId } from '../../interfaces/rest/model-with-id.interface'
+import { Includeable } from 'sequelize'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -18,7 +19,6 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async create(model: MakeNullishOptional<T['_creationAttributes']>) {
-    console.log('model')
     return this.config.modelRepository.create(model)
   }
 
@@ -36,6 +36,26 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
         returning: true
       })
     )[1][0] as unknown as T
+  }
+
+  public async createOrUpdate(
+    idOrWhereOpts: number | Partial<T>,
+    model: T | Partial<T>,
+    includes?: Includeable[]
+  ) {
+    const foundModel = await super.getOne(
+      {
+        where: {
+          ...(typeof idOrWhereOpts == 'number'
+            ? { id: idOrWhereOpts }
+            : idOrWhereOpts)
+        }
+      },
+      includes,
+      false
+    )
+    if (foundModel) return foundModel
+    return await this.update(idOrWhereOpts, model)
   }
 
   public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {

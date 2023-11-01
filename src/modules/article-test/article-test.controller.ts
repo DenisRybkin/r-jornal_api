@@ -63,7 +63,7 @@ export class ArticleTestController extends BaseController {
     modelName: 'article test',
     createDto: ComplexCreateArticleTestDto,
     model: ComplexCreateArticleTestDto,
-    requiredRoles: [Roles.Publisher]
+    requiredRoles: [Roles.Owner, Roles.Admin, Roles.Publisher]
   })
   @Post('/complex')
   async createComplex(@Body() dto: ComplexCreateArticleTestDto) {

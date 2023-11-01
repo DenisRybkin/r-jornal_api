@@ -18,6 +18,7 @@ export interface IControllerCRUDPrivacySettings
   updateRequireRoles?: Roles[]
   deleteRequireRoles?: Roles[]
   checkPermissionForUpdateInfo?: IModelInfo
+  checkPermissionForDeleteInfo?: IModelInfo
 }
 
 export interface IConfigControllerCRUD<M extends Model<M, any>>

@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsInt, IsOptional, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 
@@ -8,22 +8,22 @@ export class ReadStaticFieldFilterDto {
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly id?: number
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly name?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly originalname?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly type?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly url?: string

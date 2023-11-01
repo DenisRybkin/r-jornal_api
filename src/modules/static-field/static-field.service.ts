@@ -83,7 +83,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
     return await this.staticFieldRepository.destroy({ where: { id } })
   }
 
-  private async deleteFromStorage(name: string) {
+  public async deleteFromStorage(name: string) {
     const result = await this.client.Remove(
       CloudFoldersConstants.UPLOADS + '/' + name
     )
