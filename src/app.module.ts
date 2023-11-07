@@ -23,7 +23,9 @@ import { ExaminationQuestionModule } from './modules/examination-question/examin
 import { ExaminationAnswerModule } from './modules/examination-answer/examination-answer.module'
 import { AchievementModule } from './modules/achievement/achievement.module'
 import { HashtagModule } from './modules/hashtag/hashtag.module'
+import { ArticleModule } from './modules/article/article.module'
 import { ArticleTestModule } from './modules/article-test/article-test.module'
+import { ArticleCommentModule } from './modules/article-comment/article-comment.module'
 
 @Module({
   imports: [
@@ -51,21 +53,23 @@ import { ArticleTestModule } from './modules/article-test/article-test.module'
     ExaminationQuestionModule,
     ExaminationAnswerModule,
     AchievementModule,
-    HashtagModule
-    //ArticleTestModule
+    HashtagModule,
+    ArticleModule,
+    ArticleTestModule,
+    ArticleCommentModule
   ],
   controllers: [],
   providers: [
     JwtService,
     UniqueValidator,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard
+    // },
     {
       provide: APP_PIPE,
       useClass: ErrorsValidationPipe

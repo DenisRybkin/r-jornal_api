@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ErrorMessagesConstants } from '../constants'
-import { ROLES_KEY } from '../decorators/metadata/roles.decorator'
+import { ROLES_KEY } from '../decorators'
 import { ForbiddenException } from '../exceptions/build-in'
 import { Roles } from '../interfaces/common'
 import { AsyncContext } from '../modules/async-context/async-context'

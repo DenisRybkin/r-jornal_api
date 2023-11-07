@@ -20,6 +20,10 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
     })
   }
 
+  async getByArticleId(articleId: number) {
+    return super.getOne({ articleId })
+  }
+
   async createComplex(
     dto: ComplexCreateArticleTestDto
   ): Promise<ComplexCreateArticleTestDto> {

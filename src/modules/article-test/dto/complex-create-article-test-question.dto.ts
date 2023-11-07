@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, MinLength, ValidateNested } from 'class-validator'
+import {
+  ArrayMinSize,
+  IsArray,
+  IsString,
+  ValidateNested
+} from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { ComplexCreateArticleTestAnswerDto } from './complex-create-article-test-answer.dto'
+import { Type } from 'class-transformer'
 
 export class ComplexCreateArticleTestQuestionDto {
   @ApiProperty()
@@ -12,7 +18,12 @@ export class ComplexCreateArticleTestQuestionDto {
     type: ComplexCreateArticleTestAnswerDto,
     isArray: true
   })
-  @MinLength(2)
-  @ValidateNested({ each: true })
+  @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
+  @ArrayMinSize(2)
+  @ValidateNested({
+    each: true,
+    message: 'invalid ComplexCreateArticleTestAnswerDto'
+  })
+  @Type(() => ComplexCreateArticleTestAnswerDto)
   readonly answers: ComplexCreateArticleTestAnswerDto[]
 }

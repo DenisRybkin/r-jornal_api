@@ -9,6 +9,12 @@ import { ArticleHashtagService } from './article-hashtag.service'
 import { ArticleCategory } from '../../database/models/related/ArticleCategory/article-category.model'
 import { ArticleHashtag } from '../../database/models/related/ArticleHashtag/article-hashtag.model'
 import { ArticleController } from './article.controller'
+import { ArticleLike } from '../../database/models/related/ArticleLike/article-like.model'
+import { ArticleLikeService } from './article-like.service'
+import { ArticleRepostService } from './article-repost.service'
+import { ArticleRepost } from '../../database/models/related/ArticleRepost/article-repost.model'
+import { UserModule } from '../user/user.module'
+import { ArticleTestModule } from '../article-test/article-test.module'
 
 @Module({
   imports: [
@@ -16,21 +22,29 @@ import { ArticleController } from './article.controller'
       Article,
       ArticleStaticField,
       ArticleCategory,
-      ArticleHashtag
-    ])
+      ArticleHashtag,
+      ArticleLike,
+      ArticleRepost
+    ]),
+    ArticleTestModule,
+    UserModule
   ],
   controllers: [ArticleController],
   providers: [
     ArticleService,
     ArticlePreviewService,
     ArticleCategoryService,
-    ArticleHashtagService
+    ArticleHashtagService,
+    ArticleLikeService,
+    ArticleRepostService
   ],
   exports: [
     ArticleService,
     ArticlePreviewService,
     ArticleCategoryService,
-    ArticleHashtagService
+    ArticleHashtagService,
+    ArticleLikeService,
+    ArticleRepostService
   ]
 })
 export class ArticleModule {}

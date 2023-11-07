@@ -9,7 +9,7 @@ import {
   BaseServiceRead as AbstractServiceRead,
   IConfigServiceRead
 } from '../../interfaces/rest/services'
-import { Nullable } from '../../types'
+import { Nullable, NullableLike } from '../../types'
 import { defaultPagingOptions } from '../utils'
 import { BaseException } from '../../exceptions/base.exception'
 
@@ -21,7 +21,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
   protected constructor(protected readonly config: IConfigServiceRead<T>) {}
 
   public async getAll(
-    pagingOpts: IPagingOptions = defaultPagingOptions,
+    pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
     filterOpts: Nullable<WhereOptions<T>> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({

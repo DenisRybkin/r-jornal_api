@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ExaminationQuestion } from '../../database/models/singles/ExaminationQuestion/examination-question.model'
 import { InjectModel } from '@nestjs/sequelize'
-import { answersInclude } from '../../database/includes/question'
+import { answersInclude } from '../../database/includes/examination'
 
 @Injectable()
 export class ExaminationQuestionService extends BaseServiceCRUD<ExaminationQuestion> {

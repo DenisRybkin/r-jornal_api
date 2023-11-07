@@ -14,8 +14,8 @@ import { IsPublic, RequiredRoles } from '../../decorators'
 interface ICreateEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
   modelName?: string
-  model: Repository<M> | ClassConstructor<Object>
-  createDto: ClassConstructor<Object>
+  model?: Repository<M> | ClassConstructor<Object>
+  createDto?: ClassConstructor<Object>
 }
 
 export const CreateEndpoint = <M extends Model<M, any>>(

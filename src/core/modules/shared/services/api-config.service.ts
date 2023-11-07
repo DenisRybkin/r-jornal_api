@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import {
-  JwtModuleOptions,
-  JwtSecretRequestType,
-  JwtSignOptions
-} from '@nestjs/jwt'
+import { JwtModuleOptions, JwtSignOptions } from '@nestjs/jwt'
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
 import type { SequelizeModuleOptions } from '@nestjs/sequelize'
 import { ModelOptions } from 'sequelize/types'

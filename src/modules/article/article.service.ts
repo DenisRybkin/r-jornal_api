@@ -7,6 +7,11 @@ import { ArticlePreviewService } from './article-preview.service'
 import { ArticleCategoryService } from './article-category.service'
 import { ArticleHashtagService } from './article-hashtag.service'
 import { AsyncContext } from '../../core/modules/async-context/async-context'
+import { ArticleTestService } from '../article-test/article-test.service'
+import { defaultPagingOptions } from '../../core/bases/utils'
+import { ArticleTestUserService } from '../article-test/article-test-user.service'
+import { UserAchievementService } from '../user/user-achievement.service'
+import { EarnUserPointsStrategyConstants } from '../user/constants/user-point.constants'
 
 @Injectable()
 export class ArticleService extends BaseServiceCRUD<Article> {
@@ -15,23 +20,71 @@ export class ArticleService extends BaseServiceCRUD<Article> {
     private readonly articlePreviewService: ArticlePreviewService,
     private readonly articleCategoryService: ArticleCategoryService,
     private readonly articleHashtagService: ArticleHashtagService,
+    private readonly articleTestService: ArticleTestService,
+    private readonly articleTestUserService: ArticleTestUserService,
+    private readonly userAchievementService: UserAchievementService,
     private readonly asyncContext: AsyncContext<string, any>
   ) {
     super({
       modelRepository: articleRepository,
       autocompleteProperty: 'body',
-      includes: []
+      includes: [],
+      beforeCreate: async article =>
+        await this.updateUserPoints.call(
+          this,
+          article.id,
+          EarnUserPointsStrategyConstants.BY_PUBLICATION
+        )
     })
+  }
+
+  async updateUserPoints(
+    articleId: number,
+    strategy: EarnUserPointsStrategyConstants
+  ) {
+    const { id: userId } = this.asyncContext.get('user')
+    const articleCategories = await this.articleCategoryService.getAll(
+      {
+        ...defaultPagingOptions,
+        pageSize: -1
+      },
+      {
+        articleId
+      }
+    )
+    return await Promise.all(
+      articleCategories.items.map(articleCategory =>
+        this.userAchievementService.updateUserPoints(
+          userId,
+          articleCategory.categoryId,
+          strategy
+        )
+      )
+    )
+  }
+
+  async passTest(articleId: number) {
+    const { id: userId } = this.asyncContext.get('user')
+    const articleTest = await this.articleTestService.getByArticleId(articleId)
+    const [articleTestUser, userAchievements] = await Promise.all([
+      this.articleTestUserService.create({
+        userId,
+        testId: articleTest.id
+      }),
+      this.updateUserPoints(
+        articleId,
+        EarnUserPointsStrategyConstants.BY_PASS_TEST
+      )
+    ])
+    return articleTestUser
   }
 
   async createComplex(dto: CreateComplexArticleDto) {
     const { id: userId } = this.asyncContext.get('user')
-
     const article = await super.create({
       createdByUserId: userId,
       body: dto.body
     })
-
     const [preview, categories, hashtags] = await Promise.all([
       dto.previewId
         ? this.articlePreviewService.create({
@@ -58,7 +111,11 @@ export class ArticleService extends BaseServiceCRUD<Article> {
               })
             )
           )
-        : Promise.resolve()
+        : Promise.resolve(),
+      this.updateUserPoints(
+        article.id,
+        EarnUserPointsStrategyConstants.BY_PUBLICATION
+      )
     ])
     return article
   }
@@ -114,7 +171,6 @@ export class ArticleService extends BaseServiceCRUD<Article> {
           )
         : Promise.resolve()
     ])
-
     return article
   }
 }

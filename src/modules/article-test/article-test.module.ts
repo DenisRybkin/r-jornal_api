@@ -9,24 +9,35 @@ import { ArticleTestAnswerService } from './article-test-answer.service'
 import { ArticleTestController } from './article-test.controller'
 import { ArticleTestQuestionController } from './article-test-question.controller'
 import { ArticleTestAnswerController } from './article-test-answer.controller'
+import { ArticleTestUser } from '../../database/models/related/ArticleTestUser/article-test-user.model'
+import { ArticleTestUserService } from './article-test-user.service'
+import { UserModule } from '../user/user.module'
 
 @Module({
   imports: [
     SequelizeModule.forFeature([
       ArticleTest,
       ArticleTestQuestion,
-      ArticleTestAnswer
+      ArticleTestAnswer,
+      ArticleTestUser
     ])
   ],
   providers: [
     ArticleTestService,
     ArticleTestQuestionService,
-    ArticleTestAnswerService
+    ArticleTestAnswerService,
+    ArticleTestUserService
   ],
   controllers: [
     ArticleTestController,
     ArticleTestQuestionController,
     ArticleTestAnswerController
+  ],
+  exports: [
+    ArticleTestService,
+    ArticleTestQuestionService,
+    ArticleTestAnswerService,
+    ArticleTestUserService
   ]
 })
 export class ArticleTestModule {}

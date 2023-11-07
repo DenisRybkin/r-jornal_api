@@ -1,10 +1,13 @@
 import { IPaging, IPagingOptions } from '../interfaces/common'
 import { DbPaginationOptions } from './types'
+import { NullableLike } from '../types'
 
 export class PaginationHelper {
   public static genPagingOpts(
-    initialPagingOpts: IPagingOptions
-  ): DbPaginationOptions {
+    initialPagingOpts: NullableLike<IPagingOptions, 'pageSize'>
+  ): DbPaginationOptions | undefined {
+    if (!initialPagingOpts.pageSize || initialPagingOpts.pageSize < 0)
+      return undefined
     return {
       limit: initialPagingOpts.pageSize,
       offset: PaginationHelper.getOffset(
@@ -17,17 +20,18 @@ export class PaginationHelper {
   public static mapToIPaging<T>(
     count: number,
     data: T[],
-    opts: IPagingOptions
+    opts: NullableLike<IPagingOptions, 'pageSize'>
   ): IPaging<T> {
     return {
       items: data,
       totalItems: count,
-      pagingOptions: opts,
+      pagingOptions: { ...opts, pageSize: opts.pageSize ?? -1 },
       totalPages: PaginationHelper.getTotalPages(count, opts.pageSize)
     }
   }
 
-  private static getTotalPages(totalItems: number, pageSize: number) {
+  private static getTotalPages(totalItems: number, pageSize?: number | null) {
+    if (!pageSize) return 1
     return Math.ceil(totalItems / pageSize)
   }
 

@@ -3,7 +3,11 @@ import { MakeNullishOptional } from 'sequelize/types/utils'
 import { BaseServiceRead, IConfigServiceRead } from './service-read.interface'
 
 export interface IConfigServiceCRUD<T extends Model<T, any>>
-  extends IConfigServiceRead<T> {}
+  extends IConfigServiceRead<T> {
+  beforeCreate?: (res: T) => Promise<unknown>
+  beforeUpdate?: (res: T) => Promise<unknown>
+  beforeDelete?: () => Promise<unknown>
+}
 
 export abstract class BaseServiceCRUD<
   T extends Model<T, any>

@@ -19,14 +19,17 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async create(model: MakeNullishOptional<T['_creationAttributes']>) {
-    return this.config.modelRepository.create(model)
+    const result = await this.config.modelRepository.create(model)
+    if (result && this.config.beforeCreate)
+      await this.config.beforeCreate(result)
+    return result
   }
 
   public async update(
     idOrWhereOpts: number | Partial<T>,
     model: T | Partial<T>
   ) {
-    return (
+    const result = (
       await this.config.modelRepository.update<ORMModelWithId>(model, {
         where: {
           ...(typeof idOrWhereOpts == 'number'
@@ -36,6 +39,9 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
         returning: true
       })
     )[1][0] as unknown as T
+    if (result && this.config.beforeUpdate)
+      await this.config.beforeUpdate(result)
+    return result
   }
 
   public async createOrUpdate(
@@ -59,12 +65,30 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {
-    return this.config.modelRepository.destroy<ORMModelWithId>({
+    const result = await this.config.modelRepository.destroy<ORMModelWithId>({
       where: {
         ...(typeof idOrWhereOpts == 'number'
           ? { id: idOrWhereOpts }
           : idOrWhereOpts)
       }
     })
+    if (this.config.beforeDelete) await this.config.beforeDelete()
+    return result
+  }
+
+  public async createOrDelete(
+    idOrWhereOpts: number | Partial<T>,
+    model: MakeNullishOptional<T['_creationAttributes']>
+  ) {
+    const foundModel = await super.getOne({
+      where: {
+        ...(typeof idOrWhereOpts == 'number'
+          ? { id: idOrWhereOpts }
+          : idOrWhereOpts)
+      }
+    })
+
+    if (foundModel) return await this.delete(idOrWhereOpts)
+    return this.create(model)
   }
 }
