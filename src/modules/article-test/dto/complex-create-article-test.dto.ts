@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import {
-  IsInt,
-  MinLength,
-  ValidateNested,
-  IsArray,
-  ArrayMinSize
-} from 'class-validator'
+import { ArrayMinSize, IsArray, IsInt, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { ComplexCreateArticleTestQuestionDto } from './complex-create-article-test-question.dto'

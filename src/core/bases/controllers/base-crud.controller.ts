@@ -73,7 +73,8 @@ export function buildBaseControllerCRUD<T extends Model<T, any>>(
       isPublic: config.privacySettings?.updateIsPublic,
       updateDto: config.updatePartiallyDto,
       model: config.swagger.model,
-      modelName: config.swagger.modelName
+      modelName: config.swagger.modelName,
+      patch: true
     })
     @Patch('/:id')
     public async updatePartially(

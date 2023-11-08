@@ -9,7 +9,9 @@ const BaseController = buildBaseControllerRead<Achievement>({
   swagger: { model: Achievement, modelName: 'achievement' },
   filterDto: ReadAchievementFilterDto,
   privacySettings: {
-    getAllIsPublic: true
+    getAllIsPublic: true,
+    getByIdIsPublic: true,
+    autocompleteIsPublic: true
   }
 })
 

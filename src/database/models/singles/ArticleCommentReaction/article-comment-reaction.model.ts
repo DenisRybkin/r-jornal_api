@@ -9,6 +9,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ArticleComment } from '../ArticleComment/article-comment.model'
 import { User } from '../User/user.model'
+import { CreateArticleCommentReactionAttributes } from './article-comment-reaction.attributes'
 
 @Table({ tableName: 'ArticleCommentReaction' })
 export class ArticleCommentReaction extends Model<

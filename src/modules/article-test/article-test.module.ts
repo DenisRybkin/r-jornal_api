@@ -11,7 +11,6 @@ import { ArticleTestQuestionController } from './article-test-question.controlle
 import { ArticleTestAnswerController } from './article-test-answer.controller'
 import { ArticleTestUser } from '../../database/models/related/ArticleTestUser/article-test-user.model'
 import { ArticleTestUserService } from './article-test-user.service'
-import { UserModule } from '../user/user.module'
 
 @Module({
   imports: [

@@ -1,7 +1,6 @@
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import { ClassConstructor } from 'class-transformer'
 import { ModelWithId } from '../../interfaces/rest/model-with-id.interface'
-import { Model } from 'sequelize-typescript'
 import { applyDecorators } from '@nestjs/common'
 import {
   ApiBadRequestResponse,

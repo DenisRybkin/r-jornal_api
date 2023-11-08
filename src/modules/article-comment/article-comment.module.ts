@@ -7,6 +7,7 @@ import { ArticleCommentStaticField } from '../../database/models/related/Article
 import { StaticFieldModule } from '../static-field/static-field.module'
 import { ArticleCommentStaticFieldService } from './article-comment-static-field.service'
 import { ArticleCommentReaction } from '../../database/models/singles/ArticleCommentReaction/article-comment-reaction.model'
+import { ArticleCommentReactionService } from './article-comment-reaction.service'
 
 @Module({
   imports: [
@@ -17,8 +18,16 @@ import { ArticleCommentReaction } from '../../database/models/singles/ArticleCom
     ]),
     StaticFieldModule
   ],
-  providers: [ArticleCommentService, ArticleCommentStaticFieldService],
+  providers: [
+    ArticleCommentService,
+    ArticleCommentStaticFieldService,
+    ArticleCommentReactionService
+  ],
   controllers: [ArticleCommentController],
-  exports: [ArticleCommentService, ArticleCommentStaticFieldService]
+  exports: [
+    ArticleCommentService,
+    ArticleCommentStaticFieldService,
+    ArticleCommentReactionService
+  ]
 })
 export class ArticleCommentModule {}

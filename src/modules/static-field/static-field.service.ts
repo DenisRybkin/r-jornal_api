@@ -39,7 +39,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
 
   async getDefaultsAvatars() {
     return this.getAll(
-      { ...defaultPagingOptions, pageSize: 19 },
+      { ...defaultPagingOptions, pageSize: 30 },
       {
         name: defaultAvatarNames
       }

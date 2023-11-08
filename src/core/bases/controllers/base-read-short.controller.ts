@@ -1,12 +1,10 @@
 import { Get, Param, Req } from '@nestjs/common/decorators'
 import { ParseIntPipe } from '@nestjs/common/pipes'
 import {
-  ApiBadRequestResponse,
   ApiExtraModels,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery,
   getSchemaPath
 } from '@nestjs/swagger'
 import { Request } from 'express'

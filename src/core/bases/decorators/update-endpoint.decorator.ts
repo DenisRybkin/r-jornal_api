@@ -22,6 +22,7 @@ interface IUpdateEndpointConfig<M extends Model<M, any>>
   model: Repository<M> | ClassConstructor<Object>
   updateDto: ClassConstructor<Object>
   modelInfo?: IModelInfo
+  patch?: boolean
 }
 
 export const UpdateEndpoint = <M extends Model<M, any>>(
@@ -29,7 +30,9 @@ export const UpdateEndpoint = <M extends Model<M, any>>(
 ) =>
   applyDecorators(
     ApiOperation({
-      summary: config.operationName ?? `Full update ${config.modelName}`
+      summary:
+        config.operationName ??
+        `${config.patch ? 'Partially' : 'Full'} update ${config.modelName}`
     }),
     ApiOkResponse({ status: 200, type: config.model }),
     ApiInternalServerErrorResponse({
