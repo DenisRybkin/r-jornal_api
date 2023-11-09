@@ -5,6 +5,10 @@ import { ExaminationQuestion } from '../../database/models/singles/ExaminationQu
 import { ExaminationAnswer } from '../../database/models/singles/ExaminationAnswer/examination-answer.model'
 import { ExaminationService } from './examination.service'
 import { ExaminationController } from './examination.controller'
+import { ExaminationQuestionController } from './examination-question.controller'
+import { ExaminationQuestionService } from './examination-question.service'
+import { ExaminationAnswerController } from './examination-answer.controller'
+import { ExaminationAnswerService } from './examination-answer.service'
 
 @Module({
   imports: [
@@ -14,8 +18,20 @@ import { ExaminationController } from './examination.controller'
       ExaminationAnswer
     ])
   ],
-  controllers: [ExaminationController],
-  providers: [ExaminationService],
-  exports: [ExaminationService]
+  controllers: [
+    ExaminationController,
+    ExaminationQuestionController,
+    ExaminationAnswerController
+  ],
+  providers: [
+    ExaminationService,
+    ExaminationQuestionService,
+    ExaminationAnswerService
+  ],
+  exports: [
+    ExaminationService,
+    ExaminationQuestionService,
+    ExaminationAnswerService
+  ]
 })
 export class ExaminationModule {}

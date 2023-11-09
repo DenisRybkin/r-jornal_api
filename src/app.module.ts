@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_PIPE } from '@nestjs/core'
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { SequelizeModule } from '@nestjs/sequelize'
 import { AllExceptionsFilter } from './core/exception-filters/all-exceptions.filter'
@@ -18,13 +18,12 @@ import { CategoryModule } from './modules/category/category.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'node:path'
 import { ExaminationModule } from './modules/examination/examination.module'
-import { ExaminationQuestionModule } from './modules/examination-question/examination-question.module'
-import { ExaminationAnswerModule } from './modules/examination-answer/examination-answer.module'
 import { AchievementModule } from './modules/achievement/achievement.module'
 import { HashtagModule } from './modules/hashtag/hashtag.module'
 import { ArticleModule } from './modules/article/article.module'
 import { ArticleTestModule } from './modules/article-test/article-test.module'
 import { ArticleCommentModule } from './modules/article-comment/article-comment.module'
+import { AuthGuard, RolesGuard } from './core/guards'
 
 @Module({
   imports: [
@@ -49,8 +48,6 @@ import { ArticleCommentModule } from './modules/article-comment/article-comment.
     CategoryModule,
     StaticFieldModule,
     ExaminationModule,
-    ExaminationQuestionModule,
-    ExaminationAnswerModule,
     AchievementModule,
     HashtagModule,
     ArticleModule,
@@ -61,14 +58,14 @@ import { ArticleCommentModule } from './modules/article-comment/article-comment.
   providers: [
     JwtService,
     UniqueValidator,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard
-    // },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    },
     {
       provide: APP_PIPE,
       useClass: ErrorsValidationPipe

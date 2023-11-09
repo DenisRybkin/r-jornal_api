@@ -34,7 +34,7 @@ const BaseController = buildBaseControllerCRUD<ExaminationQuestion>({
 @Controller('examination-question')
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export class ExaminatinQuestionController extends BaseController {
+export class ExaminationQuestionController extends BaseController {
   constructor(private readonly questionService: ExaminationQuestionService) {
     super(questionService)
   }
