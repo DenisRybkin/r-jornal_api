@@ -14,7 +14,7 @@ import { defaultPagingOptions } from '../../core/bases/utils'
 import EasyYandexS3 from 'easy-yandex-s3'
 import { S3BucketFactory } from './S3/S3-bucket.factory'
 import { S3 } from 'aws-sdk'
-import { CloudFoldersConstants } from './S3/cloud-folders.constants'
+import { CloudFoldersConstants } from './constants/cloud-folders.constants'
 
 @Injectable()
 export class StaticFieldService extends BaseServiceRead<StaticField> {

@@ -65,10 +65,14 @@ const BaseController = buildBaseControllerCRUD<User>({
 })
 
 @ApiExtraModels(
-  ReadUserFilterDto,
   CreateUserDto,
-  UpdateUserDto,
+  CreateUserFollowingDto,
+  FollowDto,
+  ReadUserFilterDto,
+  ReadUserFollowerFilterDto,
+  ReadUserFollowingFilterDto,
   UpdatePartiallyUserDto,
+  UpdateUserDto,
   UserAvatarDto
 )
 @ApiTags('User')

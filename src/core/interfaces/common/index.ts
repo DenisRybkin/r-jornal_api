@@ -9,3 +9,4 @@ export {
 } from './processed-error.type'
 export { ReadFilter } from './read-filter.type'
 export { Roles } from './roles.type'
+export { LocaleType, Locale } from './locale.type'

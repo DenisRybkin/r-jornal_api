@@ -9,29 +9,21 @@ import {
 import { buildBaseControllerRead } from '../../core/bases/controllers'
 import { StaticField } from '../../database/models/singles/StaticField/static-field.model'
 import { ImageUploadDto, ReadStaticFieldFilterDto } from './dto'
-import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiConsumes,
-  ApiExtraModels,
-  ApiInternalServerErrorResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-  getSchemaPath
-} from '@nestjs/swagger'
+import { ApiConsumes, ApiExtraModels, ApiTags } from '@nestjs/swagger'
 import { StaticFieldService } from './static-field.service'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { ProcessedError500Type } from '../../core/interfaces/common/processed-error.type'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
 import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
 import { ConstraintMessagesConstants } from '../../core/constants'
 import { ImageProcessPipe, UploadProcessed } from './pipes/image-process.pipe'
 import { Get } from '@nestjs/common/decorators'
-import { PagingType } from '../../core/interfaces/common/paging'
-import { PagingOptionsType } from '../../core/interfaces/common/paging/paging-options.interface'
 import { EditorImageDto } from './dto/editor-image.dto'
-import { CloudFoldersConstants } from './S3/cloud-folders.constants'
+import { CloudFoldersConstants } from './constants/cloud-folders.constants'
+import {
+  CreateEndpoint,
+  DeleteEndpoint,
+  GetAllEndpoint
+} from '../../core/bases/decorators'
 
 const baseController = buildBaseControllerRead<StaticField>({
   filterDto: ReadStaticFieldFilterDto,
@@ -48,20 +40,10 @@ export class StaticFieldController extends baseController {
     super(staticFieldService)
   }
 
-  @ApiOperation({ summary: `Upload image & create StaticField model` })
-  @ApiOkResponse({
-    status: 200,
-    schema: { $ref: getSchemaPath(StaticField) }
-  })
-  @ApiInternalServerErrorResponse({
-    status: 500,
-    schema: {
-      $ref: getSchemaPath(ProcessedError500Type)
-    }
-  })
-  @ApiBody({
-    description: 'Image form-data',
-    type: ImageUploadDto
+  @CreateEndpoint({
+    operationName: 'Upload image & create StaticField model',
+    model: StaticField,
+    createDto: ImageUploadDto
   })
   @ApiConsumes('multipart/form-data')
   @Post()
@@ -74,22 +56,11 @@ export class StaticFieldController extends baseController {
     return this.staticFieldService.create({ ...image.dto, url: Location })
   }
 
-  @ApiOperation({
-    summary: `Upload image from editor js plugin & create StaticField model`
-  })
-  @ApiOkResponse({
-    status: 200,
-    schema: { $ref: getSchemaPath(EditorImageDto) }
-  })
-  @ApiInternalServerErrorResponse({
-    status: 500,
-    schema: {
-      $ref: getSchemaPath(ProcessedError500Type)
-    }
-  })
-  @ApiBody({
-    description: 'Image form-data',
-    type: ImageUploadDto
+  @CreateEndpoint({
+    operationName:
+      'Upload image from editor js plugin & create StaticField model',
+    model: EditorImageDto,
+    createDto: ImageUploadDto
   })
   @ApiConsumes('multipart/form-data')
   @Post('editor-js')
@@ -114,16 +85,8 @@ export class StaticFieldController extends baseController {
     }
   }
 
-  @ApiOperation({ summary: 'Delete model by id' })
-  @ApiOkResponse({
-    status: 200,
-    type: 'boolean'
-  })
-  @ApiInternalServerErrorResponse({
-    status: 500,
-    schema: {
-      $ref: getSchemaPath(ProcessedError500Type)
-    }
+  @DeleteEndpoint({
+    operationName: 'Delete static field by id'
   })
   @Delete('/:id')
   public async delete(
@@ -141,29 +104,9 @@ export class StaticFieldController extends baseController {
     return countDeleted == 1
   }
 
-  @ApiOperation({ summary: 'Endpoint for get default avatars' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      allOf: [
-        { $ref: getSchemaPath(PagingType) },
-        {
-          properties: {
-            items: {
-              type: 'array',
-              items: { $ref: getSchemaPath(StaticField) }
-            },
-            pagingOptions: { $ref: getSchemaPath(PagingOptionsType) }
-          }
-        }
-      ]
-    }
-  })
-  @ApiBadRequestResponse({
-    status: 500,
-    schema: {
-      $ref: getSchemaPath(ProcessedError500Type)
-    }
+  @GetAllEndpoint({
+    operationName: 'Endpoint for get default avatars',
+    model: StaticField
   })
   @Get('default-avatars')
   public async getDefaultAvatar() {

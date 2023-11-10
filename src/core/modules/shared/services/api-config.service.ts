@@ -6,6 +6,7 @@ import type { SequelizeModuleOptions } from '@nestjs/sequelize'
 import { ModelOptions } from 'sequelize/types'
 import { Dialect } from 'sequelize/types/sequelize'
 import { AppConfig, S3Config } from '../../../types'
+import { ClientOptions } from 'openai/src'
 
 @Injectable()
 export class ApiConfigService {
@@ -40,6 +41,10 @@ export class ApiConfigService {
 
   get clientWebUrl(): string {
     return this.getString('CLIENT_WEB_URL')
+  }
+
+  get openAIConfig(): ClientOptions {
+    return { apiKey: this.getString('CHAT_GPT_SECRET_KEY') }
   }
 
   get dbConfig(): SequelizeModuleOptions {
