@@ -51,7 +51,7 @@ export class ArticleCommentReaction extends Model<
 
   @ApiProperty({
     description: 'symbol like emoji',
-    type: '😂'
+    example: '😂'
   })
   @Column({ allowNull: false, type: DataType.STRING })
   readonly value: string

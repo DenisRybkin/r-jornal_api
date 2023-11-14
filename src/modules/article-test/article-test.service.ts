@@ -65,7 +65,6 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
   }
 
   async updateComplex(
-    id: number,
     dto: ComplexUpdateArticleTestDto
   ): Promise<ComplexUpdateArticleTestDto> {
     const [articleTestQuestions, articleTestAnswers] = await Promise.all([

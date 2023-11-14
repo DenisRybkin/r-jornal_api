@@ -157,7 +157,7 @@ export class ArticleController extends BaseController {
     model: ArticleTestUser
   })
   @Post('/pass-test/:articleId')
-  async pass(
+  async passTest(
     @Param(
       'articleId',
       new ParseIntPipe({

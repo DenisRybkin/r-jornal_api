@@ -103,9 +103,10 @@ export class UserController extends BaseController {
 
   @GetOneEndpoint({
     operationName: 'Get count followers of user by userId',
-    model: Number
+    model: Number,
+    isPublic: true
   })
-  @Get('/followers/:userId/count')
+  @Get('/follower /:userId/count')
   async getFollowersCount(
     @Param(
       'userId',
@@ -150,10 +151,10 @@ export class UserController extends BaseController {
   }
 
   @GetOneEndpoint({
-    operationName: 'Get count followers of user by userId',
+    operationName: 'Get count followings of user by userId',
     model: Number
   })
-  @Get('/followings/:userId/count')
+  @Get('/following/:userId/count')
   async getFollowingsCount(
     @Param(
       'userId',

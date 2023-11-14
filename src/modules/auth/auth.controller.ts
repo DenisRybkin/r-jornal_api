@@ -82,6 +82,23 @@ export class AuthController {
     }
   }
 
+  @ApiOperation({ summary: 'Logout endpoint' })
+  @ApiOkResponse({
+    status: 200,
+    type: Boolean
+  })
+  @ApiBadRequestResponse({
+    status: 401,
+    schema: {
+      $ref: getSchemaPath(ProcessedError401Type)
+    }
+  })
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('refresh')
+    return true
+  }
+
   @ApiOperation({ summary: 'Registration endpoint' })
   @ApiOkResponse({
     status: 200,

@@ -1,5 +1,5 @@
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
-import { Body, Controller, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Post, Put } from '@nestjs/common'
 import {
   ComplexCreateArticleTestAnswerDto,
   ComplexCreateArticleTestDto,
@@ -17,9 +17,6 @@ import { ArticleTest } from '../../database/models/singles/ArticleTest/article-t
 import { ArticleTestService } from './article-test.service'
 import { CreateEndpoint, UpdateEndpoint } from '../../core/bases/decorators'
 import { Roles } from '../../core/interfaces/common'
-import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
-import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
-import { ConstraintMessagesConstants } from '../../core/constants'
 import { AsyncContext } from '../../core/modules/async-context/async-context'
 import { ArticleTestUserService } from './article-test-user.service'
 
@@ -84,19 +81,8 @@ export class ArticleTestController extends BaseController {
     model: ComplexUpdateArticleTestDto,
     requiredRoles: [Roles.Owner, Roles.Admin, Roles.Publisher]
   })
-  @Put('/complex/:id')
-  async updateComplex(
-    @Param(
-      'id',
-      new ParseIntPipe({
-        exceptionFactory: PipeExceptionFactory('id', [
-          ConstraintMessagesConstants.MustBeInteger
-        ])
-      })
-    )
-    id: number,
-    @Body() dto: ComplexUpdateArticleTestDto
-  ) {
-    return await this.articleTestService.updateComplex(id, dto)
+  @Put('/complex')
+  async updateComplex(@Body() dto: ComplexUpdateArticleTestDto) {
+    return await this.articleTestService.updateComplex(dto)
   }
 }

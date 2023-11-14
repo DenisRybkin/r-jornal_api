@@ -8,7 +8,7 @@ module.exports = {
         id: 20,
         name: 'common.png',
         originalname: 'common.png',
-        url: `${process.env.BASE_URL}/static/categories/common.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/common.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -17,7 +17,7 @@ module.exports = {
         id: 21,
         name: 'c#.png',
         originalname: 'c#.png',
-        url: `${process.env.BASE_URL}/static/categories/c#.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/c#.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -26,7 +26,7 @@ module.exports = {
         id: 22,
         name: 'c++.png',
         originalname: 'c++.png',
-        url: `${process.env.BASE_URL}/static/categories/c++.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/c++.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -35,7 +35,7 @@ module.exports = {
         id: 23,
         name: 'c.png',
         originalname: 'c.png',
-        url: `${process.env.BASE_URL}/static/categories/c.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/c.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -44,7 +44,7 @@ module.exports = {
         id: 25,
         name: 'dart.png',
         originalname: 'dart.png',
-        url: `${process.env.BASE_URL}/static/categories/dart.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/dart.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -53,7 +53,7 @@ module.exports = {
         id: 26,
         name: 'go.png',
         originalname: 'go.png',
-        url: `${process.env.BASE_URL}/static/categories/go.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/go.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -62,7 +62,7 @@ module.exports = {
         id: 27,
         name: 'haskell.png',
         originalname: 'haskell.png',
-        url: `${process.env.BASE_URL}/static/categories/haskell.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/haskell.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -71,7 +71,7 @@ module.exports = {
         id: 28,
         name: 'java.png',
         originalname: 'java.png',
-        url: `${process.env.BASE_URL}/static/categories/java.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/java.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -80,7 +80,7 @@ module.exports = {
         id: 29,
         name: 'javascript.png',
         originalname: 'javascript.png',
-        url: `${process.env.BASE_URL}/static/categories/javascript.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/javascript.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -89,7 +89,7 @@ module.exports = {
         id: 30,
         name: 'kotlin.png',
         originalname: 'kotlin.png',
-        url: `${process.env.BASE_URL}/static/categories/kotlin.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/kotlin.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -98,7 +98,7 @@ module.exports = {
         id: 31,
         name: 'php.png',
         originalname: 'php.png',
-        url: `${process.env.BASE_URL}/static/categories/php.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/php.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -107,7 +107,7 @@ module.exports = {
         id: 32,
         name: 'power-shell.png',
         originalname: 'power-shell.png',
-        url: `${process.env.BASE_URL}/static/categories/power-shell.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/power-shell.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -116,7 +116,7 @@ module.exports = {
         id: 33,
         name: 'python.png',
         originalname: 'python.png',
-        url: `${process.env.BASE_URL}/static/categories/python.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/python.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -125,7 +125,7 @@ module.exports = {
         id: 34,
         name: 'ruby.png',
         originalname: 'ruby.png',
-        url: `${process.env.BASE_URL}/static/categories/ruby.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/ruby.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -134,7 +134,7 @@ module.exports = {
         id: 35,
         name: 'rust.png',
         originalname: 'rust.png',
-        url: `${process.env.BASE_URL}/static/categories/rust.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/rust.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -143,7 +143,7 @@ module.exports = {
         id: 36,
         name: 'scala.png',
         originalname: 'scala.png',
-        url: `${process.env.BASE_URL}/static/categories/scala.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/scala.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -152,7 +152,7 @@ module.exports = {
         id: 37,
         name: 'sql.png',
         originalname: 'sql.png',
-        url: `${process.env.BASE_URL}/static/categories/sql.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/sql.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
@@ -161,7 +161,7 @@ module.exports = {
         id: 38,
         name: 'typescript.png',
         originalname: 'typescript.png',
-        url: `${process.env.BASE_URL}/static/categories/typescript.png`,
+        url: `https://storage.yandexcloud.net/it-hub/topics/typescript.png`,
         type: 'image/png',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'

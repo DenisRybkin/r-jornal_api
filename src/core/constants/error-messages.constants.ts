@@ -1,9 +1,9 @@
 export enum ErrorMessagesConstants {
-  ValidationError = 'notifier:error.api.validation_error',
-  InternalError = 'notifier:error.api.internal_server_error',
-  Conflict = 'notifier:error.api.conflict',
-  Unauthorized = 'notifier:error.api.unauthorized',
-  Forbidden = 'notifier:error.api.forbidden',
-  BadRequest = 'notifier:error.api.bad_request',
-  NotFound = 'notifier:error.api.not_found'
+  ValidationError = 'toast:error.api.validation_error',
+  InternalError = 'toast:error.api.internal_server_error',
+  Conflict = 'toast:error.api.conflict',
+  Unauthorized = 'toast:error.api.unauthorized',
+  Forbidden = 'toast:error.api.forbidden',
+  BadRequest = 'toast:error.api.bad_request',
+  NotFound = 'toast:error.api.not_found'
 }
