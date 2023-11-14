@@ -46,7 +46,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
 
   public async createOrUpdate(
     idOrWhereOpts: number | Partial<T>,
-    model: T | Partial<T>,
+    model: MakeNullishOptional<T['_creationAttributes']>,
     includes?: Includeable[]
   ) {
     const foundModel = await super.getOne(
@@ -60,8 +60,8 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
       includes,
       false
     )
-    if (foundModel) return foundModel
-    return await this.update(idOrWhereOpts, model)
+    if (foundModel) return await this.update(idOrWhereOpts, model as T)
+    return await this.create(model)
   }
 
   public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {
