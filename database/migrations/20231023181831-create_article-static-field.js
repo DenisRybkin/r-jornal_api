@@ -23,7 +23,6 @@ module.exports = {
       staticFieldId: {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
-        unique: true,
         references: {
           model: 'StaticField',
           key: 'id'

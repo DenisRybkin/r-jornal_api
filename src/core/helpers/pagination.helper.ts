@@ -32,7 +32,7 @@ export class PaginationHelper {
 
   private static getTotalPages(totalItems: number, pageSize?: number | null) {
     if (!pageSize) return 1
-    return Math.ceil(totalItems / pageSize)
+    return pageSize < 1 ? 1 : Math.abs(Math.ceil(totalItems / pageSize))
   }
 
   private static getOffset(page: number, pageSize: number): number {

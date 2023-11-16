@@ -2,6 +2,7 @@ import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript'
 import { CreateStaticFieldAttributes } from './static-field.attributes'
 import { ApiProperty } from '@nestjs/swagger'
 import { User } from '../User/user.model'
+import { CloudFoldersConstants } from '../../../../modules/static-field/constants/cloud-folders.constants'
 
 @Table({
   tableName: 'StaticField'
@@ -58,6 +59,20 @@ export class StaticField extends Model<
     allowNull: false
   })
   readonly url: string
+
+  @ApiProperty({
+    example: 'uploads/',
+    description: 'folder of s3',
+    enum: CloudFoldersConstants
+  })
+  @Column({
+    type: DataType.ENUM({
+      values: Object.values(CloudFoldersConstants.UPLOADS)
+    }),
+    allowNull: false,
+    defaultValue: CloudFoldersConstants.UPLOADS
+  })
+  readonly folder: CloudFoldersConstants
 
   @HasMany(() => User, 'defaultAvatarId')
   readonly user?: User[]

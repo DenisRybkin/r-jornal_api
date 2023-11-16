@@ -112,4 +112,12 @@ export class StaticFieldController extends baseController {
   public async getDefaultAvatar() {
     return this.staticFieldService.getDefaultsAvatars()
   }
+  @GetAllEndpoint({
+    operationName: 'Endpoint for get previews',
+    model: StaticField
+  })
+  @Get('previews')
+  public async getPreviews() {
+    return this.staticFieldService.getPreviews()
+  }
 }

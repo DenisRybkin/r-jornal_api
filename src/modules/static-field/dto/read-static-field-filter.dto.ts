@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsInt, IsOptional, IsString } from 'class-validator'
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
+import { CloudFoldersConstants } from '../constants/cloud-folders.constants'
 
 export class ReadStaticFieldFilterDto {
   @ApiPropertyOptional()
@@ -27,4 +28,11 @@ export class ReadStaticFieldFilterDto {
   @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly url?: string
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEnum(CloudFoldersConstants, {
+    message: ConstraintMessagesConstants.MustBeString
+  })
+  readonly folder?: CloudFoldersConstants
 }

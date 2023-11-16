@@ -5,14 +5,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       'StaticField',
-      Array.from(Array(30).keys()).map((_, index) => ({
-        name: (index + 1).toString() + '.png',
-        originalname: (index + 1).toString() + '.png',
-        url: `https://it-hub.storage.yandexcloud.net/default-avatars/${
-          (index + 1).toString() + '.png'
+      Array.from(Array(9).keys()).map((_, index) => ({
+        name: (index + 1).toString() + '.jpg',
+        originalname: (index + 1).toString() + '.jpg',
+        url: `https://storage.yandexcloud.net/it-hub/previews/${
+          (index + 1).toString() + '.jpg'
         }`,
-        folder: 'default-avatars/',
-        type: 'image/png',
+        folder: 'previews/',
+        type: 'image/jpg',
         updatedAt: '2023-09-02T15:07:31.676Z',
         createdAt: '2023-09-02T15:07:31.676Z'
       }))

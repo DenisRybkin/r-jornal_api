@@ -9,7 +9,6 @@ import {
   NotFoundException
 } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
-import { defaultAvatarNames } from './constants/default-avatars.contants'
 import { defaultPagingOptions } from '../../core/bases/utils'
 import EasyYandexS3 from 'easy-yandex-s3'
 import { S3BucketFactory } from './S3/S3-bucket.factory'
@@ -39,9 +38,18 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
 
   async getDefaultsAvatars() {
     return this.getAll(
-      { ...defaultPagingOptions, pageSize: 30 },
+      { ...defaultPagingOptions, pageSize: -1 },
       {
-        name: defaultAvatarNames
+        folder: CloudFoldersConstants.DEFAULT_AVATARS
+      }
+    )
+  }
+
+  async getPreviews() {
+    return this.getAll(
+      { ...defaultPagingOptions, pageSize: -1 },
+      {
+        folder: CloudFoldersConstants.PREVIEWS
       }
     )
   }
