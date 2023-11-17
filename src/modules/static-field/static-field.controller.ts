@@ -22,7 +22,8 @@ import { CloudFoldersConstants } from './constants/cloud-folders.constants'
 import {
   CreateEndpoint,
   DeleteEndpoint,
-  GetAllEndpoint
+  GetAllEndpoint,
+  GetOneEndpoint
 } from '../../core/bases/decorators'
 
 const baseController = buildBaseControllerRead<StaticField>({
@@ -112,6 +113,7 @@ export class StaticFieldController extends baseController {
   public async getDefaultAvatar() {
     return this.staticFieldService.getDefaultsAvatars()
   }
+
   @GetAllEndpoint({
     operationName: 'Endpoint for get previews',
     model: StaticField

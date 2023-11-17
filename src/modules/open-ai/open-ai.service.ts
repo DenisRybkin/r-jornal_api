@@ -28,7 +28,7 @@ export class OpenAiService {
         frequency_penalty: 0.0,
         presence_penalty: 0.0
       })
-      .then(res => res.choices[0].text)
+      .catch(console.error)
   }
 
   async genQuestions(topic: string, locale: LocaleType, count?: number) {
