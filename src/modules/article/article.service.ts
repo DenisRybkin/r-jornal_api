@@ -81,14 +81,6 @@ export class ArticleService extends BaseServiceCRUD<Article> {
 
   async createComplex(dto: CreateComplexArticleDto) {
     const { id: userId } = this.asyncContext.get('user')
-    console.log(
-      dto.hashtagIds,
-      dto.categoryIds,
-      dto.previewId,
-      userId,
-      this.articleCategoryService,
-      this.articlePreviewService
-    )
     const article = await super.create({
       createdByUserId: userId,
       body: dto.body
