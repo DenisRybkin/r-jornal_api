@@ -13,7 +13,7 @@ module.exports = {
       },
       body: {
         allowNull: false,
-        type: Sequelize.DataTypes.STRING
+        type: Sequelize.DataTypes.TEXT
       },
       createdByUserId: {
         allowNull: false,

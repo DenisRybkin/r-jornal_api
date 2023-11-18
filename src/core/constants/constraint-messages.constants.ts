@@ -7,5 +7,7 @@ export enum ConstraintMessagesConstants {
   MustBeEnum = 'toast:error.api.validation.must_be_enum',
   MustBeDate = 'toast:error.api.validation.must_be_date',
   MustBeBoolean = 'toast:error.api.validation.must_be_boolean',
-  MustBeArray = 'toast:error.api.validation.must_be_array'
+  MustBeArray = 'toast:error.api.validation.must_be_array',
+  MustBeIntArray = 'toast:error.api.validation.must_be_int_array',
+  MustBeStringArray = 'toast:error.api.validation.must_be_string_array'
 }

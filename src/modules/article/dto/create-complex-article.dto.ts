@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   MinLength
@@ -20,12 +21,18 @@ export class CreateComplexArticleDto {
   readonly previewId?: number
 
   @ApiProperty({ isArray: true, type: Number })
-  @MinLength(1, { each: true })
+  @IsArray({ message: ConstraintMessagesConstants.MustBeIntArray })
+  @ArrayMinSize(1)
+  @IsNumber({ allowNaN: false, allowInfinity: false }, { each: true })
   readonly categoryIds: number[]
 
   @ApiPropertyOptional({ isArray: true, type: Number })
   @IsOptional()
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
   @ArrayMinSize(1)
+  @IsNumber(
+    { allowNaN: false, allowInfinity: false },
+    { each: true, message: ConstraintMessagesConstants.MustBeIntArray }
+  )
   readonly hashtagIds?: number[]
 }
