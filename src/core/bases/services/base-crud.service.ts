@@ -7,6 +7,12 @@ import {
 import { BaseServiceRead } from './base-read.service'
 import { ORMModelWithId } from '../../interfaces/rest/model-with-id.interface'
 import { Includeable } from 'sequelize'
+import {
+  Attributes,
+  CreateOptions,
+  DestroyOptions,
+  UpdateOptions
+} from 'sequelize/types/model'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -18,8 +24,11 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     super(config)
   }
 
-  public async create(model: MakeNullishOptional<T['_creationAttributes']>) {
-    const result = await this.config.modelRepository.create(model)
+  public async create(
+    model: MakeNullishOptional<T['_creationAttributes']>,
+    createOpts?: CreateOptions<Attributes<T>>
+  ) {
+    const result = await this.config.modelRepository.create(model, createOpts)
     if (result && this.config.beforeCreate)
       await this.config.beforeCreate(result)
     return result
@@ -27,7 +36,8 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
 
   public async update(
     idOrWhereOpts: number | Partial<T>,
-    model: T | Partial<T>
+    model: T | Partial<T>,
+    updateOptions?: Omit<UpdateOptions<Attributes<T>>, 'returning' | 'where'>
   ) {
     const result = (
       await this.config.modelRepository.update<ORMModelWithId>(model, {
@@ -36,7 +46,8 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
             ? { id: idOrWhereOpts }
             : idOrWhereOpts)
         },
-        returning: true
+        returning: true,
+        ...updateOptions
       })
     )[1][0] as unknown as T
     if (result && this.config.beforeUpdate)
@@ -47,7 +58,9 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   public async createOrUpdate(
     idOrWhereOpts: number | Partial<T>,
     model: MakeNullishOptional<T['_creationAttributes']>,
-    includes?: Includeable[]
+    includes?: Includeable[],
+    createOpts?: CreateOptions<Attributes<T>>,
+    updateOptions?: Omit<UpdateOptions<Attributes<T>>, 'returning' | 'where'>
   ) {
     const foundModel = await super.getOne(
       {
@@ -60,17 +73,22 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
       includes,
       false
     )
-    if (foundModel) return await this.update(idOrWhereOpts, model as T)
-    return await this.create(model)
+    if (foundModel)
+      return await this.update(idOrWhereOpts, model as T, updateOptions)
+    return await this.create(model, createOpts)
   }
 
-  public async delete(idOrWhereOpts: number | Partial<T>): Promise<number> {
+  public async delete(
+    idOrWhereOpts: number | Partial<T>,
+    deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
+  ): Promise<number> {
     const result = await this.config.modelRepository.destroy<ORMModelWithId>({
       where: {
         ...(typeof idOrWhereOpts == 'number'
           ? { id: idOrWhereOpts }
           : idOrWhereOpts)
-      }
+      },
+      ...deleteOpts
     })
     if (this.config.beforeDelete) await this.config.beforeDelete()
     return result
@@ -78,7 +96,9 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
 
   public async createOrDelete(
     idOrWhereOpts: number | Partial<T>,
-    model: MakeNullishOptional<T['_creationAttributes']>
+    model: MakeNullishOptional<T['_creationAttributes']>,
+    createOpts?: CreateOptions<Attributes<T>>,
+    deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ) {
     const foundModel = await super.getOne({
       where: {
@@ -88,7 +108,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
       }
     })
 
-    if (foundModel) return await this.delete(idOrWhereOpts)
-    return this.create(model)
+    if (foundModel) return await this.delete(idOrWhereOpts, deleteOpts)
+    return this.create(model, createOpts)
   }
 }
