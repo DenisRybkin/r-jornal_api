@@ -1,4 +1,4 @@
-import { Includeable, WhereOptions } from 'sequelize'
+import { Includeable, Transaction, WhereOptions } from 'sequelize'
 import { Model } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
@@ -22,7 +22,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
-    filterOpts: Nullable<WhereOptions<T>> = null
+    filterOpts: Nullable<WhereOptions<T>> = null,
+    transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
@@ -34,14 +35,16 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
       ),
-      include: this.config.includes
+      include: this.config.includes,
+      transaction
     })
     return PaginationHelper.mapToIPaging<T>(count, rows, pagingOpts)
   }
 
   public async getById(
     id: number,
-    rejectOnEmpty: Nullable<BaseException | false> = null
+    rejectOnEmpty: Nullable<BaseException | false> = null,
+    transaction: Nullable<Transaction> = null
   ): Promise<T> {
     return await this.config.modelRepository.findByPk(id, {
       include: this.config.includes,
@@ -50,13 +53,15 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         new NotFoundException(
           ErrorMessagesConstants.NotFound,
           `No such ${this.config.modelRepository.name}`
-        )
+        ),
+      transaction
     })
   }
 
   public async autocomplete(
     pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions<T>
+    filterOpts: WhereOptions<T>,
+    transaction: Nullable<Transaction> = null
   ): Promise<IPaging<IAutocomplete>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
@@ -68,7 +73,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         filterOpts,
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
-      )
+      ),
+      transaction
     })
 
     return PaginationHelper.mapToIPaging<IAutocomplete>(
@@ -81,7 +87,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
   protected async getOne(
     whereOpts: WhereOptions<T>,
     includes: Includeable[] | undefined = this.config.includes,
-    rejectOnEmpty: Nullable<BaseException | false> = null
+    rejectOnEmpty: Nullable<BaseException | false> = null,
+    transaction: Nullable<Transaction> = null
   ) {
     return await this.config.modelRepository.findOne({
       where: whereOpts,
@@ -91,7 +98,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         new NotFoundException(
           ErrorMessagesConstants.NotFound,
           `No such ${this.config.modelRepository.name}`
-        )
+        ),
+      transaction
     })
   }
 }

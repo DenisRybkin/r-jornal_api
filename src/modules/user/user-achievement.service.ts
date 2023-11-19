@@ -9,6 +9,7 @@ import { InternalServerErrorException } from '../../core/exceptions/build-in'
 import { ErrorMessagesConstants } from '../../core/constants'
 import { CategoryService } from '../category/category.service'
 import { defaultPagingOptions } from '../../core/bases/utils'
+import { Transaction } from 'sequelize'
 
 @Injectable()
 export class UserAchievementService extends BaseServiceCRUD<UserAchievement> {
@@ -23,18 +24,29 @@ export class UserAchievementService extends BaseServiceCRUD<UserAchievement> {
       modelRepository: userAchievementRepository
     })
   }
-  public async getByUserIdAndCategoryId(userId: number, categoryId: number) {
-    return await this.getOne({ categoryId, userId }, [achievementInclude])
+  public async getByUserIdAndCategoryId(
+    userId: number,
+    categoryId: number,
+    transaction?: Transaction
+  ) {
+    return await this.getOne(
+      { categoryId, userId },
+      [achievementInclude],
+      null,
+      transaction
+    )
   }
 
   public async updateUserPoints(
     userId: number,
     categoryId: number,
-    strategy: EarnUserPointsStrategyConstants
+    strategy: EarnUserPointsStrategyConstants,
+    transaction?: Transaction
   ) {
     const userAchievement = await this.getByUserIdAndCategoryId(
       userId,
-      categoryId
+      categoryId,
+      transaction
     )
     const achievement = userAchievement.achievement
     if (!achievement)
@@ -43,34 +55,44 @@ export class UserAchievementService extends BaseServiceCRUD<UserAchievement> {
         'Cannot find achievement'
       )
     const [updatedUserAchievement] = await Promise.all([
-      userAchievement.increment('userPoints', { by: strategy }),
+      userAchievement.increment('userPoints', { by: strategy, transaction }),
       this.achievementsHelper.checkDiscrepancyBigWay(
         userAchievement.userPoints + strategy,
         achievement.level
       )
-        ? this.assignFollowingAchievement(userAchievement)
+        ? this.assignFollowingAchievement(userAchievement, transaction)
         : Promise.resolve()
     ])
-
     return updatedUserAchievement
   }
 
-  public async assignFollowingAchievement(userAchievement: UserAchievement) {
+  public async assignFollowingAchievement(
+    userAchievement: UserAchievement,
+    transaction?: Transaction
+  ) {
     //TODO: notify client through websockets or firebase
-    await userAchievement.increment('achievementId', { by: 1 })
+    await userAchievement.increment('achievementId', { by: 1, transaction })
   }
 
-  public async createDefaultUserAchievements(userId: number) {
-    const categories = await this.categoriesService.getAll({
-      ...defaultPagingOptions,
-      pageSize: 20
-    })
+  public async createDefaultUserAchievements(
+    userId: number,
+    transaction?: Transaction
+  ) {
+    const categories = await this.categoriesService.getAll(
+      {
+        ...defaultPagingOptions,
+        pageSize: 20
+      },
+      null,
+      transaction
+    )
     return await this.userAchievementRepository.bulkCreate(
       categories.items.map(item => ({
         userId,
         achievementId: 1,
         categoryId: item.id
-      }))
+      })),
+      { transaction }
     )
   }
 }
