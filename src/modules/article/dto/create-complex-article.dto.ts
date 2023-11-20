@@ -6,9 +6,11 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  MinLength
+  ValidateNested
 } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
+import { ComplexCreateArticleTestQuestionDto } from '../../article-test/dto'
+import { Type } from 'class-transformer'
 
 export class CreateComplexArticleDto {
   @ApiProperty()
@@ -23,7 +25,10 @@ export class CreateComplexArticleDto {
   @ApiProperty({ isArray: true, type: Number })
   @IsArray({ message: ConstraintMessagesConstants.MustBeIntArray })
   @ArrayMinSize(1)
-  @IsNumber({ allowNaN: false, allowInfinity: false }, { each: true })
+  @IsNumber(
+    { allowNaN: false, allowInfinity: false },
+    { each: true, message: ConstraintMessagesConstants.MustBeIntArray }
+  )
   readonly categoryIds: number[]
 
   @ApiPropertyOptional({ isArray: true, type: Number })
@@ -35,4 +40,18 @@ export class CreateComplexArticleDto {
     { each: true, message: ConstraintMessagesConstants.MustBeIntArray }
   )
   readonly hashtagIds?: number[]
+
+  @ApiPropertyOptional({
+    type: ComplexCreateArticleTestQuestionDto,
+    isArray: true
+  })
+  @IsOptional()
+  @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
+  @ArrayMinSize(2)
+  @ValidateNested({
+    each: true,
+    message: 'invalid ComplexCreateArticleTestQuestionDto'
+  })
+  @Type(() => ComplexCreateArticleTestQuestionDto)
+  readonly questions?: ComplexCreateArticleTestQuestionDto[]
 }

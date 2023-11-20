@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/sequelize'
 import { ArticleTestQuestionService } from './article-test-question.service'
 import { ComplexCreateArticleTestDto, ComplexUpdateArticleTestDto } from './dto'
 import { ArticleTestAnswerService } from './article-test-answer.service'
+import { Transaction } from 'sequelize'
 
 @Injectable()
 export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
@@ -25,15 +26,22 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
   }
 
   async createComplex(
-    dto: ComplexCreateArticleTestDto
+    dto: ComplexCreateArticleTestDto,
+    transaction?: Transaction
   ): Promise<ComplexCreateArticleTestDto> {
-    const articleTest = await super.create({ articleId: dto.articleId })
+    const articleTest = await super.create(
+      { articleId: dto.articleId },
+      { transaction }
+    )
     const articleTestQuestions = await Promise.all(
       dto.questions.map(question =>
-        this.articleTestQuestionService.create({
-          testId: articleTest.id,
-          name: question.name
-        })
+        this.articleTestQuestionService.create(
+          {
+            testId: articleTest.id,
+            name: question.name
+          },
+          { transaction }
+        )
       )
     )
     const articleTestAnswers = await Promise.all(
@@ -46,11 +54,14 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
         )
         .flat(1)
         .map(answer =>
-          this.articleTestAnswerService.create({
-            questionId: answer.questionId,
-            isRight: answer.isRight,
-            name: answer.name
-          })
+          this.articleTestAnswerService.create(
+            {
+              questionId: answer.questionId,
+              isRight: answer.isRight,
+              name: answer.name
+            },
+            { transaction }
+          )
         )
     )
     return {

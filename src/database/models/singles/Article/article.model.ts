@@ -82,7 +82,7 @@ export class Article extends Model<Article, CreateArticleAttributes> {
     description: 'categories of this article',
     isArray: true
   })
-  @HasMany(() => ArticleRepost, 'articleId')
+  @HasMany(() => ArticleCategory, 'articleId')
   readonly categories?: ArticleCategory
 
   @ApiPropertyOptional({

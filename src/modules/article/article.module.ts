@@ -15,6 +15,8 @@ import { ArticleRepostService } from './article-repost.service'
 import { ArticleRepost } from '../../database/models/related/ArticleRepost/article-repost.model'
 import { UserModule } from '../user/user.module'
 import { ArticleTestModule } from '../article-test/article-test.module'
+import { ArticleShortService } from './article-short.service'
+import { ArticleShortController } from './article-short.controller'
 
 @Module({
   imports: [
@@ -29,14 +31,15 @@ import { ArticleTestModule } from '../article-test/article-test.module'
     ArticleTestModule,
     UserModule
   ],
-  controllers: [ArticleController],
+  controllers: [ArticleController, ArticleShortController],
   providers: [
     ArticleService,
     ArticlePreviewService,
     ArticleCategoryService,
     ArticleHashtagService,
     ArticleLikeService,
-    ArticleRepostService
+    ArticleRepostService,
+    ArticleShortService
   ],
   exports: [
     ArticleService,
@@ -44,7 +47,8 @@ import { ArticleTestModule } from '../article-test/article-test.module'
     ArticleCategoryService,
     ArticleHashtagService,
     ArticleLikeService,
-    ArticleRepostService
+    ArticleRepostService,
+    ArticleShortService
   ]
 })
 export class ArticleModule {}

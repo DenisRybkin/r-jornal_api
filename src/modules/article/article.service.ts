@@ -14,6 +14,16 @@ import { UserAchievementService } from '../user/user-achievement.service'
 import { EarnUserPointsStrategyConstants } from '../user/constants/user-point.constants'
 import { Sequelize } from 'sequelize-typescript'
 import { Transaction } from 'sequelize'
+import {
+  commentsInclude,
+  creatorInclude,
+  likesInclude,
+  repostsInclude,
+  testInclude,
+  hashtagsInclude,
+  categoriesInclude,
+  previewInclude
+} from '../../database/includes/article'
 
 @Injectable()
 export class ArticleService extends BaseServiceCRUD<Article> {
@@ -31,12 +41,21 @@ export class ArticleService extends BaseServiceCRUD<Article> {
     super({
       modelRepository: articleRepository,
       autocompleteProperty: 'body',
-      includes: [],
+      includes: [
+        commentsInclude,
+        creatorInclude,
+        likesInclude,
+        repostsInclude,
+        testInclude,
+        hashtagsInclude,
+        categoriesInclude,
+        previewInclude
+      ],
       beforeCreate: async article =>
         await this.updateUserPoints.call(
           this,
           article.id,
-          EarnUserPointsStrategyConstants.BY_PUBLICATION
+          EarnUserPointsStrategyConstants.BY_CREATE_ARTICLE
         )
     })
   }
@@ -101,7 +120,7 @@ export class ArticleService extends BaseServiceCRUD<Article> {
         },
         { transaction }
       )
-      const [preview, categories, hashtags] = await Promise.all([
+      const [preview, categories, hashtags, test] = await Promise.all([
         dto.previewId
           ? this.articlePreviewService.create(
               {
@@ -136,11 +155,22 @@ export class ArticleService extends BaseServiceCRUD<Article> {
                 )
               )
             )
+          : Promise.resolve(),
+        dto.questions
+          ? this.articleTestService.createComplex(
+              {
+                articleId: article.id,
+                questions: dto.questions
+              },
+              transaction
+            )
           : Promise.resolve()
       ])
       await this.updateUserPoints(
         article.id,
-        EarnUserPointsStrategyConstants.BY_PUBLICATION,
+        dto.questions
+          ? EarnUserPointsStrategyConstants.BY_CREATE_ARTICLE_WITH_TEST
+          : EarnUserPointsStrategyConstants.BY_CREATE_ARTICLE,
         transaction
       )
       return article
