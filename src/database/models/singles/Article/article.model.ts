@@ -62,7 +62,7 @@ export class Article extends Model<Article, CreateArticleAttributes> {
   readonly comments?: ArticleComment[]
 
   @ApiPropertyOptional({
-    type: ArticleComment,
+    type: ArticleLike,
     description: 'likes of this article',
     isArray: true
   })
@@ -98,5 +98,5 @@ export class Article extends Model<Article, CreateArticleAttributes> {
     isArray: true
   })
   @HasMany(() => ArticleHashtag, 'articleId')
-  readonly hashtags?: ArticleHashtag
+  readonly hashtags?: ArticleHashtag[]
 }

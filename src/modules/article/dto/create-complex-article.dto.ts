@@ -47,7 +47,6 @@ export class CreateComplexArticleDto {
   })
   @IsOptional()
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
-  @ArrayMinSize(2)
   @ValidateNested({
     each: true,
     message: 'invalid ComplexCreateArticleTestQuestionDto'

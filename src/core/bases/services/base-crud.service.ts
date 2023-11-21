@@ -6,7 +6,7 @@ import {
 } from '../../interfaces/rest/services'
 import { BaseServiceRead } from './base-read.service'
 import { ORMModelWithId } from '../../interfaces/rest/model-with-id.interface'
-import { Includeable } from 'sequelize'
+import { Includeable, WhereOptions } from 'sequelize'
 import {
   Attributes,
   CreateOptions,
@@ -64,12 +64,10 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   ) {
     const foundModel = await super.getOne(
       {
-        where: {
-          ...(typeof idOrWhereOpts == 'number'
-            ? { id: idOrWhereOpts }
-            : idOrWhereOpts)
-        }
-      },
+        ...(typeof idOrWhereOpts == 'number'
+          ? { id: idOrWhereOpts }
+          : idOrWhereOpts)
+      } as WhereOptions<Attributes<T>>,
       includes,
       false
     )
@@ -79,7 +77,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async delete(
-    idOrWhereOpts: number | Partial<T>,
+    idOrWhereOpts: number | WhereOptions<Attributes<T>>,
     deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ): Promise<number> {
     const result = await this.config.modelRepository.destroy<ORMModelWithId>({
@@ -95,19 +93,25 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   }
 
   public async createOrDelete(
-    idOrWhereOpts: number | Partial<T>,
+    idOrWhereOpts: WhereOptions<Attributes<T>>,
     model: MakeNullishOptional<T['_creationAttributes']>,
     createOpts?: CreateOptions<Attributes<T>>,
     deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ) {
-    const foundModel = await super.getOne({
-      where: {
+    console.log(111, {
+      ...(typeof idOrWhereOpts == 'number'
+        ? { id: idOrWhereOpts }
+        : idOrWhereOpts)
+    })
+    const foundModel = await super.getOne(
+      {
         ...(typeof idOrWhereOpts == 'number'
           ? { id: idOrWhereOpts }
           : idOrWhereOpts)
-      }
-    })
-
+      } as WhereOptions<Attributes<T>>,
+      undefined,
+      false
+    )
     if (foundModel) return await this.delete(idOrWhereOpts, deleteOpts)
     return this.create(model, createOpts)
   }

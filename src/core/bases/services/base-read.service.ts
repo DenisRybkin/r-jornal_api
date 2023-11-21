@@ -4,7 +4,7 @@ import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
 import { PaginationHelper } from '../../helpers'
 import { IAutocomplete, IPaging, IPagingOptions } from '../../interfaces/common'
-import { Order as SequelizeOrder } from 'sequelize/types/model'
+import { Attributes, Order as SequelizeOrder } from 'sequelize/types/model'
 import {
   BaseServiceRead as AbstractServiceRead,
   IConfigServiceRead
@@ -22,7 +22,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
-    filterOpts: Nullable<WhereOptions<T>> = null,
+    filterOpts: Nullable<WhereOptions<Attributes<T>>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
@@ -60,7 +60,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async autocomplete(
     pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions<T>,
+    filterOpts: WhereOptions<Attributes<T>>,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<IAutocomplete>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
@@ -84,8 +84,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     )
   }
 
-  protected async getOne(
-    whereOpts: WhereOptions<T>,
+  public async getOne(
+    whereOpts: WhereOptions<Attributes<T>>,
     includes: Includeable[] | undefined = this.config.includes,
     rejectOnEmpty: Nullable<BaseException | false> = null,
     transaction: Nullable<Transaction> = null
