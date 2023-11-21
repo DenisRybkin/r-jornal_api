@@ -28,8 +28,6 @@ export class AuthGuard implements CanActivate {
       context.getHandler()
     )
 
-    if (isPublic) return true
-
     try {
       const authHeader = request.headers.authorization
       const [tokenType, token] = authHeader?.split(' ') || []
@@ -49,6 +47,7 @@ export class AuthGuard implements CanActivate {
       this.asyncContext.set('user', payload)
       return true
     } catch (exception) {
+      if (isPublic) return true
       if (exception instanceof UnauthorizedException) throw exception
       throw new UnauthorizedException(
         ErrorMessagesConstants.Unauthorized,

@@ -3,6 +3,7 @@ import { Model, Repository } from 'sequelize-typescript'
 import { IAutocomplete, IPaging, IPagingOptions, Order } from '../../common'
 import { Nullable } from '../../../types'
 import { BaseException } from '../../../exceptions/base.exception'
+import { AsyncContext } from '../../../modules/async-context/async-context'
 
 export interface IConfigServiceRead<T extends Model<T, any>> {
   modelRepository: Repository<T>

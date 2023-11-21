@@ -1,7 +1,4 @@
 import { User } from '../../../database/models/singles/User/user.model'
-import { ArticleComment } from '../../../database/models/singles/ArticleComment/article-comment.model'
-import { ArticleLike } from '../../../database/models/related/ArticleLike/article-like.model'
-import { ArticleRepost } from '../../../database/models/related/ArticleRepost/article-repost.model'
 import { ArticleHashtag } from '../../../database/models/related/ArticleHashtag/article-hashtag.model'
 import { ModelWithId } from '../../../core/interfaces/rest/model-with-id.interface'
 import { ApiProperty } from '@nestjs/swagger'
@@ -19,14 +16,14 @@ export class ArticleShortDto implements ModelWithId {
   @ApiProperty({ type: User })
   readonly createdByUser: User
 
-  @ApiProperty({ type: ArticleComment, isArray: true })
-  readonly comments: ArticleComment[]
+  @ApiProperty()
+  readonly commentsCount: number
 
-  @ApiProperty({ type: ArticleLike, isArray: true })
-  readonly likes: ArticleLike[]
+  @ApiProperty()
+  readonly likesCount: number
 
-  @ApiProperty({ type: ArticleRepost, isArray: true })
-  readonly reposts: ArticleRepost[]
+  @ApiProperty()
+  readonly repostsCount: number
 
   @ApiProperty({ type: ArticleHashtag, isArray: true })
   readonly hashtags: ArticleHashtag[]
