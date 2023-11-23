@@ -7,14 +7,13 @@ import {
   ApiBadRequestResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery,
   getSchemaPath
 } from '@nestjs/swagger'
 import { PagingType } from '../../interfaces/common/paging'
 import { PagingOptionsType } from '../../interfaces/common/paging/paging-options.interface'
 import { ProcessedError400Type } from '../../interfaces/common'
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface'
 import { IsPublic, RequiredRoles } from '../../decorators'
+import { FilterQueries } from './utils/filters-query.decorator.util'
 
 interface IGetAllEndpointConfig<M extends Model<M, any>>
   extends IBaseSwaggerEndpoint {
@@ -54,19 +53,8 @@ export const GetAllEndpoint = <M extends Model<M, any>>(
       status: 400,
       type: ProcessedError400Type
     }),
-    ApiQuery({
-      name: 'filters',
-      required: false,
-      schema: {
-        allOf: [
-          {
-            ...(config.filterDto &&
-              ({ $ref: getSchemaPath(config.filterDto) } as SchemaObject))
-          },
-          { $ref: getSchemaPath(PagingOptionsType) }
-        ]
-      }
-    }),
+    ...FilterQueries(PagingOptionsType),
+    ...FilterQueries(config.filterDto),
     IsPublic(config.isPublic ?? false),
     RequiredRoles(...(config.requiredRoles ?? []))
   )

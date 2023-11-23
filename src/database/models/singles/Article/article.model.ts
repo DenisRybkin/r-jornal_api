@@ -48,7 +48,7 @@ export class Article extends Model<Article, CreateArticleAttributes> {
 
   @ApiPropertyOptional({
     description: 'test of this article',
-    type: ArticleTest
+    type: () => ArticleTest
   })
   @HasOne(() => ArticleTest, 'articleId')
   readonly test?: ArticleTest

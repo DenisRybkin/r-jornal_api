@@ -11,6 +11,7 @@ import { CreateArticleTestAttributes } from './article-test.attributes'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Article } from '../Article/article.model'
 import { ArticleTestUser } from '../../related/ArticleTestUser/article-test-user.model'
+import { ArticleTestQuestion } from '../ArticleTestQuestion/article-test-question.model'
 
 @Table({ tableName: 'ArticleTest' })
 export class ArticleTest extends Model<
@@ -43,4 +44,11 @@ export class ArticleTest extends Model<
   })
   @HasMany(() => ArticleTestUser, 'testId')
   readonly usersWhoPassed?: ArticleTestUser
+
+  @ApiPropertyOptional({
+    description: 'questions',
+    type: () => ArticleTestQuestion
+  })
+  @HasMany(() => ArticleTestQuestion, 'testId')
+  readonly questions: ArticleTestQuestion
 }

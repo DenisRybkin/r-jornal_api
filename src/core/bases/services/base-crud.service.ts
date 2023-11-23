@@ -98,11 +98,6 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     createOpts?: CreateOptions<Attributes<T>>,
     deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ) {
-    console.log(111, {
-      ...(typeof idOrWhereOpts == 'number'
-        ? { id: idOrWhereOpts }
-        : idOrWhereOpts)
-    })
     const foundModel = await super.getOne(
       {
         ...(typeof idOrWhereOpts == 'number'

@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { Order, OrderType } from '../order.type'
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator'
 
 export interface IPagingOptions {
   page: number
@@ -16,6 +17,8 @@ export class PagingOptionsType implements IPagingOptions {
     description: 'number of page',
     default: 1
   })
+  @IsOptional()
+  @IsInt()
   page: number
 
   @ApiPropertyOptional({
@@ -23,6 +26,8 @@ export class PagingOptionsType implements IPagingOptions {
     description: 'count items of page',
     default: 10
   })
+  @IsOptional()
+  @IsInt()
   pageSize: number
 
   @ApiPropertyOptional({
@@ -30,12 +35,16 @@ export class PagingOptionsType implements IPagingOptions {
     description: 'oder for sorting (asc | desc)',
     default: Order.desc
   })
-  order: OrderType
+  @IsOptional()
+  @IsEnum(Order)
+  order: Order
 
   @ApiPropertyOptional({
     example: 'createdAt',
     description: 'filed for ordering',
     default: 'createdAt'
   })
+  @IsOptional()
+  @IsString()
   orderBy: string
 }

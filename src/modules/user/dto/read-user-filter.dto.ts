@@ -1,4 +1,11 @@
-import { IsEmail, IsInt, IsOptional, IsString, Length } from 'class-validator'
+import {
+  IsBoolean,
+  IsEmail,
+  IsInt,
+  IsOptional,
+  IsString,
+  Length
+} from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 

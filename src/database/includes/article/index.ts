@@ -15,6 +15,7 @@ import { avatarInclude as categoryAvatarInclude } from '../category'
 import { StaticField } from '../../models/singles/StaticField/static-field.model'
 import { Hashtag } from '../../models/singles/Hashtag/hashtag.model'
 import { Category } from '../../models/singles/Category/category.model'
+import { questionsWithAnswersInclude } from '../article-test'
 
 export const creatorInclude: Includeable = {
   model: User,
@@ -24,7 +25,8 @@ export const creatorInclude: Includeable = {
 
 export const testInclude: Includeable = {
   model: ArticleTest,
-  as: 'test'
+  as: 'test',
+  include: [questionsWithAnswersInclude]
 }
 
 export const commentsInclude: Includeable = {

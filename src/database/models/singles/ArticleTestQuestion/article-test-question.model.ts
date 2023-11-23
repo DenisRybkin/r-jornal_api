@@ -43,7 +43,7 @@ export class ArticleTestQuestion extends Model<
 
   @ApiPropertyOptional({
     description: 'test of this examination-question',
-    type: ArticleTest
+    type: () => ArticleTest
   })
   @BelongsTo(() => ArticleTest, 'testId')
   readonly test?: ArticleTest

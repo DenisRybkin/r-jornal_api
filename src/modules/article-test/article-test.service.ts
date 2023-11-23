@@ -6,6 +6,11 @@ import { ArticleTestQuestionService } from './article-test-question.service'
 import { ComplexCreateArticleTestDto, ComplexUpdateArticleTestDto } from './dto'
 import { ArticleTestAnswerService } from './article-test-answer.service'
 import { Transaction } from 'sequelize'
+import {
+  questionsWithAnswersInclude,
+  usersWhoPassedInclude
+} from '../../database/includes/article-test'
+import { Sequelize } from 'sequelize-typescript'
 
 @Injectable()
 export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
@@ -13,11 +18,13 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
     @InjectModel(ArticleTest)
     private readonly articleTestRepository: typeof ArticleTest,
     private readonly articleTestQuestionService: ArticleTestQuestionService,
-    private readonly articleTestAnswerService: ArticleTestAnswerService
+    private readonly articleTestAnswerService: ArticleTestAnswerService,
+    private readonly sequelize: Sequelize
   ) {
     super({
       modelRepository: articleTestRepository,
-      autocompleteProperty: 'articleId'
+      autocompleteProperty: 'articleId',
+      includes: [questionsWithAnswersInclude, usersWhoPassedInclude]
     })
   }
 
@@ -78,28 +85,40 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
   async updateComplex(
     dto: ComplexUpdateArticleTestDto
   ): Promise<ComplexUpdateArticleTestDto> {
-    const [articleTestQuestions, articleTestAnswers] = await Promise.all([
-      Promise.all(
-        dto.questions.map(question =>
-          this.articleTestQuestionService.update(question.id, {
-            name: question.name,
-            testId: question.testId
-          })
-        )
-      ),
-      Promise.all(
-        dto.questions
-          .map(question => question.answers)
-          .flat(1)
-          .map(answer =>
-            this.articleTestAnswerService.update(answer.id, {
-              name: answer.name,
-              questionId: answer.questionId,
-              isRight: answer.isRight
-            })
-          )
+    const [articleTestQuestions, articleTestAnswers] =
+      await this.sequelize.transaction(
+        async transaction =>
+          await Promise.all([
+            Promise.all(
+              dto.questions.map(question =>
+                this.articleTestQuestionService.update(
+                  question.id,
+                  {
+                    name: question.name,
+                    testId: question.testId
+                  },
+                  { transaction }
+                )
+              )
+            ),
+            Promise.all(
+              dto.questions
+                .map(question => question.answers)
+                .flat(1)
+                .map(answer =>
+                  this.articleTestAnswerService.update(
+                    answer.id,
+                    {
+                      name: answer.name,
+                      questionId: answer.questionId,
+                      isRight: answer.isRight
+                    },
+                    { transaction }
+                  )
+                )
+            )
+          ])
       )
-    ])
     return {
       ...dto,
       questions: articleTestQuestions.map(question => ({

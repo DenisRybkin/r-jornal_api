@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
@@ -21,5 +22,9 @@ export class CreateComplexArticleCommentDto {
   @IsOptional()
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
   @ArrayMinSize(1)
-  readonly staticFieldIds: number[]
+  @IsNumber(
+    { allowNaN: false, allowInfinity: false },
+    { each: true, message: ConstraintMessagesConstants.MustBeIntArray }
+  )
+  readonly staticFieldIds?: number[]
 }
