@@ -22,8 +22,7 @@ import { CloudFoldersConstants } from './constants/cloud-folders.constants'
 import {
   CreateEndpoint,
   DeleteEndpoint,
-  GetAllEndpoint,
-  GetOneEndpoint
+  GetAllEndpoint
 } from '../../core/bases/decorators'
 
 const baseController = buildBaseControllerRead<StaticField>({
