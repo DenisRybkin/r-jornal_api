@@ -47,8 +47,23 @@ export class ArticleTest extends Model<
 
   @ApiPropertyOptional({
     description: 'questions',
-    type: () => ArticleTestQuestion
+    type: () => ArticleTestQuestion,
+    isArray: true
   })
   @HasMany(() => ArticleTestQuestion, 'testId')
   readonly questions: ArticleTestQuestion
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model created'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly createdAt: string
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model updated'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly updatedAt: string
 }

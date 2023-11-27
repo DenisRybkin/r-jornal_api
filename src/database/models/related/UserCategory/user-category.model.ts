@@ -52,4 +52,18 @@ export class UserCategory extends Model<
   })
   @BelongsTo(() => User, 'userId')
   readonly user?: User
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model created'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly createdAt: string
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model updated'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly updatedAt: string
 }

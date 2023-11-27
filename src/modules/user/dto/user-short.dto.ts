@@ -35,4 +35,10 @@ export class UserShortDto implements ModelWithId {
   })
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly userAvatar?: UserAvatar
+
+  @ApiProperty()
+  readonly createdAt: string
+
+  @ApiProperty()
+  readonly updatedAt: string
 }

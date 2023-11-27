@@ -45,4 +45,18 @@ export class ArticleCategory extends Model<
   @ApiPropertyOptional({ description: 'category', type: Category })
   @BelongsTo(() => Category, 'categoryId')
   readonly category?: Category
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model created'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly createdAt: string
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model updated'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly updatedAt: string
 }

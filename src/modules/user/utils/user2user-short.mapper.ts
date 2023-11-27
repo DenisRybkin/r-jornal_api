@@ -8,5 +8,7 @@ export const user2userShortMapper = (user: User): UserShortDto => ({
   nickname: user.nickname,
   role: user.role!,
   userAvatar: user.userAvatar,
-  defaultAvatar: user.defaultAvatar
+  defaultAvatar: user.defaultAvatar,
+  createdAt: user.createdAt,
+  updatedAt: user.updatedAt
 })

@@ -36,4 +36,10 @@ export class ArticleShortDto implements ModelWithId {
 
   @ApiProperty()
   readonly isReposted?: boolean
+
+  @ApiProperty()
+  readonly createdAt: string
+
+  @ApiProperty()
+  readonly updatedAt: string
 }

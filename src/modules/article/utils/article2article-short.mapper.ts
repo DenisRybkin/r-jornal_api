@@ -16,5 +16,7 @@ export const article2articleShortMapper = (
   repostsCount: article.reposts?.length ?? 0,
   isLiked: article.likes?.some(item => item.userId == user?.id),
   isCommented: article.comments?.some(item => item.createdByUserId == user?.id),
-  isReposted: article.reposts?.some(item => item.userId == user?.id)
+  isReposted: article.reposts?.some(item => item.userId == user?.id),
+  createdAt: article.createdAt,
+  updatedAt: article.updatedAt
 })

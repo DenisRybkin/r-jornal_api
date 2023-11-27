@@ -78,7 +78,7 @@ export class Article extends Model<Article, CreateArticleAttributes> {
   readonly reposts?: ArticleRepost[]
 
   @ApiPropertyOptional({
-    type: ArticleRepost,
+    type: ArticleCategory,
     description: 'categories of this article',
     isArray: true
   })
@@ -99,4 +99,18 @@ export class Article extends Model<Article, CreateArticleAttributes> {
   })
   @HasMany(() => ArticleHashtag, 'articleId')
   readonly hashtags?: ArticleHashtag[]
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model created'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly createdAt: string
+
+  @ApiProperty({
+    example: '2023-11-19 23:58:11.502+03',
+    description: 'date of model updated'
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  readonly updatedAt: string
 }
