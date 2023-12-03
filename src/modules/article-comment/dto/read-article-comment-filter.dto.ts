@@ -15,6 +15,11 @@ export class ReadArticleCommentFilterDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
+  readonly articleId: number
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsString({ message: ConstraintMessagesConstants.MustBeString })
   readonly createdByUserId: number
 }

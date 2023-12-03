@@ -42,10 +42,10 @@ export class ArticleService extends BaseServiceCRUD<Article> {
       modelRepository: articleRepository,
       autocompleteProperty: 'body',
       includes: [
-        commentsInclude,
+        //commentsInclude,
         creatorInclude,
-        likesInclude,
-        repostsInclude,
+        // likesInclude,
+        // repostsInclude,
         testInclude,
         hashtagsInclude,
         categoriesInclude,

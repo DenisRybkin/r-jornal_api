@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ArrayMinSize, IsArray, IsInt, ValidateNested } from 'class-validator'
+import { IsArray, IsInt, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { ComplexCreateArticleTestQuestionDto } from './complex-create-article-test-question.dto'
@@ -14,7 +14,6 @@ export class ComplexCreateArticleTestDto {
     isArray: true
   })
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
-  @ArrayMinSize(2)
   @ValidateNested({
     each: true,
     message: 'invalid ComplexCreateArticleTestQuestionDto'

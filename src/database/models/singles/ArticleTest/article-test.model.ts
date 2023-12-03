@@ -40,10 +40,11 @@ export class ArticleTest extends Model<
 
   @ApiPropertyOptional({
     description: 'user, who passed test',
-    type: () => ArticleTestUser
+    type: () => ArticleTestUser,
+    isArray: true
   })
   @HasMany(() => ArticleTestUser, 'testId')
-  readonly usersWhoPassed?: ArticleTestUser
+  readonly usersWhoPassed?: ArticleTestUser[]
 
   @ApiPropertyOptional({
     description: 'questions',

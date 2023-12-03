@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import {
-  ArrayMinSize,
   IsArray,
   IsInt,
   IsNumber,
@@ -24,7 +23,6 @@ export class CreateComplexArticleDto {
 
   @ApiProperty({ isArray: true, type: Number })
   @IsArray({ message: ConstraintMessagesConstants.MustBeIntArray })
-  @ArrayMinSize(1)
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
     { each: true, message: ConstraintMessagesConstants.MustBeIntArray }
@@ -34,7 +32,6 @@ export class CreateComplexArticleDto {
   @ApiPropertyOptional({ isArray: true, type: Number })
   @IsOptional()
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
-  @ArrayMinSize(1)
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
     { each: true, message: ConstraintMessagesConstants.MustBeIntArray }

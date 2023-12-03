@@ -1,12 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import {
-  ArrayMinSize,
-  IsArray,
-  IsInt,
-  IsNumber,
-  IsOptional,
-  IsString
-} from 'class-validator'
+import { IsArray, IsInt, IsNumber, IsOptional, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 
 export class CreateComplexArticleCommentDto {
@@ -18,10 +11,9 @@ export class CreateComplexArticleCommentDto {
   @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly articleId: number
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: Number, isArray: true })
   @IsOptional()
   @IsArray({ message: ConstraintMessagesConstants.MustBeArray })
-  @ArrayMinSize(1)
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
     { each: true, message: ConstraintMessagesConstants.MustBeIntArray }

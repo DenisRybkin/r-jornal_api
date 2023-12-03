@@ -52,7 +52,7 @@ export class ArticleComment extends Model<
     type: User,
     description: 'author'
   })
-  @BelongsTo(() => User, 'articleId')
+  @BelongsTo(() => User, 'createdByUserId')
   readonly createdByUser?: User
 
   @ApiPropertyOptional({
