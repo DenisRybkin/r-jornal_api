@@ -30,7 +30,6 @@ export class CheckModifyPermissionGuard implements CanActivate {
       MODEL_INFO_KEY,
       context.getHandler()
     )
-
     if (!modelInfo) return true
     if (!modelInfo.EntityClass)
       throw new InternalServerErrorException(
@@ -38,10 +37,10 @@ export class CheckModifyPermissionGuard implements CanActivate {
         'Something went wrong'
       )
 
-    const entityId = Number(request.params.id)
+    const entityId = Number(request.params[modelInfo.paramName ?? 'id'])
 
     if (!entityId || !Number.isInteger(entityId))
-      throw PipeExceptionFactory('id', [
+      throw PipeExceptionFactory(modelInfo.paramName ?? 'id', [
         ConstraintMessagesConstants.MustBeInteger
       ])('Validation failed (numeric string is expected)')
 

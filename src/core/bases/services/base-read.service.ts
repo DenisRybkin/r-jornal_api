@@ -26,15 +26,16 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
-      ...PaginationHelper.genPagingOpts(pagingOpts),
-      order: (this.config.orderOpts ?? []).concat([
-        [pagingOpts.orderBy, pagingOpts.order]
-      ]) as SequelizeOrder,
+      distinct: true,
       where: Object.assign(
         filterOpts ?? {},
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
       ),
+      ...PaginationHelper.genPagingOpts(pagingOpts),
+      order: (this.config.orderOpts ?? []).concat([
+        [pagingOpts.orderBy, pagingOpts.order]
+      ]) as SequelizeOrder,
       include: this.config.includes,
       transaction
     })

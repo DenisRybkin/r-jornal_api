@@ -15,14 +15,11 @@ import { EarnUserPointsStrategyConstants } from '../user/constants/user-point.co
 import { Sequelize } from 'sequelize-typescript'
 import { Transaction } from 'sequelize'
 import {
-  commentsInclude,
-  creatorInclude,
-  likesInclude,
-  repostsInclude,
-  testInclude,
-  hashtagsInclude,
   categoriesInclude,
-  previewInclude
+  creatorInclude,
+  hashtagsInclude,
+  previewInclude,
+  testInclude
 } from '../../database/includes/article'
 
 @Injectable()
@@ -189,53 +186,103 @@ export class ArticleService extends BaseServiceCRUD<Article> {
         },
         { transaction }
       )
+      const articleWithIncludes = await super.getById(
+        article.id,
+        null,
+        transaction
+      )
+
+      const willDeletedCategories =
+        dto.categoryIds &&
+        articleWithIncludes.categories?.filter(
+          item => !(dto.categoryIds ?? []).includes(item.categoryId)
+        )
+      const willCreatedCategories =
+        dto.categoryIds &&
+        dto.categoryIds?.filter(
+          item =>
+            !articleWithIncludes.categories?.some(
+              category => category.categoryId == item
+            )
+        )
+
+      const willDeletedHashtags =
+        dto.hashtagIds &&
+        articleWithIncludes.hashtags?.filter(
+          item => !(dto.hashtagIds ?? []).includes(item.hashtagId)
+        )
+      const willCreatedHashtags =
+        dto.hashtagIds &&
+        dto.hashtagIds?.filter(
+          item =>
+            !articleWithIncludes.hashtags?.some(
+              hashtag => hashtag.hashtagId == item
+            )
+        )
 
       const [] = await Promise.all([
-        dto.previewId
+        dto.previewId !== null
           ? this.articlePreviewService.createOrUpdate(
               { articleId: article.id, staticFieldId: dto.previewId },
               {
                 articleId: article.id,
-                staticFieldId: dto.previewId
+                staticFieldId: dto.previewId as number
               },
               undefined,
               { transaction },
               { transaction }
             )
-          : Promise.resolve(),
-        dto.categoryIds
+          : this.articlePreviewService.delete(
+              { articleId: article.id },
+              { transaction }
+            ),
+        willDeletedCategories
           ? Promise.all(
-              dto.categoryIds.map(categoryId =>
-                this.articleCategoryService.createOrUpdate(
+              willDeletedCategories.map(category =>
+                this.articleCategoryService.delete(
                   {
                     articleId: article.id,
-                    categoryId: categoryId
+                    categoryId: category.categoryId
                   },
-                  {
-                    articleId: article.id,
-                    categoryId: categoryId
-                  },
-                  undefined,
-                  { transaction },
                   { transaction }
                 )
               )
             )
           : Promise.resolve(),
-        dto.hashtagIds
+        willCreatedCategories
           ? Promise.all(
-              dto.hashtagIds.map(hashtagId =>
-                this.articleHashtagService.createOrUpdate(
+              willCreatedCategories.map(categoryId =>
+                this.articleCategoryService.create(
                   {
                     articleId: article.id,
-                    hashtagId
+                    categoryId: categoryId
                   },
+                  { transaction }
+                )
+              )
+            )
+          : Promise.resolve(),
+        willDeletedHashtags
+          ? Promise.all(
+              willDeletedHashtags.map(hashtag =>
+                this.articleHashtagService.delete(
                   {
                     articleId: article.id,
-                    hashtagId
+                    hashtagId: hashtag.hashtagId
                   },
-                  undefined,
-                  { transaction },
+                  { transaction }
+                )
+              )
+            )
+          : Promise.resolve(),
+        willCreatedHashtags
+          ? Promise.all(
+              willCreatedHashtags.map(hashtagId =>
+                this.articleHashtagService.create(
+                  {
+                    articleId: article.id,
+                    hashtagId: hashtagId
+                  },
                   { transaction }
                 )
               )

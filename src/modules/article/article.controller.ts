@@ -87,7 +87,8 @@ export class ArticleController extends BaseController {
     requiredRoles: [Roles.Owner, Roles.Admin, Roles.Publisher],
     modelInfo: {
       EntityClass: Article,
-      comparableFieldName: 'createdByUserId'
+      comparableFieldName: 'createdByUserId',
+      paramName: 'articleId'
     }
   })
   @Put('/complex/:articleId')

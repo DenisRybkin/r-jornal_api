@@ -83,7 +83,7 @@ export class Article extends Model<Article, CreateArticleAttributes> {
     isArray: true
   })
   @HasMany(() => ArticleCategory, 'articleId')
-  readonly categories?: ArticleCategory
+  readonly categories?: ArticleCategory[]
 
   @ApiPropertyOptional({
     type: ArticleStaticField,
