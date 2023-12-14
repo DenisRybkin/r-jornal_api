@@ -43,7 +43,7 @@ export class ArticleTestUser extends Model<
   readonly userId: number
 
   @ApiPropertyOptional({
-    type: () => ArticleTest,
+    type: () => User,
     description: 'user, who passed test'
   })
   @BelongsTo(() => User, 'userId')

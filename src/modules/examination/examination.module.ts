@@ -9,6 +9,7 @@ import { ExaminationQuestionController } from './examination-question.controller
 import { ExaminationQuestionService } from './examination-question.service'
 import { ExaminationAnswerController } from './examination-answer.controller'
 import { ExaminationAnswerService } from './examination-answer.service'
+import { UserModule } from '../user/user.module'
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ExaminationAnswerService } from './examination-answer.service'
       Examination,
       ExaminationQuestion,
       ExaminationAnswer
-    ])
+    ]),
+    UserModule
   ],
   controllers: [
     ExaminationController,

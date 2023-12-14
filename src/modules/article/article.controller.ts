@@ -162,7 +162,7 @@ export class ArticleController extends BaseController {
     @Param(
       'articleId',
       new ParseIntPipe({
-        exceptionFactory: PipeExceptionFactory('id', [
+        exceptionFactory: PipeExceptionFactory('articleId', [
           ConstraintMessagesConstants.MustBeInteger
         ])
       })

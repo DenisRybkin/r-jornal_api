@@ -11,6 +11,7 @@ import { ArticleTestQuestionController } from './article-test-question.controlle
 import { ArticleTestAnswerController } from './article-test-answer.controller'
 import { ArticleTestUser } from '../../database/models/related/ArticleTestUser/article-test-user.model'
 import { ArticleTestUserService } from './article-test-user.service'
+import { ArticleTestUserController } from './article-test-user.controller'
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { ArticleTestUserService } from './article-test-user.service'
   controllers: [
     ArticleTestController,
     ArticleTestQuestionController,
-    ArticleTestAnswerController
+    ArticleTestAnswerController,
+    ArticleTestUserController
   ],
   exports: [
     ArticleTestService,

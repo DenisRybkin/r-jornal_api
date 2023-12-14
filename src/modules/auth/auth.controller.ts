@@ -95,7 +95,12 @@ export class AuthController {
   })
   @Post('logout')
   async logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('refresh')
+    const res = response.clearCookie('refresh', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true
+    })
+    console.log(res)
     return true
   }
 

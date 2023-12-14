@@ -2,6 +2,7 @@ import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleTestUser } from '../../database/models/related/ArticleTestUser/article-test-user.model'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { includeUsers } from '../../database/includes/article-test'
 
 @Injectable()
 export class ArticleTestUserService extends BaseServiceCRUD<ArticleTestUser> {
@@ -12,7 +13,7 @@ export class ArticleTestUserService extends BaseServiceCRUD<ArticleTestUser> {
     super({
       modelRepository: ArticleTestUser,
       autocompleteProperty: 'testId',
-      includes: []
+      includes: [includeUsers]
     })
   }
 }

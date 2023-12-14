@@ -8,8 +8,13 @@ import {
   UpdatePartiallyExaminationDto
 } from './dto'
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger'
-import { Controller } from '@nestjs/common'
+import { Controller, Param, Post } from '@nestjs/common'
 import { ExaminationService } from './examination.service'
+import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
+import { PipeExceptionFactory } from '../../core/factories/pipe-exception.factory'
+import { ConstraintMessagesConstants } from '../../core/constants'
+import { CreateEndpoint } from '../../core/bases/decorators'
+import { User } from '../../database/models/singles/User/user.model'
 
 const BaseController = buildBaseControllerCRUD<Examination>({
   swagger: { model: Examination, modelName: 'examination' },
@@ -37,5 +42,24 @@ const BaseController = buildBaseControllerCRUD<Examination>({
 export class ExaminationController extends BaseController {
   constructor(private readonly examinationService: ExaminationService) {
     super(examinationService)
+  }
+
+  @CreateEndpoint({
+    operationName: 'Endpoint for pass examination & mutate user role',
+    model: User
+  })
+  @Post('/pass/:id')
+  async passExamination(
+    @Param(
+      'id',
+      new ParseIntPipe({
+        exceptionFactory: PipeExceptionFactory('id', [
+          ConstraintMessagesConstants.MustBeInteger
+        ])
+      })
+    )
+    id: number
+  ) {
+    return this.examinationService.passExamination(id)
   }
 }
