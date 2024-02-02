@@ -25,6 +25,7 @@ import { ArticleTestModule } from './modules/article-test/article-test.module'
 import { ArticleCommentModule } from './modules/article-comment/article-comment.module'
 import { AuthGuard, RolesGuard } from './core/guards'
 import { OpenAiModule } from './modules/open-ai/open-ai.module'
+import { AppController } from './app.controller'
 
 @Module({
   imports: [
@@ -56,7 +57,7 @@ import { OpenAiModule } from './modules/open-ai/open-ai.module'
     ArticleCommentModule,
     OpenAiModule
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     JwtService,
     UniqueValidator,

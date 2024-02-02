@@ -3,6 +3,7 @@ import { Model, Repository } from 'sequelize-typescript'
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import {
   ApiBadRequestResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation
 } from '@nestjs/swagger'
@@ -28,7 +29,7 @@ export const GetOneEndpoint = <M extends Model<M, any>>(
       status: 200,
       type: config.model
     }),
-    ApiBadRequestResponse({
+    ApiNotFoundResponse({
       status: 404,
       type: ProcessedError404Type
     }),
