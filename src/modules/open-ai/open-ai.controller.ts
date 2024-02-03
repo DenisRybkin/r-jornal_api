@@ -1,5 +1,5 @@
 import { Controller, Query } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { OpenAiService } from './open-ai.service'
 import { LocalePipe } from '../../core/pipes'
 import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe'
@@ -13,11 +13,13 @@ import { Get } from '@nestjs/common/decorators'
 export class OpenAiController {
   constructor(private readonly openAiService: OpenAiService) {}
 
+  @ApiBearerAuth()
   @Get('/text')
   public async text(@Query('message') message: string) {
     return this.openAiService.execute(message)
   }
 
+  @ApiBearerAuth()
   @Get('/questions')
   public async questions(
     @Query('topic') topic: string,

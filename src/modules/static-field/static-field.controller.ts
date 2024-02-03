@@ -109,7 +109,7 @@ export class StaticFieldController extends baseController {
     model: StaticField
   })
   @Get('default-avatars')
-  public async getDefaultAvatar() {
+  public async getDefaultAvatars() {
     return this.staticFieldService.getDefaultsAvatars()
   }
 

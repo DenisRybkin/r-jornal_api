@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { SharedModule } from '../shared.module'
 import { SwaggerConfigProvider } from './swagger-config.service'
-import { SwaggerModule } from '@nestjs/swagger'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 @Injectable()
 export class SwaggerBuilderService {
@@ -13,12 +13,26 @@ export class SwaggerBuilderService {
     SwaggerBuilderService.specDirectory,
     'spec.json'
   )
+  public static documentUri = '/api/docs'
+
+  private documentBuilder = new DocumentBuilder()
+    .setTitle('API')
+    .setDescription('REST API docs of r-journal platform')
+    .addBearerAuth({ type: 'http', name: 'bearer' })
+    .setVersion('1.0')
+    .addTag('Created by Denis Rybkin')
+    .setContact(
+      'Denis Rybkin',
+      'https://github.com/DenisRybkin',
+      'denis.rybkin.94@mail.ru'
+    )
+    .build()
 
   public async buildThroughApp(app: NestExpressApplication) {
     const swaggerService = app.select(SharedModule).get(SwaggerConfigProvider)
     const swaggerDocument = SwaggerModule.createDocument(
       app,
-      swaggerService.documentBuilder,
+      this.documentBuilder,
       { extraModels: swaggerService.extraModels }
     )
     if (!existsSync(SwaggerBuilderService.specDirectory))
@@ -28,10 +42,16 @@ export class SwaggerBuilderService {
       SwaggerBuilderService.specPath,
       JSON.stringify(swaggerDocument)
     )
-    SwaggerModule.setup(swaggerService.docsPrefix, app, swaggerDocument, {
-      swaggerOptions: {
-        persistAuthorization: true
+
+    SwaggerModule.setup(
+      SwaggerBuilderService.documentUri,
+      app,
+      swaggerDocument,
+      {
+        swaggerOptions: {
+          persistAuthorization: true
+        }
       }
-    })
+    )
   }
 }

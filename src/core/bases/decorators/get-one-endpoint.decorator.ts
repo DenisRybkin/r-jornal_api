@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common'
 import { Model, Repository } from 'sequelize-typescript'
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation
@@ -33,5 +34,6 @@ export const GetOneEndpoint = <M extends Model<M, any>>(
       type: ProcessedError404Type
     }),
     IsPublic(config.isPublic ?? false),
+    ...(config.isPublic ? [] : [ApiBearerAuth()]),
     RequiredRoles(...(config.requiredRoles ?? []))
   )

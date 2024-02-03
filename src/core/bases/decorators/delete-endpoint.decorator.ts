@@ -1,6 +1,7 @@
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import { applyDecorators } from '@nestjs/common'
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation
@@ -20,15 +21,18 @@ interface IDeleteEndpointConfig extends IBaseSwaggerEndpoint {
 
 export const DeleteEndpoint = (config: IDeleteEndpointConfig) =>
   applyDecorators(
-    ApiOperation({
-      summary: config.operationName ?? `Delete ${config.modelName}`
-    }),
-    ApiOkResponse({ status: 200, type: Boolean }),
-    ApiInternalServerErrorResponse({
-      status: 500,
-      type: ProcessedError500Type
-    }),
-    IsPublic(config.isPublic ?? false),
-    RequiredRoles(...(config.requiredRoles ?? [])),
-    CheckPermissionModify(config.modelInfo)
+    ...[
+      ApiOperation({
+        summary: config.operationName ?? `Delete ${config.modelName}`
+      }),
+      ApiOkResponse({ status: 200, type: Boolean }),
+      ApiInternalServerErrorResponse({
+        status: 500,
+        type: ProcessedError500Type
+      }),
+      IsPublic(config.isPublic ?? false),
+      ...(config.isPublic ? [] : [ApiBearerAuth()]),
+      RequiredRoles(...(config.requiredRoles ?? [])),
+      CheckPermissionModify(config.modelInfo)
+    ]
   )

@@ -5,6 +5,7 @@ import { ModelWithId } from '../../interfaces/rest/model-with-id.interface'
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   getSchemaPath
@@ -56,5 +57,6 @@ export const GetAllEndpoint = <M extends Model<M, any>>(
     ...FilterQueries(PagingOptionsType),
     ...FilterQueries(config.filterDto),
     IsPublic(config.isPublic ?? false),
+    ...(config.isPublic ? [] : [ApiBearerAuth()]),
     RequiredRoles(...(config.requiredRoles ?? []))
   )

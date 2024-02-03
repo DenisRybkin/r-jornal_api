@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { DocumentBuilder } from '@nestjs/swagger'
 import { Role } from '../../../../database/models/singles/Role/role.model'
 import { User } from '../../../../database/models/singles/User/user.model'
 import {
@@ -46,21 +45,6 @@ import { ExaminationQuestion } from '../../../../database/models/singles/Examina
 
 @Injectable()
 export class SwaggerConfigProvider {
-  public documentBuilder = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('REST API docs of r-journal platform')
-    .addBearerAuth()
-    .setVersion('1.0')
-    .addTag('Created by Denis Rybkin')
-    .setContact(
-      'Denis Rybkin',
-      'https://github.com/DenisRybkin',
-      'denis.rybkin.94@mail.ru'
-    )
-    .build()
-
-  public docsPrefix = '/api/docs'
-
   private dbModels = [
     User,
     UserAvatar,

@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -22,15 +23,18 @@ export const CreateEndpoint = <M extends Model<M, any>>(
   config: ICreateEndpointConfig<M>
 ) =>
   applyDecorators(
-    ApiOperation({
-      summary: config.operationName ?? `Create new ${config.modelName} model`
-    }),
-    ApiOkResponse({ status: 200, type: config.model }),
-    ApiInternalServerErrorResponse({
-      status: 500,
-      type: ProcessedError500Type
-    }),
-    ApiBody({ type: config.createDto }),
-    IsPublic(config.isPublic ?? false),
-    RequiredRoles(...(config.requiredRoles ?? []))
+    ...[
+      ApiOperation({
+        summary: config.operationName ?? `Create new ${config.modelName} model`
+      }),
+      ApiOkResponse({ status: 200, type: config.model }),
+      ApiInternalServerErrorResponse({
+        status: 500,
+        type: ProcessedError500Type
+      }),
+      ApiBody({ type: config.createDto }),
+      IsPublic(config.isPublic ?? false),
+      ...(config.isPublic ? [] : [ApiBearerAuth()]),
+      RequiredRoles(...(config.requiredRoles ?? []))
+    ]
   )

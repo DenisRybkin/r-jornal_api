@@ -10,6 +10,7 @@ import { CheckRefreshGuard } from '../../core/guards'
 import { Req } from '@nestjs/common/decorators'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
@@ -54,7 +55,7 @@ export class AuthController {
       $ref: getSchemaPath(ProcessedError401Type)
     }
   })
-  @IsPublic(true)
+  @IsPublic()
   @Post('login')
   async login(
     @Body() userDto: LoginDto,
@@ -93,14 +94,14 @@ export class AuthController {
       $ref: getSchemaPath(ProcessedError401Type)
     }
   })
+  @ApiBearerAuth()
   @Post('logout')
   async logout(@Res({ passthrough: true }) response: Response) {
-    const res = response.clearCookie('refresh', {
+    response.clearCookie('refresh', {
       httpOnly: true,
       sameSite: 'none',
       secure: true
     })
-    console.log(res)
     return true
   }
 

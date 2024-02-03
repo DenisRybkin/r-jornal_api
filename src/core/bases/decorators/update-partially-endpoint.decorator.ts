@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -39,6 +40,7 @@ export const UpdatePartiallyEndpoint = <M extends Model<M, any>>(
     }),
     ApiBody({ type: config.updateDto }),
     IsPublic(config.isPublic ?? false),
+    ...(config.isPublic ? [] : [ApiBearerAuth()]),
     RequiredRoles(...(config.requiredRoles ?? [])),
     CheckPermissionModify(config.modelInfo)
   )

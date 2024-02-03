@@ -4,6 +4,7 @@ import { ModelWithId } from '../../interfaces/rest/model-with-id.interface'
 import { applyDecorators } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
@@ -63,6 +64,7 @@ export const AutocompleteEndpoint = (config: IAutocompleteEndpointConfig) =>
         }
       }),
       IsPublic(config.isPublic ?? false),
+      ...(config.isPublic ? [] : [ApiBearerAuth()]),
       RequiredRoles(...(config.requiredRoles ?? []))
     ]
   )
