@@ -2,7 +2,6 @@ import { applyDecorators } from '@nestjs/common'
 import { Model, Repository } from 'sequelize-typescript'
 import { IBaseSwaggerEndpoint } from './interfaces/base-swagger-endpoint.interface'
 import {
-  ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation

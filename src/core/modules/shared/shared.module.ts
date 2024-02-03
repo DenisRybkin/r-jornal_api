@@ -5,6 +5,7 @@ import { DateService } from './services/date.service'
 import { GeneratorService } from './services/generator.service'
 import { SwaggerConfigProvider } from './services/swagger-config.service'
 import { UrlService } from './services/url.service'
+import { SwaggerBuilderService } from './services/swagger-builder.service'
 
 interface SharedModuleOptions {
   isGlobal?: boolean
@@ -17,7 +18,8 @@ export class SharedModule {
       DateService,
       GeneratorService,
       UrlService,
-      SwaggerConfigProvider
+      SwaggerConfigProvider,
+      SwaggerBuilderService
     ]
 
     return {

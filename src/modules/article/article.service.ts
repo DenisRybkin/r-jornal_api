@@ -89,7 +89,7 @@ export class ArticleService extends BaseServiceCRUD<Article> {
     const { id: userId } = this.asyncContext.get('user')
     const articleTest = await this.articleTestService.getByArticleId(articleId)
     return await this.sequelize.transaction(async transaction => {
-      const [articleTestUser, userAchievements] = await Promise.all([
+      const [articleTestUser] = await Promise.all([
         this.articleTestUserService.create(
           {
             userId,
@@ -117,7 +117,7 @@ export class ArticleService extends BaseServiceCRUD<Article> {
         },
         { transaction }
       )
-      const [preview, categories, hashtags, test] = await Promise.all([
+      await Promise.all([
         dto.previewId
           ? this.articlePreviewService.create(
               {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { DocumentBuilder } from '@nestjs/swagger'
-import { ApiConfigService } from './api-config.service'
 import { Role } from '../../../../database/models/singles/Role/role.model'
 import { User } from '../../../../database/models/singles/User/user.model'
 import {
@@ -47,8 +46,6 @@ import { ExaminationQuestion } from '../../../../database/models/singles/Examina
 
 @Injectable()
 export class SwaggerConfigProvider {
-  constructor(private readonly configService: ApiConfigService) {}
-
   public documentBuilder = new DocumentBuilder()
     .setTitle('API')
     .setDescription('REST API docs of r-journal platform')

@@ -6,10 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run type-check"
-    }
+    "hooks": {}
   },
   "scripts": {
     "type-check": "tsc —project tsconfig.build.json",

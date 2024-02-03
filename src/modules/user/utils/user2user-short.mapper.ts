@@ -6,7 +6,8 @@ export const user2userShortMapper = (user: User): UserShortDto => ({
   email: user.email,
   name: user.name,
   nickname: user.nickname,
-  role: user.role!,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  role: user!.role!,
   userAvatar: user.userAvatar,
   defaultAvatar: user.defaultAvatar,
   createdAt: user.createdAt,

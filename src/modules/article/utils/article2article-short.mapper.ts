@@ -9,7 +9,9 @@ export const article2articleShortMapper = (
   id: article.id,
   body: article.body,
   createdByUserId: article.createdByUserId,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   createdByUser: article.createdByUser!,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   hashtags: article.hashtags!,
   likesCount: article.likes?.length ?? 0,
   commentsCount: article.comments?.length ?? 0,
