@@ -16,8 +16,8 @@ import { IConfigControllerRead } from 'src/core/interfaces/rest/controllers/cont
 import { BaseServiceRead } from 'src/core/interfaces/rest/services'
 import {
   transformPagingOptions,
-  transformQueryFilter,
-  transformReadFilter
+  transformQueriesFilter,
+  transformReadFilters
 } from '../utils'
 import {
   AutocompleteEndpoint,
@@ -50,8 +50,8 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     @Get()
     public override async getAll(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
-      const filterOpts = await transformReadFilter(
-        transformQueryFilter<T>(query.other, config.swagger.model),
+      const filterOpts = await transformReadFilters(
+        transformQueriesFilter<T>(query.other),
         config.filterDto
       )
       return this.service.getAll(query.pagingOptions, filterOpts)
@@ -65,11 +65,11 @@ export function buildBaseControllerRead<T extends Model<T, any>>(
     @Get('/autocomplete')
     public override async autocomplete(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
-      const filterOpts = await transformReadFilter(
-        transformQueryFilter<T>(query.other, config.swagger.model),
+      const filterOpts = await transformReadFilters(
+        transformQueriesFilter<T>(query.other),
         config.filterDto
       )
-      return this.service.autocomplete(query.pagingOptions, filterOpts)
+      return this.service.autocomplete(query.pagingOptions, filterOpts.filters)
     }
 
     @GetOneEndpoint<T>({

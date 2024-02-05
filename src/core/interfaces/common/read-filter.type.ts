@@ -3,5 +3,5 @@ import { QueryNamingConventionConstants } from 'src/core/constants/query-naming-
 export type ReadFilter = {
   key: string
   filterType: QueryNamingConventionConstants
-  value: number | string | boolean
+  value: number | string | boolean | string[] | number[]
 }

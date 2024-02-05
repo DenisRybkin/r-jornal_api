@@ -1,8 +1,13 @@
-import { Includeable, Transaction, WhereOptions } from 'sequelize'
+import {
+  Includeable,
+  IncludeOptions,
+  Transaction,
+  WhereOptions
+} from 'sequelize'
 import { Model } from 'sequelize-typescript'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
-import { PaginationHelper } from '../../helpers'
+import { IncludesHelper, PaginationHelper } from '../../helpers'
 import { IAutocomplete, IPaging, IPagingOptions } from '../../interfaces/common'
 import { Attributes, Order as SequelizeOrder } from 'sequelize/types/model'
 import {
@@ -10,7 +15,7 @@ import {
   IConfigServiceRead
 } from '../../interfaces/rest/services'
 import { Nullable, NullableLike } from '../../types'
-import { defaultPagingOptions } from '../utils'
+import { defaultPagingOptions, TransformedReadFilters } from '../utils'
 import { BaseException } from '../../exceptions/base.exception'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -22,13 +27,13 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
-    filterOpts: Nullable<WhereOptions<Attributes<T>>> = null,
+    filterOpts: Nullable<Partial<TransformedReadFilters>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       distinct: true,
       where: Object.assign(
-        filterOpts ?? {},
+        filterOpts?.filters ?? {},
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
       ),
@@ -36,7 +41,10 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       order: (this.config.orderOpts ?? []).concat([
         [pagingOpts.orderBy, pagingOpts.order]
       ]) as SequelizeOrder,
-      include: this.config.includes,
+      include: IncludesHelper.transformWithFilters(
+        (this.config.includes ?? []) as IncludeOptions[],
+        filterOpts?.associatedFilters ?? []
+      ),
       transaction
     })
     return PaginationHelper.mapToIPaging<T>(count, rows, pagingOpts)
@@ -60,8 +68,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
   }
 
   public async autocomplete(
-    pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions<Attributes<T>>,
+    pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
+    filterOpts: Nullable<WhereOptions<Attributes<T>>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<IAutocomplete>> {
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
@@ -71,7 +79,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         [pagingOpts.orderBy, pagingOpts.order]
       ]) as SequelizeOrder,
       where: Object.assign(
-        filterOpts,
+        filterOpts ?? {},
         this.config.whereOpts,
         this.config.whereOptsFactory?.()
       ),

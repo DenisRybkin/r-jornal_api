@@ -40,7 +40,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
     return this.getAll(
       { ...defaultPagingOptions, pageSize: -1 },
       {
-        folder: CloudFoldersConstants.DEFAULT_AVATARS
+        filters: { folder: CloudFoldersConstants.DEFAULT_AVATARS }
       }
     )
   }
@@ -49,7 +49,7 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
     return this.getAll(
       { ...defaultPagingOptions, pageSize: -1 },
       {
-        folder: CloudFoldersConstants.PREVIEWS
+        filters: { folder: CloudFoldersConstants.PREVIEWS }
       }
     )
   }

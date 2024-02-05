@@ -1,25 +1,47 @@
 import { ClassConstructor } from 'class-transformer'
 import { Query } from 'express-serve-static-core'
 import { Op, WhereOptions } from 'sequelize'
-import { Model, Repository } from 'sequelize-typescript'
+import { Model } from 'sequelize-typescript'
 import {
   ConstraintMessagesConstants,
   ErrorMessagesConstants
 } from 'src/core/constants'
 import { QueryNamingConventionConstants } from 'src/core/constants/query-naming-convention.constants'
 import { BadRequestException } from 'src/core/exceptions/build-in'
-import { ReadFilter } from 'src/core/interfaces/common'
+import { ReadAssociatedFilter, ReadFilter } from 'src/core/interfaces/common'
 import { validateByDto } from 'src/core/validators'
 
-const transformBoolean = (value: 'true' | 'false'): boolean => value != 'false'
+export interface TransformedQuery {
+  filters: ReadFilter[]
+  associatedFilters: ReadAssociatedFilter[]
+}
 
-export const transformQueryFilter = <T extends Model<T, any>>(
-  query: Query,
-  model: Repository<T>
-): ReadFilter[] => {
-  if (!Object.keys(query).length) return []
-  return Object.entries(query).map(([key, value]) => {
-    const [filterBy, conventionType] = key.toString().split('.')
+export interface TransformedReadFilters {
+  filters: WhereOptions
+  associatedFilters: ReadAssociatedFilter[]
+}
+
+const transformBoolean = (value: 'true' | 'false'): boolean => value != 'false'
+const transformArray = (value: string): number[] | string[] => {
+  const divided = value.split(',')
+  if (divided.every(item => typeof Number.isNaN(Number(item)) == 'number'))
+    return divided.map(item => Number(item))
+  return divided
+}
+
+export const transformQueriesFilter = <T extends Model<T, any>>(
+  query: Query
+): TransformedQuery => {
+  const defaultTransformedQuery: TransformedQuery = {
+    filters: [],
+    associatedFilters: []
+  }
+  if (!Object.keys(query).length) return defaultTransformedQuery
+  return Object.entries(query).reduce((acc, [key, value]) => {
+    const [filterBy, conventionType, associatedModel] = key
+      .toString()
+      .split('.')
+
     if (
       !conventionType ||
       !Object.values(QueryNamingConventionConstants).includes(
@@ -28,27 +50,29 @@ export const transformQueryFilter = <T extends Model<T, any>>(
     )
       throw new BadRequestException(
         ErrorMessagesConstants.BadRequest,
-        `Invalid query parameter: ${key}, by convention available only: ${Object.values(
+        `Invalid query parameter: ${conventionType}, by convention available only: ${Object.values(
           QueryNamingConventionConstants
         )}`
       )
-    if (!model.rawAttributes[filterBy])
-      throw new BadRequestException(
-        ErrorMessagesConstants.BadRequest,
-        `Invalid query parameter: ${key}, model not exist field ${key}`
-      )
 
-    return {
+    const transformedQuery = {
       key: filterBy,
       value: value as string,
-      filterType: conventionType as QueryNamingConventionConstants
+      filterType: conventionType as QueryNamingConventionConstants,
+      ...(associatedModel && { associatedModel })
     }
-  })
+
+    if ('associatedModel' in transformedQuery)
+      acc.associatedFilters.push(transformedQuery as ReadAssociatedFilter)
+    else acc.filters.push(transformedQuery)
+
+    return acc
+  }, defaultTransformedQuery)
 }
 
-const getOperationByConventionConstant = (
+export const getOperationByConventionConstant = (
   constant: QueryNamingConventionConstants
-) => {
+): symbol => {
   switch (constant) {
     case QueryNamingConventionConstants.Equal:
       return Op.eq
@@ -66,15 +90,17 @@ const getOperationByConventionConstant = (
       return Op.lt
     case QueryNamingConventionConstants.LessThanOrEqual:
       return Op.lte
+    case QueryNamingConventionConstants.Or:
+      return Op.or
     default:
       return Op.eq
   }
 }
 
 const transformQueryValueByOperationType = (
-  value: string | number | boolean,
+  value: string,
   operationType: QueryNamingConventionConstants
-): string | number | boolean => {
+): string | number | boolean | number[] | string[] => {
   if (value == 'true' || value == 'false') return transformBoolean(value)
   switch (operationType) {
     case QueryNamingConventionConstants.Equal:
@@ -87,6 +113,7 @@ const transformQueryValueByOperationType = (
     case QueryNamingConventionConstants.GreaterThanOrEqual:
     case QueryNamingConventionConstants.LessThan:
     case QueryNamingConventionConstants.LessThanOrEqual: {
+      console.log(typeof value, ' ', value)
       if (Number.isNaN(Number(value)))
         throw new BadRequestException(
           ConstraintMessagesConstants.MustBeNumber,
@@ -94,40 +121,54 @@ const transformQueryValueByOperationType = (
         )
       return Number(value)
     }
+    case QueryNamingConventionConstants.Or:
+      return transformArray(value)
     default:
       return value
   }
 }
 
-export const transformReadFilter = async (
-  readFilters: ReadFilter[],
+export const transformReadFilters = async <T extends Model<T, any>>(
+  transformedQueries: TransformedQuery,
   dto: ClassConstructor<any>
-): Promise<WhereOptions> => {
-  const withTransformedValue = readFilters.map(item => ({
-    ...item,
-    value: transformQueryValueByOperationType(item.value, item.filterType)
-  }))
-  await validateByDto(
-    dto,
-    Object.assign(
-      {},
-      ...withTransformedValue.map(readFilter => ({
-        [readFilter.key]: readFilter.value
-      }))
-    ),
-    {
-      skipMissingProperties: true,
-      whitelist: true,
-      forbidNonWhitelisted: true
-    }
-  )
-
-  return Object.assign(
+): Promise<TransformedReadFilters> => {
+  const withTransformedValueFilters: ReadFilter[] =
+    transformedQueries.filters.map(item => ({
+      ...item,
+      value: transformQueryValueByOperationType(
+        item.value as string,
+        item.filterType
+      )
+    }))
+  const withTransformedValueAssociatedFilters: ReadAssociatedFilter[] =
+    transformedQueries.associatedFilters.map(item => ({
+      ...item,
+      value: transformQueryValueByOperationType(
+        item.value as string,
+        item.filterType
+      )
+    }))
+  const whereOpts = Object.assign(
     {},
-    ...withTransformedValue.map(filter => ({
-      [filter.key]: {
-        [getOperationByConventionConstant(filter.filterType)]: filter.value
-      }
+    ...[
+      ...withTransformedValueFilters,
+      ...withTransformedValueAssociatedFilters
+    ].map(readFilter => ({
+      [readFilter.key]: readFilter.value
     }))
   )
+  console.log(whereOpts)
+  await validateByDto(dto, whereOpts, {
+    skipMissingProperties: true,
+    whitelist: true,
+    forbidNonWhitelisted: true
+  })
+  return {
+    filters: withTransformedValueFilters.map(filter => ({
+      [filter.key as keyof T]: {
+        [getOperationByConventionConstant(filter.filterType)]: filter.value
+      }
+    })),
+    associatedFilters: withTransformedValueAssociatedFilters
+  }
 }

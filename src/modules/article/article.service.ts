@@ -69,7 +69,7 @@ export class ArticleService extends BaseServiceCRUD<Article> {
         pageSize: -1
       },
       {
-        articleId
+        filters: { articleId }
       },
       transaction
     )

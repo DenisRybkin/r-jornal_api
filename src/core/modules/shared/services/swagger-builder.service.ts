@@ -8,7 +8,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 @Injectable()
 export class SwaggerBuilderService {
-  public static specDirectory = join(__dirname, 'static')
+  private static nestingToRoot = 4
+  public static specDirectory = join(
+    ...[
+      __dirname,
+      ...Array(SwaggerBuilderService.nestingToRoot).fill('..'),
+      'static'
+    ]
+  )
   public static specPath = join(
     SwaggerBuilderService.specDirectory,
     'spec.json'
@@ -37,12 +44,10 @@ export class SwaggerBuilderService {
     )
     if (!existsSync(SwaggerBuilderService.specDirectory))
       mkdirSync(SwaggerBuilderService.specDirectory)
-
     writeFileSync(
       SwaggerBuilderService.specPath,
       JSON.stringify(swaggerDocument)
     )
-
     SwaggerModule.setup(
       SwaggerBuilderService.documentUri,
       app,

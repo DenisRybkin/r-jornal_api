@@ -39,8 +39,8 @@ import { UserAvatar } from '../../database/models/related/UserAvatar/user-avatar
 import { Request } from 'express'
 import {
   transformPagingOptions,
-  transformQueryFilter,
-  transformReadFilter
+  transformQueriesFilter,
+  transformReadFilters
 } from '../../core/bases/utils'
 import { UserFollower } from '../../database/models/related/UserFollower/user-follower.model'
 import { UserFollowingService } from './user-following.service'
@@ -140,13 +140,16 @@ export class UserController extends BaseController {
     @Req() req: Request
   ) {
     const query = transformPagingOptions(req.query, UserFollower)
-    const filterOpts = await transformReadFilter(
-      transformQueryFilter<UserFollower>(query.other, UserFollower),
+    const filterOpts = await transformReadFilters(
+      transformQueriesFilter<UserFollower>(query.other),
       ReadUserFollowerFilterDto
     )
     return this.userFollowerService.getAll(query.pagingOptions, {
       ...filterOpts,
-      userId
+      filters: {
+        ...filterOpts.filters,
+        userId
+      }
     })
   }
 
@@ -188,13 +191,13 @@ export class UserController extends BaseController {
     @Req() req: Request
   ) {
     const query = transformPagingOptions(req.query, UserFollowing)
-    const filterOpts = await transformReadFilter(
-      transformQueryFilter<UserFollowing>(query.other, UserFollowing),
+    const filterOpts = await transformReadFilters(
+      transformQueriesFilter<UserFollowing>(query.other),
       ReadUserFollowingFilterDto
     )
     return this.userFollowingService.getAll(query.pagingOptions, {
       ...filterOpts,
-      userId
+      filters: { ...filterOpts.filters, userId }
     })
   }
 

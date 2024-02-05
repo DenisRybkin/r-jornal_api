@@ -2,6 +2,7 @@ import { User } from '../../../database/models/singles/User/user.model'
 import { ArticleHashtag } from '../../../database/models/related/ArticleHashtag/article-hashtag.model'
 import { ModelWithId } from '../../../core/interfaces/rest/model-with-id.interface'
 import { ApiProperty } from '@nestjs/swagger'
+import { Category } from '../../../database/models/singles/Category/category.model'
 
 export class ArticleShortDto implements ModelWithId {
   @ApiProperty()
@@ -15,6 +16,9 @@ export class ArticleShortDto implements ModelWithId {
 
   @ApiProperty({ type: User })
   readonly createdByUser: User
+
+  @ApiProperty({ type: Category, isArray: true })
+  readonly categories: Category[]
 
   @ApiProperty()
   readonly commentsCount: number

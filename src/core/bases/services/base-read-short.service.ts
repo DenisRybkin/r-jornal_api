@@ -1,4 +1,3 @@
-import { WhereOptions } from 'sequelize'
 import { Model } from 'sequelize-typescript'
 import { IPaging, IPagingOptions } from 'src/core/interfaces/common'
 import { ModelWithId } from 'src/core/interfaces/rest/model-with-id.interface'
@@ -7,8 +6,8 @@ import {
   IConfigServiceReadShort
 } from 'src/core/interfaces/rest/services'
 import { BaseServiceRead } from './base-read.service'
-import { defaultPagingOptions } from '../utils'
-import { Attributes } from 'sequelize/types/model'
+import { TransformedReadFilters } from '../utils'
+import { Nullable } from '../../types'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -26,8 +25,8 @@ export abstract class BaseServiceReadShort<
   }
 
   public async getAllShort(
-    pagingOpts: IPagingOptions = defaultPagingOptions,
-    filterOpts: WhereOptions<Attributes<T>>
+    pagingOpts: IPagingOptions,
+    filterOpts: Nullable<Partial<TransformedReadFilters>>
   ): Promise<IPaging<TShort>> {
     const result = await super.getAll(pagingOpts, filterOpts)
     return { ...result, items: result?.items.map(this.config.mapper) }

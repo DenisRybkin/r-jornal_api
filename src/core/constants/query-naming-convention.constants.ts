@@ -6,5 +6,6 @@ export enum QueryNamingConventionConstants {
   GreaterThan = 'gt', // for numbers // example?age.gt=18
   GreaterThanOrEqual = 'gte', // for numbers // example?age.gte=18
   LessThan = 'lt', // for numbers // example?age.lt=40
-  LessThanOrEqual = 'lte' // for numbers // example?age.lte=40
+  LessThanOrEqual = 'lte', // for numbers // example?age.lte=40
+  Or = 'or'
 }

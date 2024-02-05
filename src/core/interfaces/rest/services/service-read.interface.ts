@@ -1,8 +1,10 @@
-import { Includeable, WhereOptions } from 'sequelize'
+import { Includeable, Transaction, WhereOptions } from 'sequelize'
 import { Model, Repository } from 'sequelize-typescript'
 import { IAutocomplete, IPaging, IPagingOptions, Order } from '../../common'
-import { Nullable } from '../../../types'
+import { Nullable, NullableLike } from '../../../types'
 import { BaseException } from '../../../exceptions/base.exception'
+import { TransformedReadFilters } from '../../../bases/utils'
+import { Attributes } from 'sequelize/types/model'
 
 export interface IConfigServiceRead<T extends Model<T, any>> {
   modelRepository: Repository<T>
@@ -15,18 +17,25 @@ export interface IConfigServiceRead<T extends Model<T, any>> {
 
 export abstract class BaseServiceRead<T extends Model<T, any>> {
   protected constructor(protected readonly config: IConfigServiceRead<T>) {}
-  abstract getById(id: number): Promise<T>
+  abstract getById(
+    id: number,
+    rejectOnEmpty?: Nullable<BaseException | false>,
+    transaction?: Nullable<Transaction>
+  ): Promise<T>
   abstract getAll(
-    pagingOptions: IPagingOptions,
-    filterOpts: WhereOptions
+    pagingOpts: NullableLike<IPagingOptions, 'pageSize'>,
+    filterOpts: Nullable<Partial<TransformedReadFilters>>,
+    transaction?: Nullable<Transaction>
   ): Promise<IPaging<T>>
   abstract autocomplete(
-    opts: IPagingOptions,
-    filterOpts: WhereOptions
+    pagingOpts: IPagingOptions,
+    filterOpts: WhereOptions<Attributes<T>>,
+    transaction?: Nullable<Transaction>
   ): Promise<IPaging<IAutocomplete>>
   abstract getOne(
-    whereOpts: WhereOptions<T>,
+    whereOpts: WhereOptions<Attributes<T>>,
     includes: Includeable[] | undefined,
-    rejectOnEmpty: Nullable<BaseException>
+    rejectOnEmpty: Nullable<BaseException | false>,
+    transaction: Nullable<Transaction>
   ): Promise<T>
 }

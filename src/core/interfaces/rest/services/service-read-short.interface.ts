@@ -1,9 +1,10 @@
-import { WhereOptions } from 'sequelize'
 import { Model } from 'sequelize-typescript'
 import { BaseServiceRead } from 'src/core/bases/services'
 import { IPaging, IPagingOptions } from '../../common'
 import { ModelWithId } from '../model-with-id.interface'
 import { IConfigServiceRead } from './service-read.interface'
+import { Nullable, NullableLike } from '../../../types'
+import { TransformedReadFilters } from '../../../bases/utils'
 
 export interface IConfigServiceReadShort<
   T extends Model<T, any>,
@@ -23,7 +24,7 @@ export abstract class BaseServiceReadShort<
   }
   abstract getShortById(id: number): Promise<TShort>
   abstract getAllShort(
-    pagingOptions: IPagingOptions,
-    filterOpts: WhereOptions
+    pagingOpts: NullableLike<IPagingOptions, 'pageSize'>,
+    filterOpts: Nullable<Partial<TransformedReadFilters>>
   ): Promise<IPaging<TShort>>
 }

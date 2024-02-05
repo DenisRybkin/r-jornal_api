@@ -27,8 +27,8 @@ import { ModelWithId } from 'src/core/interfaces/rest/model-with-id.interface'
 import { BaseServiceReadShort } from 'src/core/interfaces/rest/services'
 import {
   transformPagingOptions,
-  transformQueryFilter,
-  transformReadFilter
+  transformQueriesFilter,
+  transformReadFilters
 } from '../utils'
 import { GetAllEndpoint, GetOneEndpoint } from '../decorators'
 
@@ -64,8 +64,8 @@ export function buildBaseControllerReadShort<
     @Get()
     public override async getAll(@Req() req: Request) {
       const query = transformPagingOptions(req.query, config.swagger.model)
-      const filterOpts = await transformReadFilter(
-        transformQueryFilter<T>(query.other, config.swagger.model),
+      const filterOpts = await transformReadFilters(
+        transformQueriesFilter<T>(query.other),
         config.filterDto
       )
       return this.service.getAllShort(query.pagingOptions, filterOpts)

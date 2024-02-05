@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common'
-import { Role } from '../../../../database/models/singles/Role/role.model'
-import { User } from '../../../../database/models/singles/User/user.model'
 import {
+  AutoCompleteType,
+  PagingType,
   BaseProcessedError,
+  LoginResponseType,
+  PagingOptionsType,
   ProcessedError400Type,
   ProcessedError401Type,
   ProcessedError404Type,
   ProcessedError500Type
-} from '../../../interfaces/common/processed-error.type'
-import { PagingType } from '../../../interfaces/common/paging'
-import { PagingOptionsType } from '../../../interfaces/common/paging/paging-options.interface'
-import { AutoCompleteType } from '../../../interfaces/common'
-import { LoginResponseType } from '../../../interfaces/common/login-response.type'
+} from '../../../interfaces/common'
 import {
   ValidationErrorType,
   ValidationMessageType
 } from '../../../exceptions/types/validation.types'
+import { Role } from '../../../../database/models/singles/Role/role.model'
+import { User } from '../../../../database/models/singles/User/user.model'
 import { StaticField } from '../../../../database/models/singles/StaticField/static-field.model'
 import { UserAvatar } from '../../../../database/models/related/UserAvatar/user-avatar.model'
 import { Category } from '../../../../database/models/singles/Category/category.model'

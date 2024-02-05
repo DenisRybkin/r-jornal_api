@@ -3,7 +3,12 @@ export {
   TransformPagingType
 } from './transform-paging.util'
 export {
-  transformQueryFilter,
-  transformReadFilter
+  TransformedQuery,
+  TransformedReadFilters,
+  transformQueriesFilter,
+  transformReadFilters
 } from './transform-read-filter.util'
-export { defaultPagingOptions } from './default-value.constants'
+export {
+  defaultPagingOptions,
+  defaultTransformedQuery
+} from './default-value.constants'

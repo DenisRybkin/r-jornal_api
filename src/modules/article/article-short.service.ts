@@ -2,6 +2,7 @@ import { BaseServiceReadShort } from '../../core/bases/services'
 import { Article } from '../../database/models/singles/Article/article.model'
 import { InjectModel } from '@nestjs/sequelize'
 import {
+  categoriesInclude,
   commentsInclude,
   creatorInclude,
   hashtagsInclude,
@@ -32,7 +33,8 @@ export class ArticleShortService extends BaseServiceReadShort<
         likesInclude,
         commentsInclude,
         repostsInclude,
-        hashtagsInclude
+        hashtagsInclude,
+        categoriesInclude
       ]
     })
   }

@@ -8,6 +8,8 @@ export const article2articleShortMapper = (
 ): ArticleShortDto => ({
   id: article.id,
   body: article.body,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  categories: article.categories!.map(item => item.category!),
   createdByUserId: article.createdByUserId,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   createdByUser: article.createdByUser!,
