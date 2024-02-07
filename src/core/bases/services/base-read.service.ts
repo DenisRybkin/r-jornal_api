@@ -17,19 +17,24 @@ import {
 import { Nullable, NullableLike } from '../../types'
 import { defaultPagingOptions, TransformedReadFilters } from '../utils'
 import { BaseException } from '../../exceptions/base.exception'
+import { Logger } from '@nestjs/common'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 export abstract class BaseServiceRead<T extends Model<T, any>>
   implements AbstractServiceRead<T>
 {
-  protected constructor(protected readonly config: IConfigServiceRead<T>) {}
+  protected constructor(
+    protected readonly config: IConfigServiceRead<T>,
+    protected readonly logger: Logger
+  ) {}
 
   public async getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
     filterOpts: Nullable<Partial<TransformedReadFilters>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
+    this.logger.log('start "getAll" method in base service read')
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       distinct: true,
       where: Object.assign(
@@ -47,6 +52,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       ),
       transaction
     })
+    this.logger.log('end "getAll" method in base service read')
     return PaginationHelper.mapToIPaging<T>(count, rows, pagingOpts)
   }
 
@@ -55,7 +61,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     rejectOnEmpty: Nullable<BaseException | false> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<T> {
-    return await this.config.modelRepository.findByPk(id, {
+    this.logger.log('start "getById" method in base service read')
+    const result = await this.config.modelRepository.findByPk(id, {
       include: this.config.includes,
       rejectOnEmpty:
         rejectOnEmpty ??
@@ -65,6 +72,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         ),
       transaction
     })
+    this.logger.log('end "getById" method in base service read')
+    return result
   }
 
   public async autocomplete(
@@ -72,6 +81,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     filterOpts: Nullable<WhereOptions<Attributes<T>>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<IAutocomplete>> {
+    this.logger.log('start "autocomplete" method in base service read')
     const { count, rows } = await this.config.modelRepository.findAndCountAll({
       ...PaginationHelper.genPagingOpts(pagingOpts),
       attributes: ['id', [this.config.autocompleteProperty, 'text']],
@@ -85,7 +95,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
       ),
       transaction
     })
-
+    this.logger.log('end "autocomplete" method in base service read')
     return PaginationHelper.mapToIPaging<IAutocomplete>(
       count,
       rows as unknown as IAutocomplete[],
@@ -99,7 +109,8 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
     rejectOnEmpty: Nullable<BaseException | false> = null,
     transaction: Nullable<Transaction> = null
   ) {
-    return await this.config.modelRepository.findOne({
+    this.logger.log('start "getOne" method in base service read')
+    const result = await this.config.modelRepository.findOne({
       where: whereOpts,
       include: includes,
       rejectOnEmpty:
@@ -110,5 +121,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
         ),
       transaction
     })
+    this.logger.log('end "getOne" method in base service read')
+    return result
   }
 }

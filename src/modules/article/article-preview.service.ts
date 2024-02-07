@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleStaticField } from '../../database/models/related/ArticleStaticField/article-static-field.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -9,10 +9,13 @@ export class ArticlePreviewService extends BaseServiceCRUD<ArticleStaticField> {
     @InjectModel(ArticleStaticField)
     private readonly articleStaticFieldRepository: typeof ArticleStaticField
   ) {
-    super({
-      modelRepository: articleStaticFieldRepository,
-      autocompleteProperty: 'staticFieldId',
-      includes: []
-    })
+    super(
+      {
+        modelRepository: articleStaticFieldRepository,
+        autocompleteProperty: 'staticFieldId',
+        includes: []
+      },
+      new Logger(ArticlePreviewService.name)
+    )
   }
 }

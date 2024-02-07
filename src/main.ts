@@ -13,7 +13,8 @@ import { SwaggerBuilderService } from './core/modules/shared/services/swagger-bu
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter()
+    new ExpressAdapter(),
+    { bufferLogs: true }
   )
 
   const configService = app.select(SharedModule).get(ApiConfigService)

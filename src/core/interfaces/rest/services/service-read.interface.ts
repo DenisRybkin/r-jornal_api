@@ -5,6 +5,7 @@ import { Nullable, NullableLike } from '../../../types'
 import { BaseException } from '../../../exceptions/base.exception'
 import { TransformedReadFilters } from '../../../bases/utils'
 import { Attributes } from 'sequelize/types/model'
+import { Logger } from '@nestjs/common'
 
 export interface IConfigServiceRead<T extends Model<T, any>> {
   modelRepository: Repository<T>
@@ -16,7 +17,10 @@ export interface IConfigServiceRead<T extends Model<T, any>> {
 }
 
 export abstract class BaseServiceRead<T extends Model<T, any>> {
-  protected constructor(protected readonly config: IConfigServiceRead<T>) {}
+  protected constructor(
+    protected readonly config: IConfigServiceRead<T>,
+    protected readonly logger: Logger
+  ) {}
   abstract getById(
     id: number,
     rejectOnEmpty?: Nullable<BaseException | false>,

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleCategory } from '../../database/models/related/ArticleCategory/article-category.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -9,10 +9,13 @@ export class ArticleCategoryService extends BaseServiceCRUD<ArticleCategory> {
     @InjectModel(ArticleCategory)
     private readonly articleCategoryRepository: typeof ArticleCategory
   ) {
-    super({
-      modelRepository: articleCategoryRepository,
-      autocompleteProperty: 'categoryId',
-      includes: []
-    })
+    super(
+      {
+        modelRepository: articleCategoryRepository,
+        autocompleteProperty: 'categoryId',
+        includes: []
+      },
+      new Logger(ArticleCategoryService.name)
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { UserAchievement } from '../../database/models/related/UserAchievement/user-achievement.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -19,10 +19,13 @@ export class UserAchievementService extends BaseServiceCRUD<UserAchievement> {
     private readonly achievementsHelper: AchievementsHelper,
     private readonly categoriesService: CategoryService
   ) {
-    super({
-      autocompleteProperty: 'userId',
-      modelRepository: userAchievementRepository
-    })
+    super(
+      {
+        autocompleteProperty: 'userId',
+        modelRepository: userAchievementRepository
+      },
+      new Logger(UserAchievementService.name)
+    )
   }
   public async getByUserIdAndCategoryId(
     userId: number,

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleTest } from '../../database/models/singles/ArticleTest/article-test.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -21,11 +21,14 @@ export class ArticleTestService extends BaseServiceCRUD<ArticleTest> {
     private readonly articleTestAnswerService: ArticleTestAnswerService,
     private readonly sequelize: Sequelize
   ) {
-    super({
-      modelRepository: articleTestRepository,
-      autocompleteProperty: 'articleId',
-      includes: [questionsWithAnswersInclude, usersWhoPassedInclude]
-    })
+    super(
+      {
+        modelRepository: articleTestRepository,
+        autocompleteProperty: 'articleId',
+        includes: [questionsWithAnswersInclude, usersWhoPassedInclude]
+      },
+      new Logger(ArticleTestService.name)
+    )
   }
 
   async getByArticleId(articleId: number) {

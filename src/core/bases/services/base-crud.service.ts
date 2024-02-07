@@ -13,6 +13,7 @@ import {
   DestroyOptions,
   UpdateOptions
 } from 'sequelize/types/model'
+import { Logger } from '@nestjs/common'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -20,17 +21,22 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
   extends BaseServiceRead<T>
   implements AbstractServiceCRUD<T>
 {
-  protected constructor(protected readonly config: IConfigServiceCRUD<T>) {
-    super(config)
+  protected constructor(
+    protected readonly config: IConfigServiceCRUD<T>,
+    protected readonly logger: Logger
+  ) {
+    super(config, logger)
   }
 
   public async create(
     model: MakeNullishOptional<T['_creationAttributes']>,
     createOpts?: CreateOptions<Attributes<T>>
   ) {
+    this.logger.log('start "create" method in base service crud')
     const result = await this.config.modelRepository.create(model, createOpts)
     if (result && this.config.beforeCreate)
       await this.config.beforeCreate(result)
+    this.logger.log('end "create" method in base service crud')
     return result
   }
 
@@ -39,6 +45,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     model: T | Partial<T>,
     updateOptions?: Omit<UpdateOptions<Attributes<T>>, 'returning' | 'where'>
   ) {
+    this.logger.log('start "update" method in base service crud')
     const result = (
       await this.config.modelRepository.update<ORMModelWithId>(model, {
         where: {
@@ -52,6 +59,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     )[1][0] as unknown as T
     if (result && this.config.beforeUpdate)
       await this.config.beforeUpdate(result)
+    this.logger.log('end "update" method in base service crud')
     return result
   }
 
@@ -62,6 +70,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     createOpts?: CreateOptions<Attributes<T>>,
     updateOptions?: Omit<UpdateOptions<Attributes<T>>, 'returning' | 'where'>
   ) {
+    this.logger.log('start "createOrUpdate" method in base service crud')
     const foundModel = await super.getOne(
       {
         ...(typeof idOrWhereOpts == 'number'
@@ -73,6 +82,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     )
     if (foundModel)
       return await this.update(idOrWhereOpts, model as T, updateOptions)
+    this.logger.log('end "createOrUpdate" method in base service crud')
     return await this.create(model, createOpts)
   }
 
@@ -80,6 +90,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     idOrWhereOpts: number | WhereOptions<Attributes<T>>,
     deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ): Promise<number> {
+    this.logger.log('start "delete" method in base service crud')
     const result = await this.config.modelRepository.destroy<ORMModelWithId>({
       where: {
         ...(typeof idOrWhereOpts == 'number'
@@ -89,6 +100,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
       ...deleteOpts
     })
     if (this.config.beforeDelete) await this.config.beforeDelete()
+    this.logger.log('end "delete" method in base service crud')
     return result
   }
 
@@ -98,6 +110,7 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
     createOpts?: CreateOptions<Attributes<T>>,
     deleteOpts?: Omit<DestroyOptions<Attributes<T>>, 'where'>
   ) {
+    this.logger.log('start "createOrDelete" method in base service crud')
     const foundModel = await super.getOne(
       {
         ...(typeof idOrWhereOpts == 'number'
@@ -108,6 +121,8 @@ export abstract class BaseServiceCRUD<T extends Model<T, any>>
       false
     )
     if (foundModel) return await this.delete(idOrWhereOpts, deleteOpts)
-    return this.create(model, createOpts)
+    const createdModel = await this.create(model, createOpts)
+    this.logger.log('end "createOrDelete" method in base service crud')
+    return createdModel
   }
 }

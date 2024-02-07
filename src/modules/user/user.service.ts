@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { User } from '../../database/models/singles/User/user.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -32,19 +32,22 @@ export class UserService extends BaseServiceCRUD<User> {
     private readonly generatorService: GeneratorService,
     private readonly staticFiledService: StaticFieldService
   ) {
-    super({
-      autocompleteProperty: 'nickname',
-      modelRepository: userRepository,
-      includes: [
-        roleInclude,
-        avatarInclude,
-        defaultAvatarInclude,
-        categoriesInclude,
-        achievementsInclude,
-        followingsInclude,
-        followersInclude
-      ]
-    })
+    super(
+      {
+        autocompleteProperty: 'nickname',
+        modelRepository: userRepository,
+        includes: [
+          roleInclude,
+          avatarInclude,
+          defaultAvatarInclude,
+          categoriesInclude,
+          achievementsInclude,
+          followingsInclude,
+          followersInclude
+        ]
+      },
+      new Logger(UserService.name)
+    )
   }
 
   async getByEmail(

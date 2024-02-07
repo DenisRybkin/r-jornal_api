@@ -1,6 +1,6 @@
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ExaminationAnswer } from '../../database/models/singles/ExaminationAnswer/examination-answer.model'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 
 @Injectable()
@@ -9,9 +9,12 @@ export class ExaminationAnswerService extends BaseServiceCRUD<ExaminationAnswer>
     @InjectModel(ExaminationAnswer)
     private readonly answerRepository: typeof ExaminationAnswer
   ) {
-    super({
-      autocompleteProperty: 'name',
-      modelRepository: answerRepository
-    })
+    super(
+      {
+        autocompleteProperty: 'name',
+        modelRepository: answerRepository
+      },
+      new Logger(ExaminationAnswerService.name)
+    )
   }
 }

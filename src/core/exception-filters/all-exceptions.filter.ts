@@ -3,13 +3,16 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
-  HttpStatus
+  HttpStatus,
+  Logger
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
 import { ErrorMessagesConstants } from '../constants'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionsFilter.name)
+
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
@@ -22,6 +25,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest<Request>())
     }
+
+    this.logger.error(responseBody)
 
     httpAdapter.reply(
       ctx.getResponse(),

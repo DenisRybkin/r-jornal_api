@@ -1,6 +1,6 @@
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleCommentReaction } from '../../database/models/singles/ArticleCommentReaction/article-comment-reaction.model'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 
 @Injectable()
@@ -9,10 +9,13 @@ export class ArticleCommentReactionService extends BaseServiceCRUD<ArticleCommen
     @InjectModel(ArticleCommentReaction)
     private readonly articleCommentReactionRepository: typeof ArticleCommentReaction
   ) {
-    super({
-      modelRepository: articleCommentReactionRepository,
-      autocompleteProperty: 'commentId',
-      includes: []
-    })
+    super(
+      {
+        modelRepository: articleCommentReactionRepository,
+        autocompleteProperty: 'commentId',
+        includes: []
+      },
+      new Logger(ArticleCommentReactionService.name)
+    )
   }
 }

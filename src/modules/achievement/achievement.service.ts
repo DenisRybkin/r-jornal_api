@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { Achievement } from '../../database/models/singles/Achievement/achievement.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -9,9 +9,12 @@ export class AchievementService extends BaseServiceCRUD<Achievement> {
     @InjectModel(Achievement)
     private readonly achievementRepository: typeof Achievement
   ) {
-    super({
-      autocompleteProperty: 'name',
-      modelRepository: achievementRepository
-    })
+    super(
+      {
+        autocompleteProperty: 'name',
+        modelRepository: achievementRepository
+      },
+      new Logger(AchievementService.name)
+    )
   }
 }

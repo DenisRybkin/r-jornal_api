@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { BaseServiceCRUD } from 'src/core/bases/services'
 import { ErrorMessagesConstants } from '../../core/constants'
@@ -10,10 +10,13 @@ import { Role } from '../../database/models/singles/Role/role.model'
 @Injectable()
 export class RoleService extends BaseServiceCRUD<Role> {
   constructor(@InjectModel(Role) private readonly roleRepository: typeof Role) {
-    super({
-      autocompleteProperty: 'name',
-      modelRepository: roleRepository
-    })
+    super(
+      {
+        autocompleteProperty: 'name',
+        modelRepository: roleRepository
+      },
+      new Logger(RoleService.name)
+    )
   }
 
   public async getByName(name: Roles, rejectOnEmpty: Nullable<Error> = null) {

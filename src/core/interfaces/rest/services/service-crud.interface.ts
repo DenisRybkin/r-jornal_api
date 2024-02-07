@@ -1,6 +1,7 @@
 import { Model } from 'sequelize-typescript'
 import { MakeNullishOptional } from 'sequelize/types/utils'
 import { BaseServiceRead, IConfigServiceRead } from './service-read.interface'
+import { Logger } from '@nestjs/common'
 
 export interface IConfigServiceCRUD<T extends Model<T, any>>
   extends IConfigServiceRead<T> {
@@ -12,8 +13,11 @@ export interface IConfigServiceCRUD<T extends Model<T, any>>
 export abstract class BaseServiceCRUD<
   T extends Model<T, any>
 > extends BaseServiceRead<T> {
-  protected constructor(protected readonly config: IConfigServiceCRUD<T>) {
-    super(config)
+  protected constructor(
+    protected readonly config: IConfigServiceCRUD<T>,
+    protected readonly logger: Logger
+  ) {
+    super(config, logger)
   }
   abstract create(
     model: MakeNullishOptional<T['_creationAttributes']>

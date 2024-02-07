@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { StaticField } from '../../database/models/singles/StaticField/static-field.model'
 import { BaseServiceRead } from '../../core/bases/services'
@@ -24,10 +24,13 @@ export class StaticFieldService extends BaseServiceRead<StaticField> {
     private readonly staticFieldRepository: typeof StaticField,
     private readonly configService: ApiConfigService
   ) {
-    super({
-      modelRepository: staticFieldRepository,
-      autocompleteProperty: 'url'
-    })
+    super(
+      {
+        modelRepository: staticFieldRepository,
+        autocompleteProperty: 'url'
+      },
+      new Logger(StaticFieldService.name)
+    )
 
     this.client = S3BucketFactory(configService)
   }

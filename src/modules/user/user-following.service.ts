@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { UserFollowing } from '../../database/models/related/UserFollowing/user-following.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -10,11 +10,14 @@ export class UserFollowingService extends BaseServiceCRUD<UserFollowing> {
     @InjectModel(UserFollowing)
     private readonly userFollowingRepository: typeof UserFollowing
   ) {
-    super({
-      autocompleteProperty: 'userId',
-      modelRepository: userFollowingRepository,
-      includes: [followingWithAvatar]
-    })
+    super(
+      {
+        autocompleteProperty: 'userId',
+        modelRepository: userFollowingRepository,
+        includes: [followingWithAvatar]
+      },
+      new Logger(UserFollowingService.name)
+    )
   }
 
   async count(userId: number) {

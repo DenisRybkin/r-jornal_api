@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { Category } from '../../database/models/singles/Category/category.model'
 import { InjectModel } from '@nestjs/sequelize'
 import { BaseServiceCRUD } from '../../core/bases/services'
@@ -9,10 +9,13 @@ export class CategoryService extends BaseServiceCRUD<Category> {
   constructor(
     @InjectModel(Category) private readonly categoryRepository: typeof Category
   ) {
-    super({
-      autocompleteProperty: 'name',
-      modelRepository: categoryRepository,
-      includes: [avatarInclude]
-    })
+    super(
+      {
+        autocompleteProperty: 'name',
+        modelRepository: categoryRepository,
+        includes: [avatarInclude]
+      },
+      new Logger(CategoryService.name)
+    )
   }
 }

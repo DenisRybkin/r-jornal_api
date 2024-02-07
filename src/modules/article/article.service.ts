@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { Article } from '../../database/models/singles/Article/article.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -35,26 +35,29 @@ export class ArticleService extends BaseServiceCRUD<Article> {
     private readonly sequelize: Sequelize,
     private readonly asyncContext: AsyncContext<string, any>
   ) {
-    super({
-      modelRepository: articleRepository,
-      autocompleteProperty: 'body',
-      includes: [
-        //commentsInclude,
-        creatorInclude,
-        // likesInclude,
-        // repostsInclude,
-        testInclude,
-        hashtagsInclude,
-        categoriesInclude,
-        previewInclude
-      ],
-      beforeCreate: async article =>
-        await this.updateUserPoints.call(
-          this,
-          article.id,
-          EarnUserPointsStrategyConstants.BY_CREATE_ARTICLE
-        )
-    })
+    super(
+      {
+        modelRepository: articleRepository,
+        autocompleteProperty: 'body',
+        includes: [
+          //commentsInclude,
+          creatorInclude,
+          // likesInclude,
+          // repostsInclude,
+          testInclude,
+          hashtagsInclude,
+          categoriesInclude,
+          previewInclude
+        ],
+        beforeCreate: async article =>
+          await this.updateUserPoints.call(
+            this,
+            article.id,
+            EarnUserPointsStrategyConstants.BY_CREATE_ARTICLE
+          )
+      },
+      new Logger(ArticleService.name)
+    )
   }
 
   async updateUserPoints(

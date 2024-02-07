@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { ArticleComment } from '../../database/models/singles/ArticleComment/article-comment.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -22,11 +22,14 @@ export class ArticleCommentService extends BaseServiceCRUD<ArticleComment> {
     private readonly asyncContext: AsyncContext<string, any>,
     private readonly sequelize: Sequelize
   ) {
-    super({
-      modelRepository: articleCommentRepository,
-      autocompleteProperty: 'text',
-      includes: [creatorInclude, attachmentsInclude, reactionsInclude]
-    })
+    super(
+      {
+        modelRepository: articleCommentRepository,
+        autocompleteProperty: 'text',
+        includes: [creatorInclude, attachmentsInclude, reactionsInclude]
+      },
+      new Logger(ArticleCommentService.name)
+    )
   }
 
   async createComplex(dto: CreateComplexArticleCommentDto) {

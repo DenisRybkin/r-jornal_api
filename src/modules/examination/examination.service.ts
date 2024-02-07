@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { BaseServiceCRUD } from '../../core/bases/services'
 import { Examination } from '../../database/models/singles/Examination/examination.model'
 import { InjectModel } from '@nestjs/sequelize'
@@ -14,11 +14,14 @@ export class ExaminationService extends BaseServiceCRUD<Examination> {
     private readonly useService: UserService,
     private readonly asyncContext: AsyncContext<string, any>
   ) {
-    super({
-      autocompleteProperty: 'title',
-      modelRepository: examinationRepository,
-      includes: [questionsInclude]
-    })
+    super(
+      {
+        autocompleteProperty: 'title',
+        modelRepository: examinationRepository,
+        includes: [questionsInclude]
+      },
+      new Logger(ExaminationService.name)
+    )
   }
 
   async passExamination(examinationId: number) {
