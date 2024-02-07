@@ -14,12 +14,6 @@ export class OpenAiController {
   constructor(private readonly openAiService: OpenAiService) {}
 
   @ApiBearerAuth()
-  @Get('/text')
-  public async text(@Query('message') message: string) {
-    return this.openAiService.execute(message)
-  }
-
-  @ApiBearerAuth()
   @Get('/questions')
   public async questions(
     @Query('topic') topic: string,
@@ -34,6 +28,8 @@ export class OpenAiController {
     )
     count: number
   ) {
-    return this.openAiService.genQuestions(topic, locale, count)
+    return JSON.parse(
+      await this.openAiService.promptGenerateQuestions(topic, locale, count)
+    )
   }
 }

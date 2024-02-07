@@ -27,7 +27,7 @@ export class SharedModule {
       global: !!options?.isGlobal,
       providers,
       imports: [HttpModule],
-      exports: [...providers, HttpModule]
+      exports: [...providers]
     }
   }
 }

@@ -1,37 +1,50 @@
 import { Injectable } from '@nestjs/common'
-import { OpenAiFactory } from './utils/open-ai.factory'
-import OpenAI from 'openai'
 import { ApiConfigService } from '../../core/modules/shared/services/api-config.service'
-import { AsyncContext } from '../../core/modules/async-context/async-context'
+import { catchError, firstValueFrom } from 'rxjs'
+import {
+  defaultGPTOptions,
+  genTemplatesForQuestions,
+  jsonSeparator
+} from './utils/query.templates'
 import { LocaleType } from '../../core/interfaces/common'
-import { genTemplateForQuestions } from './utils/query.templates'
+import { HttpService } from '@nestjs/axios'
+import { Readable } from 'stream'
+import { InternalServerErrorException } from '../../core/exceptions/build-in'
+import { ErrorMessagesConstants } from '../../core/constants'
+import { queryGetter } from './utils/query-getter.util'
 
 @Injectable()
 export class OpenAiService {
-  private client: OpenAI
-
   constructor(
-    private readonly configService: ApiConfigService,
-    private readonly asyncContext: AsyncContext<string, any>
-  ) {
-    this.client = OpenAiFactory(configService)
-  }
+    private readonly httpService: HttpService,
+    private readonly configService: ApiConfigService
+  ) {}
 
-  async execute(text: string) {
-    return this.client.completions
-      .create({
-        model: 'gpt-3.5-turbo',
-        prompt: text
-        // max_tokens: 300,
-        // temperature: 0,
-        // top_p: 1.0,
-        // frequency_penalty: 0.0,
-        // presence_penalty: 0.0
-      })
-      .catch(console.error)
-  }
+  public async promptGenerateQuestions(
+    topic: string,
+    locale: LocaleType,
+    count = 3
+  ): Promise<string> {
+    const data = {
+      ...defaultGPTOptions(this.configService.alisaGPTConfig.idKey),
+      messages: genTemplatesForQuestions(topic, locale, count)
+    }
 
-  async genQuestions(topic: string, locale: LocaleType, count?: number) {
-    return this.execute(genTemplateForQuestions(topic, locale, count))
+    const res = await firstValueFrom(
+      this.httpService.post<Readable>('', data).pipe(
+        catchError((error: Error) => {
+          throw new InternalServerErrorException(
+            ErrorMessagesConstants.InternalError,
+            'Something went wrong'
+          )
+        })
+      )
+    )
+    const awaited = await res
+    const target = queryGetter(awaited)
+    return target.slice(
+      target.indexOf(jsonSeparator) + jsonSeparator.length,
+      target.lastIndexOf(jsonSeparator)
+    )
   }
 }

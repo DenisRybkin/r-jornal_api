@@ -18,7 +18,10 @@ export class BaseProcessedError {
 }
 
 export class ProcessedError400Type implements BaseProcessedError {
-  @ApiProperty({ example: 400, description: 'http status of request' })
+  @ApiProperty({
+    example: 400,
+    description: 'http status of request'
+  })
   statusCode: HttpStatus
 
   @ApiProperty({
@@ -54,7 +57,10 @@ export class ProcessedError400Type implements BaseProcessedError {
 }
 
 export class ProcessedError401Type implements BaseProcessedError {
-  @ApiProperty({ example: 401, description: 'http status of request' })
+  @ApiProperty({
+    example: 401,
+    description: 'http status of request'
+  })
   statusCode: HttpStatus
 
   @ApiProperty({
@@ -83,7 +89,10 @@ export class ProcessedError401Type implements BaseProcessedError {
 }
 
 export class ProcessedError404Type implements BaseProcessedError {
-  @ApiProperty({ example: 404, description: 'http status of request' })
+  @ApiProperty({
+    example: 404,
+    description: 'http status of request'
+  })
   statusCode: HttpStatus
 
   @ApiProperty({
@@ -112,7 +121,10 @@ export class ProcessedError404Type implements BaseProcessedError {
 }
 
 export class ProcessedError500Type implements BaseProcessedError {
-  @ApiProperty({ example: 500, description: 'http status of request' })
+  @ApiProperty({
+    example: 500,
+    description: 'http status of request'
+  })
   statusCode: HttpStatus
 
   @ApiProperty({

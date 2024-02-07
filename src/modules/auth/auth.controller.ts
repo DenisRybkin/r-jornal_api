@@ -17,12 +17,12 @@ import {
   ApiTags,
   getSchemaPath
 } from '@nestjs/swagger'
-import { LoginResponseType } from '../../core/interfaces/common/login-response.type'
+import { LoginResponseType } from '../../core/interfaces/common'
 import {
   ProcessedError400Type,
   ProcessedError401Type,
   ProcessedError500Type
-} from '../../core/interfaces/common/processed-error.type'
+} from '../../core/interfaces/common'
 import { UserService } from '../user/user.service'
 import {
   avatarInclude,

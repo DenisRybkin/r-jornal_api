@@ -5,7 +5,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import type { SequelizeModuleOptions } from '@nestjs/sequelize'
 import { ModelOptions } from 'sequelize/types'
 import { Dialect } from 'sequelize/types/sequelize'
-import { AppConfig, S3Config } from '../../../types'
+import { AlisaGptConfig, AppConfig, S3Config } from '../../../types'
 import { ClientOptions } from 'openai/src'
 
 @Injectable()
@@ -45,6 +45,15 @@ export class ApiConfigService {
 
   get openAIConfig(): ClientOptions {
     return { apiKey: this.getString('CHAT_GPT_SECRET_KEY') }
+  }
+
+  get alisaGPTConfig(): AlisaGptConfig {
+    return {
+      baseUrl:
+        'https://llm.api.cloud.yandex.net/foundationModels/v1/completion',
+      idKey: this.getString('ALISA_GPT_ID_KEY'),
+      secretKey: this.getString('ALISA_GPT_SECRET_KEY')
+    }
   }
 
   get dbConfig(): SequelizeModuleOptions {
