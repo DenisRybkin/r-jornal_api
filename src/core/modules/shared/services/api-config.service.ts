@@ -68,7 +68,8 @@ export class ApiConfigService {
       host: this.getString('DB_HOST'),
       username: this.getString('DB_USER'),
       password: this.getString('DB_PASSWORD'),
-      database: this.getString('DB_NAME')
+      database: this.getString('DB_NAME'),
+      logging: false
     }
   }
 

@@ -56,7 +56,7 @@ export const GetAllEndpoint = <M extends Model<M, any>>(
     }),
     ...FilterQueries(PagingOptionsType),
     ...FilterQueries(config.filterDto),
-    IsPublic(config.isPublic ?? false),
+    IsPublic(config.isPublic ?? true),
     ...(config.isPublic ? [] : [ApiBearerAuth()]),
     RequiredRoles(...(config.requiredRoles ?? []))
   )

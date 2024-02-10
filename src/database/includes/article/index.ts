@@ -55,12 +55,7 @@ const categoryInclude: Includeable = {
 export const categoriesInclude: Includeable = {
   model: ArticleCategory,
   as: 'categories',
-  include: [categoryInclude],
-  where: {
-    categoryId: {
-      [Op.gt]: 1
-    }
-  }
+  include: [categoryInclude]
 }
 
 const staticFiledInclude: Includeable = {

@@ -1,6 +1,6 @@
 import { ModelWithId } from '../../../core/interfaces/rest/model-with-id.interface'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { IsInt, IsString } from 'class-validator'
 import { ConstraintMessagesConstants } from '../../../core/constants'
 import { Role } from '../../../database/models/singles/Role/role.model'
 import { StaticField } from '../../../database/models/singles/StaticField/static-field.model'
@@ -8,7 +8,7 @@ import { UserAvatar } from '../../../database/models/related/UserAvatar/user-ava
 
 export class UserShortDto implements ModelWithId {
   @ApiProperty()
-  @IsString({ message: ConstraintMessagesConstants.MustBeInteger })
+  @IsInt({ message: ConstraintMessagesConstants.MustBeInteger })
   readonly id: number
 
   @ApiProperty()

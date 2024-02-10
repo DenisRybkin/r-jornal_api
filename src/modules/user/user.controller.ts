@@ -9,7 +9,9 @@ import {
   ReadUserFollowingFilterDto,
   UpdatePartiallyUserDto,
   UpdateUserDto,
-  UserAvatarDto
+  UserAvatarDto,
+  UserCategoryDto,
+  UserInfoDto
 } from './dto'
 import { UserService } from './user.service'
 import {
@@ -46,6 +48,8 @@ import { UserFollower } from '../../database/models/related/UserFollower/user-fo
 import { UserFollowingService } from './user-following.service'
 import { UserFollowerService } from './user-follower.service'
 import { UserFollowing } from '../../database/models/related/UserFollowing/user-following.model'
+import { UserShortService } from './user-short.service'
+import { UserCategoryService } from './user-category.service'
 
 const BaseController = buildBaseControllerCRUD<User>({
   privacySettings: {
@@ -73,7 +77,9 @@ const BaseController = buildBaseControllerCRUD<User>({
   ReadUserFollowingFilterDto,
   UpdatePartiallyUserDto,
   UpdateUserDto,
-  UserAvatarDto
+  UserAvatarDto,
+  UserInfoDto,
+  UserCategoryDto
 )
 @ApiTags('User')
 @Controller('user')
@@ -85,6 +91,8 @@ export class UserController extends BaseController {
     private readonly userAvatarService: UserAvatarService,
     private readonly userFollowerService: UserFollowerService,
     private readonly userFollowingService: UserFollowingService,
+    private readonly userShortService: UserShortService,
+    private readonly userCategoryService: UserCategoryService,
     private readonly asyncContext: AsyncContext<string, any>
   ) {
     super(userService)
@@ -106,7 +114,7 @@ export class UserController extends BaseController {
     model: Number,
     isPublic: true
   })
-  @Get('/follower /:userId/count')
+  @Get('/follower/:userId/count')
   async getFollowersCount(
     @Param(
       'userId',
@@ -170,6 +178,35 @@ export class UserController extends BaseController {
     userId: number
   ) {
     return this.userFollowingService.count(userId)
+  }
+
+  @GetOneEndpoint({
+    operationName: 'Get user info by userId',
+    model: UserInfoDto
+  })
+  @Get('/info/:userId')
+  async getUserInfo(
+    @Param(
+      'userId',
+      new ParseIntPipe({
+        exceptionFactory: PipeExceptionFactory('userId', [
+          ConstraintMessagesConstants.MustBeInteger
+        ])
+      })
+    )
+    userId: number
+  ) {
+    const [userShort, countFollowings, countFollowers] = await Promise.all([
+      this.userShortService.getShortById(userId),
+      this.userFollowingService.count(userId),
+      this.userFollowerService.count(userId)
+    ])
+
+    return {
+      ...userShort,
+      countFollowers,
+      countFollowings
+    }
   }
 
   @GetAllEndpoint({
@@ -278,7 +315,7 @@ export class UserController extends BaseController {
     operationName: 'Delete avatar of user by id'
   })
   @Delete('/avatar/:id')
-  public async deleteAvatar(
+  async deleteAvatar(
     @Param(
       'id',
       new ParseIntPipe({
@@ -291,5 +328,19 @@ export class UserController extends BaseController {
   ) {
     const countDeleted = await this.userAvatarService.delete(id)
     return countDeleted >= 1
+  }
+
+  @CreateEndpoint({
+    operationName: 'Endpoint for toggle favorite category',
+    createDto: UserCategoryDto,
+    model: UserCategoryDto
+  })
+  @Post('category/favorite')
+  async toggleCategoryFavorite(@Body() dto: UserCategoryDto) {
+    const { id: userId } = this.asyncContext.get('user')
+    return await this.userCategoryService.createOrDelete(
+      { userId, categoryId: dto.categoryId },
+      { userId, categoryId: dto.categoryId }
+    )
   }
 }

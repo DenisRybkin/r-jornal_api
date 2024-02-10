@@ -22,4 +22,9 @@ export class ReadArticleFilterDto {
   @IsOptional()
   @IsInt({ message: ConstraintMessagesConstants.MustBeNumber })
   readonly categoryId: number
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt({ message: ConstraintMessagesConstants.MustBeNumber })
+  readonly userId: number
 }

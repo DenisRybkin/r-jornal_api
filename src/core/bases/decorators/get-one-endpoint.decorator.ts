@@ -33,7 +33,7 @@ export const GetOneEndpoint = <M extends Model<M, any>>(
       status: 404,
       type: ProcessedError404Type
     }),
-    IsPublic(config.isPublic ?? false),
+    IsPublic(config.isPublic ?? true),
     ...(config.isPublic ? [] : [ApiBearerAuth()]),
     RequiredRoles(...(config.requiredRoles ?? []))
   )

@@ -131,7 +131,7 @@ export class ArticleController extends BaseController {
   }
 
   @CreateEndpoint({
-    operationName: 'Endpoint for toggle like in article',
+    operationName: 'Endpoint for toggle repost in article',
     modelName: 'article like'
   })
   @Post('/repost/:articleId')
