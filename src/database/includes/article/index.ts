@@ -1,4 +1,4 @@
-import { Includeable, Op } from 'sequelize'
+import { Includeable } from 'sequelize'
 import { User } from '../../models/singles/User/user.model'
 import { ArticleLike } from '../../models/related/ArticleLike/article-like.model'
 import { ArticleComment } from '../../models/singles/ArticleComment/article-comment.model'

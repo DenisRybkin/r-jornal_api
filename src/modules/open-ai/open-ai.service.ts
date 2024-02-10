@@ -32,7 +32,7 @@ export class OpenAiService {
 
     const res = await firstValueFrom(
       this.httpService.post<Readable>('', data).pipe(
-        catchError((error: Error) => {
+        catchError(() => {
           throw new InternalServerErrorException(
             ErrorMessagesConstants.InternalError,
             'Something went wrong'
