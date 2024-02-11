@@ -47,6 +47,10 @@ export class UserAchievement extends Model<
   @Column({ type: DataType.INTEGER, allowNull: false })
   readonly achievementId: number
 
+  @ApiPropertyOptional({
+    type: () => getSchemaPath(Achievement),
+    description: 'achievement'
+  })
   @BelongsTo(() => Achievement, 'achievementId')
   readonly achievement?: Achievement
 

@@ -10,14 +10,15 @@ import { QueryNamingConventionConstants } from 'src/core/constants/query-naming-
 import { BadRequestException } from 'src/core/exceptions/build-in'
 import { ReadAssociatedFilter, ReadFilter } from 'src/core/interfaces/common'
 import { validateByDto } from 'src/core/validators'
+import { Attributes } from 'sequelize/types/model'
 
 export interface TransformedQuery {
   filters: ReadFilter[]
   associatedFilters: ReadAssociatedFilter[]
 }
 
-export interface TransformedReadFilters {
-  filters: WhereOptions
+export interface TransformedReadFilters<T extends Model<T, any>> {
+  filters: WhereOptions<Attributes<T>>
   associatedFilters: ReadAssociatedFilter[]
 }
 
@@ -131,7 +132,7 @@ const transformQueryValueByOperationType = (
 export const transformReadFilters = async <T extends Model<T, any>>(
   transformedQueries: TransformedQuery,
   dto: ClassConstructor<any>
-): Promise<TransformedReadFilters> => {
+): Promise<TransformedReadFilters<T>> => {
   const withTransformedValueFilters: ReadFilter[] =
     transformedQueries.filters.map(item => ({
       ...item,
@@ -163,7 +164,10 @@ export const transformReadFilters = async <T extends Model<T, any>>(
     whitelist: true,
     forbidNonWhitelisted: true
   })
+
   return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     filters: withTransformedValueFilters.map(filter => ({
       [filter.key as keyof T]: {
         [getOperationByConventionConstant(filter.filterType)]: filter.value

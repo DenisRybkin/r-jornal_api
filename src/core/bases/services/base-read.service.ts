@@ -31,7 +31,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>>
 
   public async getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'> = defaultPagingOptions,
-    filterOpts: Nullable<Partial<TransformedReadFilters>> = null,
+    filterOpts: Nullable<Partial<TransformedReadFilters<T>>> = null,
     transaction: Nullable<Transaction> = null
   ): Promise<IPaging<T>> {
     this.logger.log('start "getAll" method in base service read')

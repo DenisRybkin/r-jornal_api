@@ -40,6 +40,7 @@ import {
 import { UserAvatar } from '../../database/models/related/UserAvatar/user-avatar.model'
 import { Request } from 'express'
 import {
+  defaultPagingOptions,
   transformPagingOptions,
   transformQueriesFilter,
   transformReadFilters
@@ -50,6 +51,7 @@ import { UserFollowerService } from './user-follower.service'
 import { UserFollowing } from '../../database/models/related/UserFollowing/user-following.model'
 import { UserShortService } from './user-short.service'
 import { UserCategoryService } from './user-category.service'
+import { UserAchievementService } from './user-achievement.service'
 
 const BaseController = buildBaseControllerCRUD<User>({
   privacySettings: {
@@ -92,6 +94,7 @@ export class UserController extends BaseController {
     private readonly userFollowerService: UserFollowerService,
     private readonly userFollowingService: UserFollowingService,
     private readonly userShortService: UserShortService,
+    private readonly userAchievementService: UserAchievementService,
     private readonly userCategoryService: UserCategoryService,
     private readonly asyncContext: AsyncContext<string, any>
   ) {
@@ -196,16 +199,22 @@ export class UserController extends BaseController {
     )
     userId: number
   ) {
-    const [userShort, countFollowings, countFollowers] = await Promise.all([
-      this.userShortService.getShortById(userId),
-      this.userFollowingService.count(userId),
-      this.userFollowerService.count(userId)
-    ])
+    const [userShort, countFollowings, countFollowers, achievements] =
+      await Promise.all([
+        this.userShortService.getShortById(userId),
+        this.userFollowingService.count(userId),
+        this.userFollowerService.count(userId),
+        this.userAchievementService.getAll(
+          { ...defaultPagingOptions, pageSize: -1 },
+          { filters: { userId } }
+        )
+      ])
 
     return {
       ...userShort,
       countFollowers,
-      countFollowings
+      countFollowings,
+      achievements: achievements.items
     }
   }
 

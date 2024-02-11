@@ -27,6 +27,6 @@ export abstract class BaseServiceReadShort<
   abstract getShortById(id: number): Promise<TShort>
   abstract getAllShort(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'>,
-    filterOpts: Nullable<Partial<TransformedReadFilters>>
+    filterOpts: Nullable<Partial<TransformedReadFilters<T>>>
   ): Promise<IPaging<TShort>>
 }

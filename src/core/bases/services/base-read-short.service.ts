@@ -28,7 +28,7 @@ export abstract class BaseServiceReadShort<
 
   public async getAllShort(
     pagingOpts: IPagingOptions,
-    filterOpts: Nullable<Partial<TransformedReadFilters>>
+    filterOpts: Nullable<Partial<TransformedReadFilters<T>>>
   ): Promise<IPaging<TShort>> {
     this.logger.log('start "getAllShort" method in base service read short')
     this.logger.warn(

@@ -22,7 +22,8 @@ export class UserAchievementService extends BaseServiceCRUD<UserAchievement> {
     super(
       {
         autocompleteProperty: 'userId',
-        modelRepository: userAchievementRepository
+        modelRepository: userAchievementRepository,
+        includes: [achievementInclude]
       },
       new Logger(UserAchievementService.name)
     )

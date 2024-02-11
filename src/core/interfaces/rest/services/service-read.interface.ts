@@ -28,7 +28,7 @@ export abstract class BaseServiceRead<T extends Model<T, any>> {
   ): Promise<T>
   abstract getAll(
     pagingOpts: NullableLike<IPagingOptions, 'pageSize'>,
-    filterOpts: Nullable<Partial<TransformedReadFilters>>,
+    filterOpts: Nullable<Partial<TransformedReadFilters<T>>>,
     transaction?: Nullable<Transaction>
   ): Promise<IPaging<T>>
   abstract autocomplete(
