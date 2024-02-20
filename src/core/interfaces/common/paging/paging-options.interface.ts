@@ -33,7 +33,9 @@ export class PagingOptionsType implements IPagingOptions {
   @ApiPropertyOptional({
     example: Order.desc,
     description: 'oder for sorting (asc | desc)',
-    default: Order.desc
+    default: Order.desc,
+    enum: Order,
+    enumName: 'Order'
   })
   @IsOptional()
   @IsEnum(Order)

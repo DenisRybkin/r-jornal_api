@@ -114,7 +114,6 @@ const transformQueryValueByOperationType = (
     case QueryNamingConventionConstants.GreaterThanOrEqual:
     case QueryNamingConventionConstants.LessThan:
     case QueryNamingConventionConstants.LessThanOrEqual: {
-      console.log(typeof value, ' ', value)
       if (Number.isNaN(Number(value)))
         throw new BadRequestException(
           ConstraintMessagesConstants.MustBeNumber,
@@ -158,7 +157,6 @@ export const transformReadFilters = async <T extends Model<T, any>>(
       [readFilter.key]: readFilter.value
     }))
   )
-  console.log(whereOpts)
   await validateByDto(dto, whereOpts, {
     skipMissingProperties: true,
     whitelist: true,

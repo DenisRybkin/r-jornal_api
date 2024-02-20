@@ -31,9 +31,6 @@ export abstract class BaseServiceReadShort<
     filterOpts: Nullable<Partial<TransformedReadFilters<T>>>
   ): Promise<IPaging<TShort>> {
     this.logger.log('start "getAllShort" method in base service read short')
-    this.logger.warn(
-      `${JSON.stringify(filterOpts?.associatedFilters)}` + '__@filterOptions'
-    )
     const result = await super.getAll(pagingOpts, filterOpts)
     this.logger.log('end "getAllShort" method in base service read short')
     return { ...result, items: result?.items.map(this.config.mapper) }
