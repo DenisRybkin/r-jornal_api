@@ -2,9 +2,10 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('StaticField', [
       {
+        id: 1,
         name: '29e80db2-70ce-4bb2-b039-cabb5f067254.webp',
         originalname: 'EUOV1Jc-3ik.jpg',
         url: 'https://it-hub.storage.yandexcloud.net/uploads/29e80db2-70ce-4bb2-b039-cabb5f067254.webp',
@@ -16,7 +17,7 @@ module.exports = {
     ])
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('StaticField', null)
   }
 }

@@ -2,10 +2,11 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert(
       'StaticField',
       Array.from(Array(9).keys()).map((_, index) => ({
+        id: 50 + index,
         name: (index + 1).toString() + '.jpg',
         originalname: (index + 1).toString() + '.jpg',
         url: `https://storage.yandexcloud.net/it-hub/previews/${
@@ -19,7 +20,7 @@ module.exports = {
     )
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('StaticField')
   }
 }

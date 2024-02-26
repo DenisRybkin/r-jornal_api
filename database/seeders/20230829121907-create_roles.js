@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('Role', [
       {
         id: 1,
@@ -18,11 +18,16 @@ module.exports = {
         id: 3,
         name: 'owner',
         description: 'Has all permissions'
+      },
+      {
+        id: 4,
+        name: 'publisher',
+        description: 'Has permission to publish articles'
       }
     ])
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('Role', null)
   }
 }

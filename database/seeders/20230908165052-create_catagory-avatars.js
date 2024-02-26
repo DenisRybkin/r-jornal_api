@@ -2,10 +2,10 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('StaticField', [
       {
-        id: 20,
+        id: 32,
         name: 'common.png',
         originalname: 'common.png',
         folder: 'topics/',
@@ -15,7 +15,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 21,
+        id: 33,
         name: 'c#.png',
         originalname: 'c#.png',
         folder: 'topics/',
@@ -25,7 +25,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 22,
+        id: 34,
         name: 'c++.png',
         originalname: 'c++.png',
         folder: 'topics/',
@@ -35,7 +35,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 23,
+        id: 35,
         name: 'c.png',
         originalname: 'c.png',
         folder: 'topics/',
@@ -45,7 +45,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 25,
+        id: 36,
         name: 'dart.png',
         originalname: 'dart.png',
         folder: 'topics/',
@@ -55,7 +55,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 26,
+        id: 37,
         name: 'go.png',
         originalname: 'go.png',
         folder: 'topics/',
@@ -65,7 +65,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 27,
+        id: 38,
         name: 'haskell.png',
         originalname: 'haskell.png',
         folder: 'topics/',
@@ -75,7 +75,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 28,
+        id: 39,
         name: 'java.png',
         originalname: 'java.png',
         folder: 'topics/',
@@ -85,7 +85,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 29,
+        id: 40,
         name: 'javascript.png',
         originalname: 'javascript.png',
         folder: 'topics/',
@@ -95,7 +95,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 30,
+        id: 41,
         name: 'kotlin.png',
         originalname: 'kotlin.png',
         folder: 'topics/',
@@ -105,7 +105,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 31,
+        id: 42,
         name: 'php.png',
         originalname: 'php.png',
         folder: 'topics/',
@@ -115,7 +115,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 32,
+        id: 43,
         name: 'power-shell.png',
         originalname: 'power-shell.png',
         folder: 'topics/',
@@ -125,7 +125,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 33,
+        id: 44,
         name: 'python.png',
         originalname: 'python.png',
         folder: 'topics/',
@@ -135,7 +135,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 34,
+        id: 45,
         name: 'ruby.png',
         originalname: 'ruby.png',
         folder: 'topics/',
@@ -145,7 +145,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 35,
+        id: 46,
         name: 'rust.png',
         originalname: 'rust.png',
         folder: 'topics/',
@@ -155,7 +155,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 36,
+        id: 47,
         name: 'scala.png',
         originalname: 'scala.png',
         folder: 'topics/',
@@ -165,7 +165,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 37,
+        id: 48,
         name: 'sql.png',
         originalname: 'sql.png',
         folder: 'topics/',
@@ -175,7 +175,7 @@ module.exports = {
         createdAt: '2023-09-02T15:07:31.676Z'
       },
       {
-        id: 38,
+        id: 49,
         name: 'typescript.png',
         originalname: 'typescript.png',
         folder: 'topics/',
@@ -187,7 +187,7 @@ module.exports = {
     ])
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('StaticField', null)
   }
 }

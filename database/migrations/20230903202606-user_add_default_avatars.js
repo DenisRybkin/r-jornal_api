@@ -7,7 +7,7 @@ module.exports = {
       type: Sequelize.DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'StaticField', key: 'id' },
-      onDelete: 'SET NULL',
+      onDelete: 'CASCADE',
       defaultValue: 7
     })
   },

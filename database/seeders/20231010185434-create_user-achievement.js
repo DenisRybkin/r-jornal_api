@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('UserAchievement', [
       { userId: 1, categoryId: 1, achievementId: 1 },
       { userId: 1, categoryId: 2, achievementId: 1 },
@@ -25,7 +25,7 @@ module.exports = {
     ])
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('UserAchievement', null)
   }
 }

@@ -6,6 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert(
       'StaticField',
       Array.from(Array(30).keys()).map((_, index) => ({
+        id: index + 2,
         name: (index + 1).toString() + '.png',
         originalname: (index + 1).toString() + '.png',
         url: `https://it-hub.storage.yandexcloud.net/default-avatars/${

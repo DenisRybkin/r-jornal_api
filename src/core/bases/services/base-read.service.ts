@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common'
 import {
   Includeable,
   IncludeOptions,
@@ -5,19 +6,18 @@ import {
   WhereOptions
 } from 'sequelize'
 import { Model } from 'sequelize-typescript'
+import { Attributes, Order as SequelizeOrder } from 'sequelize/types/model'
 import { ErrorMessagesConstants } from 'src/core/constants'
 import { NotFoundException } from 'src/core/exceptions/build-in'
+import { BaseException } from '../../exceptions/base.exception'
 import { IncludesHelper, PaginationHelper } from '../../helpers'
 import { IAutocomplete, IPaging, IPagingOptions } from '../../interfaces/common'
-import { Attributes, Order as SequelizeOrder } from 'sequelize/types/model'
 import {
   BaseServiceRead as AbstractServiceRead,
   IConfigServiceRead
 } from '../../interfaces/rest/services'
 import { Nullable, NullableLike } from '../../types'
 import { defaultPagingOptions, TransformedReadFilters } from '../utils'
-import { BaseException } from '../../exceptions/base.exception'
-import { Logger } from '@nestjs/common'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
